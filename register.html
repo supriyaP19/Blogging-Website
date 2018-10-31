@@ -1,0 +1,42 @@
+{%extends 'base.html' %}
+{%block content%}
+      <h1 style="text-align:center;">Follow Interest</h1>
+    	<div class="box">
+  			<h1>Register</h1>
+  			<form action="/register" method="post">
+    			<input type="text" name="name" id="name" placeholder="Full Name" required/>
+    			<br>
+    			<label style="margin-left: 0px;">Gender:</label><br>
+    			<select name="gender" id="gender" style="width:108px">
+					  <option value="Male">Male</option>
+					  <option value="Female">Female</option>
+			    </select><br><br>
+			    <input type="password" name="password" id="password" placeholder="Password" required/>
+    			<br>	
+    			<input type="text" name="usernamesp" id="username" placeholder="Username" required/>
+    			<br>
+    			<input type="text" name="email" id="email" placeholder="Email" required/>
+    			<br>
+
+    			<input type="text" name="urlblog" id="urlblog" placeholder="Blog URL" required/>
+    			<br>
+    			<input type="text" name="urltitle" id="urltitle" placeholder="Title URL" required/>
+    			<br>
+    			
+    			<!-- <input type="text" name="blogURL" id="burl" placeholder="Blog URL" required/>
+    			<br> -->
+				<input type="text" name="age" id="age" placeholder="Age" required/><br><br>
+				
+				
+				<!-- <label style="margin-left: 80px;">Interest:</label>
+				<select name="interest" id="interest" style="width:108px">
+					  <option value="Computers">Computers</option>
+					  <option value="Fiction">Fiction</option>
+					  <option value="Comics">Comics</option>
+					  <option value="Sports">Sports</option>
+			    </select><br> -->
+    			<input type="submit" class="button" value="Register"/>
+  			</form>
+		</div>
+				
+{%endblock%}

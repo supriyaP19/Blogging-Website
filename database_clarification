@@ -1,3 +1,12 @@
 in follows table follows_id field refers to all the users that a blogger is following and follows_userid refers to a particular blogger whose follows list is stored in the table.
 if followers table, followers_id refers to all the users that are following a particular blogger and followers_userif refers to a particular blogger user followers list is stored in the table!
 need to run "PRAGMA foreign key =ON;" to ensure that foreign key constraint is working
+post_id sequence starts from 100
+
+
+to be taken care of:
+-> while inserting into comments table, make sure that the the post_id actually belongs the user_id mentioned for that comment
+-> while inserting into follows or followers make sure they are different
+-> while inserting in follows and followers make sure that the one being followed is an admin
+to update in database while creating the database:
+ON UPDATE CASCADE

@@ -1,0 +1,3 @@
+in follows table follows_id field refers to all the users that a blogger is following and follows_userid refers to a particular blogger whose follows list is stored in the table.
+if followers table, followers_id refers to all the users that are following a particular blogger and followers_userif refers to a particular blogger user followers list is stored in the table!
+need to run "PRAGMA foreign key =ON;" to ensure that foreign key constraint is working

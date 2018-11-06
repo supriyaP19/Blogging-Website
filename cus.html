@@ -1,0 +1,70 @@
+<style>
+:root{
+  --main-hue : var(--main-hue);
+}
+
+* {
+  margin: 0;
+}
+html{
+  height: 100%;
+}
+body{
+  height: 100%;
+  font-family: -apple-system, BlinkMacSystemFont“Segoe UI”, “Roboto”, “Oxygen”, “Ubuntu”, “Cantarell”,
+ “Fira Sans”, “Droid Sans”, “Helvetica Neue”,sans-serif;
+  display: flex;
+  flex-direction: column;
+}
+nav{
+  background: hsl(var(--main-hue), 50%, 50%);
+  padding: 1.3rem;
+  color: hsl(var(--main-hue), 50%, 10%);
+}
+.container{
+  flex: 1;
+  background:hsl(var(--main-hue), 50%, 95%);
+  padding: 1rem;
+}
+p.content{
+  padding: 0.7rem;
+  font-size: 0.7rem;
+  color: hsl(var(--main-hue), 50%, 50%);
+}
+.container h2.title{
+  padding: 1rem;
+  color: hsl(var(--main-hue), 50%, 20%);
+}
+footer{
+  background: hsl(var(--main-hue), 93%, 88%);
+  padding: 1rem;
+}
+input[type=button] {
+  color:hsl(var(--main-hue), 50%, 20%);
+  padding: 0.3rem;
+  font-size: 1rem;
+}
+</style>
+
+
+<nav class="navbar">Title</nav>
+<div class="container">
+  <div>
+    <input type="button" value="try this" id="toggle-theme" onclick="red()"/>
+    <input type="button" value="try this also" id="toggle-theme" onclick="blue()"/>
+
+    <script>
+    function blue(){
+      document.documentElement.style.setProperty('--main-hue', 500);
+    }
+    function red(){
+      document.documentElement.style.setProperty('--main-hue', 320);
+    }
+    </script>
+  </div>
+    <h2 class="title">What is Lorem Ipsum?</h2>
+    <p class="content">Lorem Ipsum is simply dummy text of the printing and typesetting industry...</p>
+</div>
+<footer>
+  Copyright 2018
+</footer>

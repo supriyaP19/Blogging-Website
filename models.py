@@ -37,7 +37,7 @@ def checkBlogUrl(request):
 def authenticate(request):
     con = sql.connect("BloggerDB.db")
    
-    sqlQuery = "select username from users where (username ='" + request.form['username'] + "' and password ='" + request.form['password'] + "')"
+    sqlQuery = "select username from user where (username ='" + request.form['username'] + "' and password ='" + request.form['password'] + "')"
     cursor = con.cursor()
     cursor.execute(sqlQuery)
     row = cursor.fetchone()

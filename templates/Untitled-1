@@ -1,0 +1,46 @@
+{% extends 'home.html'%}
+
+{% block reglog %}
+            <a target="_blank" href="https://mdbootstrap.com/education/bootstrap/" class="btn btn-indigo btn-lg">Register
+              <i class="fa fa-book ml-2"></i>
+            </a>
+
+{% endlblock %}           
+
+{% block form %}
+                <!-- Form -->
+                <form name="">
+                  <!-- Heading -->
+                  <h3 class="dark-grey-text text-center">
+                    <strong>USER LOGIN:</strong>
+                  </h3>
+                  <hr>
+
+                  <div class="md-form">
+                    <i class="fa fa-user prefix grey-text"></i>
+                    <input type="text" id="form3" class="form-control">
+                    <label for="form3">User name</label>
+                  </div>
+                  <div class="md-form">
+                    <i class="fas fa-asterisk prefix grey-text"></i>
+                    <input type="text" id="form2" class="form-control">
+                    <label for="form2">Enter password</label>
+                  </div>
+
+
+                  <div >
+                    <fieldset class="form-check" style="align-content:left">
+                      <input type="checkbox" class="form-check-input" id="checkbox1">
+                      <label for="checkbox1" class="form-check-label dark-grey-text" >Keep me alive.</label>
+                    </fieldset>
+                    <hr>
+
+                    <div class="text-center">
+                        <button class="btn btn-indigo">Enter</button>
+                    </div>
+
+                  </div>
+
+                </form>
+                <!-- Form -->
+{% endblock %}

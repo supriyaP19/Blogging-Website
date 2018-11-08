@@ -1,0 +1,66 @@
+{% extends 'home.html'%}
+
+{% block reglog %}
+            <a href="/" class="btn btn-indigo btn-lg">Login
+              <i class="fa fa-user ml-2"></i>
+            </a>
+
+{% endblock %}           
+
+{% block form %}
+
+                <!-- Form -->
+                <form method="POST" action="">
+                  <!-- Heading -->
+                  <h3 class="dark-grey-text text-center">
+                    <strong>Start From Here:</strong>
+                  </h3>
+                  <hr>
+                  {% from "includes/_formhelpers.html" import render_field %}
+                  
+                  <div class="md-form" >
+                    <i class="fa fa-user prefix grey-text"></i>
+                    {{render_field(form.name, class_="form-control")}}
+                    <!-- <label for="form3">Name</label> -->
+                  </div>
+                  
+
+                  <div class="md-form">
+                        <i class="fas fa-id-card prefix grey-text"></i>
+                        {{render_field(form.username, class_="form-control")}}
+                        <!-- <label for="form3">User Name</label> -->
+                  </div>
+
+                  <div class="md-form">
+                        <i class="fas fa-envelope prefix grey-text"></i>
+                        {{render_field(form.email, class_="form-control")}}
+                        <!-- <label for="form2">Email</label> -->
+                      </div>
+
+                  <div class="md-form" required>
+                    <i class="fas fa-asterisk prefix grey-text"></i>
+                    {{render_field(form.password, class_="form-control")}}
+                    <!-- <label for="form2">Enter password</label> -->
+                  </div>
+
+                  <div class="md-form" >
+                    <i class="fas fa-asterisk prefix grey-text"></i>
+                    {{render_field(form.confirm, class_="form-control")}}
+                    <!-- <label for="form2">Confirm password</label> -->
+                  </div>
+                  
+                  <div >
+                    <hr>
+
+                    <div class="text-center">
+                        <button class="btn btn-indigo" type="submit">Enter</button>
+                    </div>
+
+                  </div>
+
+                </form>
+                <!-- Form -->
+             
+
+              
+{% endblock %}

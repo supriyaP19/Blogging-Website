@@ -1,0 +1,286 @@
+{% extends 'default.html' %}
+
+{% block title %}
+Blogger Clone
+{% endblock %}
+
+{% block style %}
+<!-- Font Awesome -->
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+<!-- Bootstrap core CSS -->
+<link href='{{url_for("static", filename="css/bootstrap.min.css")}}' rel="stylesheet">
+<!-- Material Design Bootstrap -->
+<link href='{{url_for("static", filename="css/mdb.min.css")}}' rel="stylesheet">
+<!-- Your custom styles (optional) -->
+<link href='{{url_for("static", filename="css/style.min.css")}}' rel="stylesheet">
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.5.0/css/all.css" integrity="sha384-B4dIYHKNBt8Bc12p+WXckhzcICo0wtJAoU8YZTY5qE0Id1GSseTk6S+L3BlXeVIU" crossorigin="anonymous">
+
+<!-- <link href='{{url_for("static", filename="bootstrap-iso/bootstrap-iso.css")}}' rel="stylesheet"> -->
+
+
+<style type="text/css">
+
+
+.sidenav {
+    height: 100%;
+    width: 0;
+    position: fixed;
+    z-index: 1;
+    top: 0;
+    right: 0;
+    background-color: #111;
+    overflow-x: hidden;
+    transition: 0.5s;
+    padding-top: 60px;
+}
+
+.sidenav a {
+    padding: 8px 8px 8px 32px;
+    text-decoration: none;
+    font-size: 25px;
+    color: #818181;
+    display: block;
+    transition: 0.3s;
+}
+
+.sidenav a:hover {
+    color: #f1f1f1;
+}
+
+.sidenav .closebtn {
+    position: absolute;
+    top: 0;
+    right: 25px;
+    font-size: 36px;
+    margin-left: 50px;
+}
+
+#main {
+    transition: margin-left .5s;
+    padding: 16px;
+}
+
+@media screen and (max-height: 450px) {
+  .sidenav {padding-top: 15px;}
+  .sidenav a {font-size: 18px;}
+}
+
+
+  html,
+  body,
+  header,
+  .view {
+    height: 100%;
+  }
+
+  @media (max-width: 740px) {
+    html,
+    body,
+    header,
+    .view {
+      height: 1000px;
+    }
+  }
+
+  @media (min-width: 800px) and (max-width: 850px) {
+    html,
+    body,
+    header,
+    .view {
+      height: 650px;
+    }
+  }
+  @media (min-width: 800px) and (max-width: 850px) {
+            .navbar:not(.top-nav-collapse) {
+                background: #1C2331!important;
+            }
+        }
+</style>
+
+{% endblock %}
+
+
+{% block body %}
+
+
+
+  <!-- Navbar -->
+  <nav class="navbar fixed-top navbar-expand-lg navbar-dark scrolling-navbar" >
+      <div id="mySidenav" class="sidenav">
+          <!-- <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a> -->
+          <i class="fa fa-angle-right" style="font-size:30px;color:azure;cursor:pointer; position: absolute; left:15%; top:4%; " onclick="closeNav()"></i>
+
+          <a href="#">About</a>
+          <a href="#">Services</a>
+          <a href="#">Clients</a>
+          <a href="#">Contact</a>
+        </div>
+
+    
+    
+    <div class="container">
+
+      
+
+      <!-- Brand -->
+          <strong style="font-size: 30px; color:azure;align-content: left">Blogger </strong>
+
+      <!-- Collapse -->
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
+        aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+
+      <!-- Links -->
+      <div class="collapse navbar-collapse" id="navbarSupportedContent">
+
+        <!-- Left -->
+        <ul class="navbar-nav mr-auto">
+          <li class="nav-item active">
+            <a class="nav-link" href="#">Home
+              <span class="sr-only">(current)</span>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="https://mdbootstrap.com/getting-started/" target="_blank">Read post</a>
+          </li>
+          
+            <li class="nav-item">
+                <a class="nav-link" href="https://mdbootstrap.com/material-design-for-bootstrap/" target="_blank">About Blogger clone</a>
+            </li>
+    
+        </ul>
+
+        <!-- Right -->
+        <ul class="navbar-nav nav-flex-icons">
+            
+          
+          <li class="nav-item">
+            <a href="https://github.com/mdbootstrap/bootstrap-material-design" class="nav-link"
+              target="_blank">
+              <i class="fab fa-blogger" style="font-size:40px"></i>
+            </a>
+            
+          </li>
+          <li class="nav-item">
+              <div id="main">
+            
+                  <i  class="fa fa-angle-left" style="font-size:30px;color:azure;cursor:pointer;position: relative; right:-1000%; top:30%; " onclick="openNav()"></i>
+              
+                </div>
+              
+          </li>
+       
+        </ul>
+
+      </div>
+
+    </div>
+  
+  </nav>
+  <!-- Navbar -->
+</div>
+
+
+
+
+
+
+  <!-- Full Page Intro -->
+  <div class="view full-page-intro" style='background-image: url("static/img/login.jpg"); background-repeat: no-repeat; background-size: cover;'>
+
+    
+
+  </div>
+  <!-- Full Page Intro -->
+
+  <!--Main layout-->
+  <main>
+    
+    <div class="container">
+
+
+      
+      <!--Section: More-->
+      <section id="posts">
+
+        <h2 class="my-5 h3 text-center">Posts</h2>
+
+
+      </section>
+      <!--Section: More-->
+
+
+
+      <hr class="my-5">
+
+
+      <!--Section: Main features & Quick Start-->
+      <section>
+
+            <h3 class="h3 text-center mb-5">About MDB</h3>
+
+          </section>
+          <!--Section: Main features & Quick Start-->
+
+          
+
+
+
+    </div>
+  </main>
+  <!--Main layout-->
+
+  <!--Footer-->
+  <footer class="page-footer text-center font-small mt-4 wow fadeIn">
+
+    <!--Call to action-->
+    <div class="pt-4">
+      <a class="btn btn-outline-white" href="https://mdbootstrap.com/getting-started/" target="_blank" role="button">Download MDB
+        <i class="fa fa-download ml-2"></i>
+      </a>
+      <a class="btn btn-outline-white" href="https://mdbootstrap.com/education/bootstrap/" target="_blank" role="button">Register
+        <i class="fa fa-book ml-2"></i>
+      </a>
+    </div>
+    <!--/.Call to action-->
+
+    <hr class="my-4">
+
+   
+    <!--Copyright-->
+    <div class="footer-copyright py-3">
+      © 2018 Copyright:
+      <a href="https://mdbootstrap.com/education/bootstrap/" target="_blank"> bloggerclone.com </a>
+    </div>
+    <!--/.Copyright-->
+
+  </footer>
+  <!--/.Footer-->
+
+  <!-- SCRIPTS -->
+  <!-- JQuery -->
+  <script type="text/javascript" src='static/js/jquery-3.3.1.min.js'></script>
+  <!-- Bootstrap tooltips -->
+  <script type="text/javascript" src='static/js/popper.min.js'></script>
+  <!-- Bootstrap core JavaScript -->
+  <script type="text/javascript" src='static/js/bootstrap.min.js'></script>
+  <!-- MDB core JavaScript -->
+  <script type="text/javascript" src='static/js/mdb.min.js'></script>
+  <!-- Initializations -->
+  <script type="text/javascript">
+    // Animations initialization
+    new WOW().init();
+
+
+      function openNav() {
+          document.getElementById("mySidenav").style.width = "250px";
+          document.getElementById("main").style.marginRight = "250px";	      }
+
+      function closeNav() {
+          document.getElementById("mySidenav").style.width = "0";
+          document.getElementById("main").style.marginRight = "0";	      }
+
+  </script>
+
+{% endblock %}

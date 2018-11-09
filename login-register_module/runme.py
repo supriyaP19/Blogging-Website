@@ -1,9 +1,21 @@
 from flask import Flask, render_template, flash, redirect, url_for, session, request, logging
 from wtforms import Form, StringField, TextAreaField, PasswordField, validators
 from passlib.hash import sha256_crypt
+from flask_sqlalchemy import SQLAlchemy
 from functools import wraps
+import flask_alchemytry #import *
+
 
 app = Flask(__name__)
+app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite://///home/harshita/Sem1/Scripting/Project/flask tutorial/practice_flask/blogger_db1.db'
+app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+db = SQLAlchemy()
+db.init_app(app)
+
+#flask_alchemytry.db.create_all()
+
+user = flask_alchemytry.User.query.all()
+print(user)
 
 @app.route('/')
 def index():
@@ -29,7 +41,18 @@ def register():
         username = form.username.data
         password = sha256_crypt.encrypt(str(form.password.data))
 
-        # # Create cursor
+
+
+        user_data = flask_alchemytry.User.query.all()
+        get_index = user_data[len(user_data)-1]
+        get_index = get_index.user_id + 1
+        new_user = flask_alchemytry.User(get_index,username,email,password,username+'.com','my blog',1)
+        flask_alchemytry.db.session.add(new_user)
+        flask_alchemytry.db.session.commit()
+		
+		# print('hello')
+		#user_data = User.query.all()  
+	        # # Create cursor
         # cur = mysql.connection.cursor()
 
         # # Execute query
@@ -52,9 +75,33 @@ def register():
 # def reg():
 #     return render_template("reg.html")
 
+
+class LoginForm(Form):
+    username = StringField('User id', [validators.Length(min=4, max=25),validators.Required()])
+    password = PasswordField('Password', [
+        validators.DataRequired(),
+    ])
+
 @app.route('/login')
 def login():
-    return render_template("login.html")
+    form = LoginForm(request.form)
+    if request.method == 'POST' and form.validate():
+        username = form.username.data
+        # email = form.email.data
+        # username = form.username.data
+        password = sha256_crypt.encrypt(str(form.user_password.data))
+
+        check_user = User.query.filter_by(user_name = username, user_password = password)
+
+        if check_user:
+        	return render_template('login.html', form = form)
+        	
+        else:
+        	flash('Please enter valid username and password', 'failure')
+
+    return render_template('reg.html', form = form)
+
+
 if(__name__) == '__main__':
     app.secret_key='secret123'
     app.run(debug=True)

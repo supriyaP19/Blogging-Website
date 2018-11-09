@@ -16,15 +16,16 @@
                     <strong>USER LOGIN:</strong>
                   </h3>
                   <hr>
-
+                  <!-- {% from "includes/_formhelpers.html" import render_field %} -->
                   <div class="md-form">
                     <i class="fa fa-user prefix grey-text"></i>
-                    <input type="text" id="form3" class="form-control">
+                    <input type="text" id="form3" class="form-control" name="username">
                     <label for="form3">User ID</label>
+
                   </div>
                   <div class="md-form">
                     <i class="fas fa-asterisk prefix grey-text"></i>
-                    <input type="text" id="form2" class="form-control">
+                    <input type="text" id="form2" class="form-control" name="user_password">
                     <label for="form2">Enter password</label>
                   </div>
 

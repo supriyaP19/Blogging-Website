@@ -7,7 +7,7 @@ import flask_alchemytry #import *
 
 
 app = Flask(__name__)
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite://///home/harshita/Sem1/Scripting/Project/flask tutorial/practice_flask/blogger_db1.db'
+app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:////Users/martian/Documents/study/PG18/1st sem/Scripting/Project blogger/Blogging-Website/login-register_module/blogger_db1.db'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 db = SQLAlchemy()
 db.init_app(app)
@@ -17,9 +17,37 @@ db.init_app(app)
 user = flask_alchemytry.User.query.all()
 print(user)
 
+
+
 @app.route('/')
 def index():
-    return render_template("index.html",login = True )
+    return render_template("index.html")
+
+# class LoginForm(Form):
+#     username = StringField('Username', [validators.Length(min=4, max=25),validators.Required()])
+#     password = PasswordField('Password')
+
+
+
+@app.route('/login',methods=['GET','POST'])
+def login():
+    print "here"
+    # form = LoginForm(request.form)
+
+    print request.method
+    if request.method == 'POST':
+        username = request.form['username']
+
+        password = request.form['user_password']
+   
+        check_user = flask_alchemytry.User.query.filter_by(user_name = username).first()
+        print "post"
+        if check_user and sha256_crypt.verify(password, check_user.user_password):
+        	return render_template('dashboard.html')
+        	
+        else:
+            flash('Please enter valid username and password', 'failure')
+            return render_template("index.html")
 
 # Register Form Class
 class RegisterForm(Form):
@@ -50,23 +78,10 @@ def register():
         flask_alchemytry.db.session.add(new_user)
         flask_alchemytry.db.session.commit()
 		
-		# print('hello')
-		#user_data = User.query.all()  
-	        # # Create cursor
-        # cur = mysql.connection.cursor()
-
-        # # Execute query
-        # cur.execute("INSERT INTO users(name, email, username, password) VALUES(%s, %s, %s, %s)", (name, email, username, password))
-
-        # # Commit to DB
-        # mysql.connection.commit()
-
-        # # Close connection
-        # cur.close()
 
         flash('You are now registered and can log in', 'success')
 
-        # return redirect(url_for('login'))
+        return redirect(url_for('login'))
     return render_template('reg.html', form=form)
 
 
@@ -76,30 +91,26 @@ def register():
 #     return render_template("reg.html")
 
 
-class LoginForm(Form):
-    username = StringField('User id', [validators.Length(min=4, max=25),validators.Required()])
-    password = PasswordField('Password', [
-        validators.DataRequired(),
-    ])
 
-@app.route('/login')
-def login():
-    form = LoginForm(request.form)
-    if request.method == 'POST' and form.validate():
-        username = form.username.data
-        # email = form.email.data
-        # username = form.username.data
-        password = sha256_crypt.encrypt(str(form.user_password.data))
 
-        check_user = User.query.filter_by(user_name = username, user_password = password)
+# @app.route('/login')
+# def login():
+#     form = LoginForm(request.form)
+#     if request.method == 'POST' and form.validate():
+#         username = form.username.data
+#         # email = form.email.data
+#         # username = form.username.data
+#         password = sha256_crypt.encrypt(str(form.user_password.data))
 
-        if check_user:
-        	return render_template('login.html', form = form)
+#         check_user = User.query.filter_by(user_name = username, user_password = password)
+
+#         if check_user:
+#         	return render_template('login.html', form = form)
         	
-        else:
-        	flash('Please enter valid username and password', 'failure')
+#         else:
+#         	flash('Please enter valid username and password', 'failure')
 
-    return render_template('reg.html', form = form)
+#     return render_template('reg.html', form = form)
 
 
 if(__name__) == '__main__':

@@ -4,7 +4,7 @@ from passlib.hash import sha256_crypt
 from flask_sqlalchemy import SQLAlchemy
 from functools import wraps
 import flask_alchemytry #import *
-
+from functools import wraps
 
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///blogger_db1.db'
@@ -19,9 +19,9 @@ print(user)
 
 
 
-@app.route('/')
-def index():
-    return render_template("index.html")
+# @app.route('/')
+# def index():
+#     return render_template("index.html")
 
 # class LoginForm(Form):
 #     username = StringField('Username', [validators.Length(min=4, max=25),validators.Required()])
@@ -47,7 +47,19 @@ def showPosts():
     return render_template("viewPost.html",post=posts)
 
 
-@app.route('/login',methods=['GET','POST'])
+#check if user is logged in
+def is_logged_in(f):
+    @wraps(f)
+    def wrap(*args,**kwargs):
+        if 'logged_in' in session:
+            return f(*args, **kwargs)
+        else:
+            flash('Unauthorized','danger')
+            return redirect(url_for('login'))
+    return wrap
+
+
+@app.route('/',methods=['GET','POST'])
 def login():
     print("here")
     # form = LoginForm(request.form)
@@ -65,12 +77,29 @@ def login():
             session['username']=username
             flash('you are now logged in!!')
 
-            print("hey t=rajjo",session['username'])
-            return render_template('dashboard.html')
+            print("hey ",session['username'])
+            return redirect(url_for('dashboard'))
         	
         else:
             flash('Please enter valid username and password', 'failure')
-            return render_template("index.html")
+    return render_template("index.html")
+
+
+
+
+@app.route('/logout')
+def logout():
+    session.clear()
+    flash('Logged out!','success')
+    return redirect(url_for('login'))
+
+
+@app.route('/dashboard')
+@is_logged_in
+def dashboard():
+    return render_template('dashboard.html')
+
+
 
 # Register Form Class
 class RegisterForm(Form):

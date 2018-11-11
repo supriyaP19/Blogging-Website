@@ -7,7 +7,7 @@ import flask_alchemytry #import *
 
 
 app = Flask(__name__)
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite://///home/supriya/IIIT_Hyderabad/Scripting_Assignment/Scripting_Project/rajjo/Blogging-Website/login-register_module/blogger_db1.db'
+app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///blogger_db1.db'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 db = SQLAlchemy()
 db.init_app(app)

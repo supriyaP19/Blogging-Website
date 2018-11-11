@@ -1,4 +1,4 @@
-from flask import Flask, render_template, flash, redirect, url_for, session, request, logging
+from flask import Flask, render_template, flash, redirect, url_for, session, request, logging, Markup
 from wtforms import Form, StringField, TextAreaField, PasswordField, validators
 from passlib.hash import sha256_crypt
 from flask_sqlalchemy import SQLAlchemy
@@ -35,16 +35,19 @@ def showPosts():
     for i in posts:
         print(i.post_id)
     # print("inside showall",session['username'])
+    temp=[]
+    for i in posts:
+        temp.append(Markup(i.post_content))
     theme = flask_alchemytry.User.query.filter_by(user_name=session['username'])
     id = theme[0].user_themeid
     print("the id is ",id)
 
-    # if id == 1:
-    #     return render_template("viewPost.html",post=posts)
-    # elif id == 2:
-    #     return render_template("viewPost1.html",post=posts)
-    # else:
-    return render_template("viewPost.html",post=posts)
+    if id == "1":
+        return render_template("viewPost.html",post=temp)
+    elif id == "2":
+        return render_template("viewPost1.html",post=temp)
+    else:
+        return render_template("viewPost2.html",post=temp)
 
 
 @app.route('/login',methods=['GET','POST'])

@@ -81,16 +81,16 @@
         <div class="col-lg-8 col-md-10 mx-auto">
 
           {% for i in post %}
-            <div class="post-preview">
+            <div class="post-preview" style="height: 10px;">
               <a href="post.html">
-                <h2 class="post-title">
+                <h2 class="post-title" >
                   <!-- Man must explore, and this is exploration at its greatest -->
                  <!--  {% if i.post_content|length < 2%}
                       {{i.post_content}}
                   {% else %}
                       {{i.post_id}}
                   {% endif %} -->
-                  {{i.post_content}}
+                  {{i}}
                 </h2>
                 <!-- <iframe id="output" frameborder="1" style="width: 50vw;height: 70vh;margin-left: 0cm;"> -->
                     <!-- <body>
@@ -223,18 +223,6 @@
     <script src="js/clean-blog.min.js"></script>
 
   </body>
-  <script type="text/javascript">
-    // var myContent = '<span style="color:white;"><strong>'
-    // + 'My dynamic document'
-    // + '</strong></span>';
-    
-    var myContent = '<h2 class="post-title" style="color:green;">'+'{' +'{i' + '.' + 'post_content}'+'}' +'</h2>';
-    function display_output(){
-      alert(myContent)
-        var output = $("#output").contents().find('body');
-        
-        output.html(myContent);
-    }
-  </script>
+
 
 </html>

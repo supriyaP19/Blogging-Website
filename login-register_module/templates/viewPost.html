@@ -78,11 +78,15 @@
     <!-- Main Content -->
     <div class="container background">
       <div class="row">
-        <div class="col-lg-8 col-md-10 mx-auto">
+        <div class="col-lg-11 col-md-10 mx-auto">
+         
+            
+         
+          {% for i in range(0,post|length) %}
+            <div class="post-preview" style="height: 30%;width: 100%;align-content: center;">
 
-          {% for i in post %}
-            <div class="post-preview" style="height: 10px;">
               <a href="post.html">
+                   
                 <h2 class="post-title" >
                   <!-- Man must explore, and this is exploration at its greatest -->
                  <!--  {% if i.post_content|length < 2%}
@@ -90,21 +94,43 @@
                   {% else %}
                       {{i.post_id}}
                   {% endif %} -->
-                  {{i}}
+                  {{post_title[i]}}
                 </h2>
+
                 <!-- <iframe id="output" frameborder="1" style="width: 50vw;height: 70vh;margin-left: 0cm;"> -->
                     <!-- <body>
                         {{i.post_content}}  
                     </body> -->
                     
                 <!-- </iframe> -->
-                <h3 class="post-subtitle">
-                  Problems look mighty small from 150 miles up
+                <h3 class="post-subtitle" style="font-style:italic;">
+                  <!-- Problems look mighty small from 150 miles up -->
+                  {{post[i]}}
                 </h3>
-              </a>
-              <p class="post-meta">Posted by
-                <a href="#">Start Bootstrap</a>
-                {{i.post_published_on}}</p>
+              </a><!-- 
+              <div class="row">
+                <div class="col-md-6"> -->
+                
+                  <p class="post-meta">Posted by
+                   
+                      
+                          <a href="#">{{uname[i]}}</a> on
+                          {{x[i]}} {{day[i]}},{{year[i]}} 
+              <!--   </div>
+                <div class="col-md-6"> -->
+                  &ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;
+                  <!-- &ensp;&ensp;&ensp;&ensp;&ensp; -->
+                  
+                  <a style="padding-left:55px,font-size: 15px;padding-right: 0px;color: #0085a1;font-weight: normal;font-family: all;" href="/comment" >Comment</a> 
+               
+                </p>
+                 
+                  
+             <!--   </div>
+              </div> -->
+       
+        
+
             </div>
             <hr>
 

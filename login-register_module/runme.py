@@ -36,18 +36,61 @@ def showPosts():
         print(i.post_id)
     # print("inside showall",session['username'])
     temp=[]
+    time=[]
+    mon=[]
+    day=[]
+    year=[]
+    uname=[]
+    title=[]
     for i in posts:
-        temp.append(Markup(i.post_content))
+        str = i.post_content
+        str = str[0:200]
+        # print("date is: ",i.post_published_on)
+        date = ((i.post_published_on).strftime('%m/%d/%Y %H:%M:%S')).split(" ")
+        print("secs :",date[1])
+        date1 = (date[0]).split('/')
+        month = date1[1]
+        year.append(date1[2])
+        day.append(date1[0])
+        temp.append(Markup(str))
+        if month=="1" or month=="01":
+            mon.append("January")
+        elif month=="2" or month=="02":
+            mon.append("February")
+        elif month=="3" or month=="03":
+            mon.append("March")
+        elif month=="4" or month=="04":
+            mon.append("April")
+        elif month=="5" or month=="05":
+            mon.append("May")
+        elif month=="6" or month=="06":
+            mon.append("June")
+        elif month=="7" or month=="07":
+            mon.append("July")
+        elif month=="8" or month=="08":
+            mon.append("August")
+        elif month=="9" or month=="09":
+            mon.append("September")
+        elif month=="10":
+            mon.append("October")
+        elif month=="11":
+            mon.append("November")
+        elif month=="12":
+            mon.append("December")
+        time.append(((date[1]).split(":"))[0] + ":" + ((date[1]).split(":"))[1])
+        user = flask_alchemytry.User.query.filter_by(user_id=i.post_userid)
+        title.append(i.post_title)
+        uname.append(user[0].user_name)
     theme = flask_alchemytry.User.query.filter_by(user_name=session['username'])
     id = theme[0].user_themeid
     print("the id is ",id)
 
     if id == "1":
-        return render_template("viewPost.html",post=temp)
+        return render_template("viewPost.html",post=temp,x=mon,time=time,day=day,year=year,uname=uname,post_title=title)
     elif id == "2":
-        return render_template("viewPost1.html",post=temp)
+        return render_template("viewPost1.html",post=temp,x=mon,time=time,day=day,year=year,uname=uname,post_title=title)
     else:
-        return render_template("viewPost2.html",post=temp)
+        return render_template("viewPost2.html",post=temp,x=mon,time=time,day=day,year=year,uname=uname,post_title=title)
 
 
 @app.route('/login',methods=['GET','POST'])

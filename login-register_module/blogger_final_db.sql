@@ -18,8 +18,8 @@ insert into comments (comment_id,comment_postid,comment_userid,comment_content) 
 
 posts
 -------
-insert into posts (post_id,post_userid,post_published_on,post_content) values (100,1,datetime('now'),' Lorem <span style="color:green;">ipsum</span> dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.');
-insert into posts (post_id,post_userid,post_published_on,post_content) values (101,1,datetime('now'),'Id eos sanctus quaerendum. Vix dicam verear cu, solum iudico detraxit an eum. In sea reque oratio dissentiet, tation nonumy expetenda sea eu. Diam movet voluptatibus ea est, ei mel liber aeque option');
+insert into posts (post_id,post_userid,post_published_on,post_content,post_title) values (100,1,datetime('now'),' Lorem <span style="color:green;">ipsum</span> dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.','Title 1');
+insert into posts (post_id,post_userid,post_published_on,post_content,post_title) values (101,1,datetime('now'),'Id eos sanctus quaerendum. Vix dicam verear cu, solum iudico detraxit an eum. In sea reque oratio dissentiet, tation nonumy expetenda sea eu. Diam movet voluptatibus ea est, ei mel liber aeque option','Title 2');
 
 followers
 ---------

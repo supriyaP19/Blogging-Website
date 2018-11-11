@@ -7,7 +7,7 @@ import flask_alchemytry #import *
 
 
 app = Flask(__name__)
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:////Users/martian/Documents/study/PG18/1st sem/Scripting/Project blogger/Blogging-Website/login-register_module/blogger_db1.db'
+app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite://///home/supriya/IIIT_Hyderabad/Scripting_Assignment/Scripting_Project/rajjo/Blogging-Website/login-register_module/blogger_db1.db'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 db = SQLAlchemy()
 db.init_app(app)
@@ -27,23 +27,46 @@ def index():
 #     username = StringField('Username', [validators.Length(min=4, max=25),validators.Required()])
 #     password = PasswordField('Password')
 
+@app.route('/showall',methods=['GET','POST'])
+def showPosts():
+    
+    # theme = User.query.filter_by(user_name=)
+    posts=flask_alchemytry.Posts.query.all()
+    for i in posts:
+        print(i.post_id)
+    # print("inside showall",session['username'])
+    theme = flask_alchemytry.User.query.filter_by(user_name=session['username'])
+    id = theme[0].user_themeid
+    print("the id is ",id)
+
+    # if id == 1:
+    #     return render_template("viewPost.html",post=posts)
+    # elif id == 2:
+    #     return render_template("viewPost1.html",post=posts)
+    # else:
+    return render_template("viewPost.html",post=posts)
 
 
 @app.route('/login',methods=['GET','POST'])
 def login():
-    print "here"
+    print("here")
     # form = LoginForm(request.form)
 
-    print request.method
+    print(request.method)
     if request.method == 'POST':
         username = request.form['username']
 
         password = request.form['user_password']
    
         check_user = flask_alchemytry.User.query.filter_by(user_name = username).first()
-        print "post"
+        print("post")
         if check_user and sha256_crypt.verify(password, check_user.user_password):
-        	return render_template('dashboard.html')
+            session['logged_in']=True
+            session['username']=username
+            flash('you are now logged in!!')
+
+            print("hey t=rajjo",session['username'])
+            return render_template('dashboard.html')
         	
         else:
             flash('Please enter valid username and password', 'failure')
@@ -74,7 +97,7 @@ def register():
         user_data = flask_alchemytry.User.query.all()
         get_index = user_data[len(user_data)-1]
         get_index = get_index.user_id + 1
-        new_user = flask_alchemytry.User(get_index,username,email,password,username+'.com','my blog',1)
+        new_user = flask_alchemytry.User(get_index,username,email,password,username+'.com','my blog',1) 
         flask_alchemytry.db.session.add(new_user)
         flask_alchemytry.db.session.commit()
 		

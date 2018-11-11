@@ -1,0 +1,3 @@
+for if condition in html page - 
+
+{% if some_var|length > 1 %}{% endif %}

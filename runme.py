@@ -1,27 +1,46 @@
-from flask import Flask, render_template, flash, redirect, url_for, session, request, logging, Markup
+from flask import Flask, render_template, flash, redirect, url_for, session, request, logging,Markup
 from wtforms import Form, StringField, TextAreaField, PasswordField, validators
 from passlib.hash import sha256_crypt
 from flask_sqlalchemy import SQLAlchemy
 from functools import wraps
 import flask_alchemytry #import *
-from functools import wraps
-
+from datetime import datetime
+import random
 app = Flask(__name__)
+
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///blogger_db1.db'
+
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 db = SQLAlchemy()
 db.init_app(app)
 
 #flask_alchemytry.db.create_all()
+##
+##user = flask_alchemytry.User.query.all()
+##print(user)
 
-user = flask_alchemytry.User.query.all()
-print(user)
 
 
+@app.route('/')
+def index():
+    return render_template("index.html")
 
-# @app.route('/')
-# def index():
-#     return render_template("index.html")
+@app.route('/comment')
+def post_comment():
+    return render_template("comment.html")
+
+@app.route('/comment-result',methods=['POST', 'GET'])
+def publish_comment():
+
+    if request.method == 'POST':
+        user_com = request.form['comment']
+        ts1 = datetime(2012, 3, 3, 10, 10, 10)
+        new_com = flask_alchemytry.Comments( random.randint(1,101),1,2,ts1,user_com)
+        flask_alchemytry.db.session.add(new_com)
+        flask_alchemytry.db.session.commit()
+        flash('Record was successfully added')
+         # return redirect(url_for('show_all'))
+    return "RECORD ADDED"
 
 # class LoginForm(Form):
 #     username = StringField('Username', [validators.Length(min=4, max=25),validators.Required()])
@@ -29,83 +48,29 @@ print(user)
 
 @app.route('/showall',methods=['GET','POST'])
 def showPosts():
-    
+
     # theme = User.query.filter_by(user_name=)
     posts=flask_alchemytry.Posts.query.all()
+    temp=[]
+    for i in posts:
+        temp.append(Markup(i.post_content))
+    print("temp: ",temp)
     for i in posts:
         print(i.post_id)
     # print("inside showall",session['username'])
-    temp=[]
-    time=[]
-    mon=[]
-    day=[]
-    year=[]
-    uname=[]
-    title=[]
-    for i in posts:
-        str = i.post_content
-        str = str[0:200]
-        # print("date is: ",i.post_published_on)
-        date = ((i.post_published_on).strftime('%m/%d/%Y %H:%M:%S')).split(" ")
-        print("secs :",date[1])
-        date1 = (date[0]).split('/')
-        month = date1[1]
-        year.append(date1[2])
-        day.append(date1[0])
-        temp.append(Markup(str))
-        if month=="1" or month=="01":
-            mon.append("January")
-        elif month=="2" or month=="02":
-            mon.append("February")
-        elif month=="3" or month=="03":
-            mon.append("March")
-        elif month=="4" or month=="04":
-            mon.append("April")
-        elif month=="5" or month=="05":
-            mon.append("May")
-        elif month=="6" or month=="06":
-            mon.append("June")
-        elif month=="7" or month=="07":
-            mon.append("July")
-        elif month=="8" or month=="08":
-            mon.append("August")
-        elif month=="9" or month=="09":
-            mon.append("September")
-        elif month=="10":
-            mon.append("October")
-        elif month=="11":
-            mon.append("November")
-        elif month=="12":
-            mon.append("December")
-        time.append(((date[1]).split(":"))[0] + ":" + ((date[1]).split(":"))[1])
-        user = flask_alchemytry.User.query.filter_by(user_id=i.post_userid)
-        title.append(i.post_title)
-        uname.append(user[0].user_name)
     theme = flask_alchemytry.User.query.filter_by(user_name=session['username'])
     id = theme[0].user_themeid
     print("the id is ",id)
 
-    if id == "1":
-        return render_template("viewPost.html",post=temp,x=mon,time=time,day=day,year=year,uname=uname,post_title=title)
-    elif id == "2":
-        return render_template("viewPost1.html",post=temp,x=mon,time=time,day=day,year=year,uname=uname,post_title=title)
-    else:
-        return render_template("viewPost2.html",post=temp,x=mon,time=time,day=day,year=year,uname=uname,post_title=title)
+    # if id == 1:
+    #     return render_template("viewPost.html",post=posts)
+    # elif id == 2:
+    #     return render_template("viewPost1.html",post=posts)
+    # else:
+    return render_template("viewPost.html",post=temp)
 
 
-#check if user is logged in
-def is_logged_in(f):
-    @wraps(f)
-    def wrap(*args,**kwargs):
-        if 'logged_in' in session:
-            return f(*args, **kwargs)
-        else:
-            flash('Unauthorized','danger')
-            return redirect(url_for('login'))
-    return wrap
-
-
-@app.route('/',methods=['GET','POST'])
+@app.route('/login',methods=['GET','POST'])
 def login():
     print("here")
     # form = LoginForm(request.form)
@@ -115,7 +80,7 @@ def login():
         username = request.form['username']
 
         password = request.form['user_password']
-   
+
         check_user = flask_alchemytry.User.query.filter_by(user_name = username).first()
         print("post")
         if check_user and sha256_crypt.verify(password, check_user.user_password):
@@ -123,29 +88,12 @@ def login():
             session['username']=username
             flash('you are now logged in!!')
 
-            print("hey ",session['username'])
-            return redirect(url_for('dashboard'))
-        	
+            print("hey t=rajjo",session['username'])
+            return render_template('dashboard.html')
+
         else:
             flash('Please enter valid username and password', 'failure')
-    return render_template("index.html")
-
-
-
-
-@app.route('/logout')
-def logout():
-    session.clear()
-    flash('Logged out!','success')
-    return redirect(url_for('login'))
-
-
-@app.route('/dashboard')
-@is_logged_in
-def dashboard():
-    return render_template('dashboard.html')
-
-
+            return render_template("index.html")
 
 # Register Form Class
 class RegisterForm(Form):
@@ -172,10 +120,10 @@ def register():
         user_data = flask_alchemytry.User.query.all()
         get_index = user_data[len(user_data)-1]
         get_index = get_index.user_id + 1
-        new_user = flask_alchemytry.User(get_index,username,email,password,username+'.com','my blog',1) 
+        new_user = flask_alchemytry.User(get_index,username,email,password,username+'.com','my blog',1)
         flask_alchemytry.db.session.add(new_user)
         flask_alchemytry.db.session.commit()
-		
+
 
         flash('You are now registered and can log in', 'success')
 
@@ -204,7 +152,7 @@ def register():
 
 #         if check_user:
 #         	return render_template('login.html', form = form)
-        	
+
 #         else:
 #         	flash('Please enter valid username and password', 'failure')
 
@@ -214,4 +162,3 @@ def register():
 if(__name__) == '__main__':
     app.secret_key='secret123'
     app.run(debug=True)
-    

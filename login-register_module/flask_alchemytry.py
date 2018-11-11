@@ -32,6 +32,7 @@ class Posts(db.Model):
     post_userid = db.Column('post_userid',db.Integer, db.ForeignKey('user.user_id', onupdate='CASCADE', ondelete = 'CASCADE'),nullable=False)
     post_published_on = db.Column('post_published_on',db.DateTime,default = datetime.utcnow)
     post_content = db.Column('post_content',db.Unicode)
+    post_title = db.Column('post_title',db.Unicode)
 #    __table_args__ = (ForeignKeyConstraint(onupdate = 'CASCADE', ondelete = 'CASCADE') )
 
     def __init__(self, id, userid,published_on, content):

@@ -134,8 +134,8 @@ def showmore(id):
 
 
 
-@app.route('/showall',methods=['GET','POST'])
-def showPosts():
+@app.route('/showall/<string:uname>/',methods=['GET','POST'])
+def showPosts(uname):
     print ("in SHOW POSTS")
     # theme = User.query.filter_by(user_name=)
     userid=flask_alchemytry.User.query.filter_by(user_name=session['username']).first()
@@ -218,13 +218,15 @@ def blog_url():
     try:
         user = flask_alchemytry.User.query.filter_by(user_name=session['username'])
         url = user[0].user_blog_url
-        return render_template(url)
+        print("url is : ",url)
+        return redirect(url)
     except:
         return "Oops!"
 
 @app.route('/',methods=['GET','POST'])
 def login():
     if 'logged_in' in session:
+            # uname = session['username']
             return redirect(url_for('dashboard'))
     else:
         print("here i am")
@@ -295,17 +297,29 @@ def register():
 
 
 
-        user_data = flask_alchemytry.User.query.all()
-        get_index = user_data[len(user_data)-1]
-        get_index = get_index.user_id + 1
-        new_user = flask_alchemytry.User(get_index,username,email,password,username+'.com','my blog',1)
-        flask_alchemytry.db.session.add(new_user)
-        flask_alchemytry.db.session.commit()
+        # user_data = flask_alchemytry.User.query.all()
+        # get_index = user_data[len(user_data)-1]
+        userid = db.session.query(func.max(flask_alchemytry.User.user_id)).scalar()
+        try:
+            get_index = userid+1
+            # get_index = get_index.user_id + 1
+            new_user = flask_alchemytry.User(get_index,username,email,password,username+'.blogspot.com','my blog',1)
+            flask_alchemytry.db.session.add(new_user)
+            flask_alchemytry.db.session.commit()
 
 
-        flash('You are now registered and can log in', 'success')
+            flash('You are now registered and can log in', 'success')
 
-        return redirect(url_for('login'))
+            return redirect(url_for('login'))
+        except:
+
+            new_user = flask_alchemytry.User(1,username,email,password,username+'.blogspot.com','my blog',1)
+            flask_alchemytry.db.session.add(new_user)
+            flask_alchemytry.db.session.commit()
+            flash('You are now registered and can log in', 'success')
+
+            return redirect(url_for('login'))
+
     return render_template('reg.html', form=form)
 
 

@@ -8,26 +8,35 @@
     <meta name="description" content="">
     <meta name="author" content="">
 
+<<<<<<< HEAD
     <title>All Your Blogs Here!</title>
+=======
+>>>>>>> ae513eb842152b2fdc51ce9337ef1b72e5a3cb4c
 
-    <!-- Bootstrap core CSS -->
-    <link href="../static/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <title>Clean Blog - Start Bootstrap Theme</title>
+ <!-- Bootstrap core CSS -->
+    <link href='{{url_for("static",filename="vendor/bootstrap/css/bootstrap.min.css")}}' rel="stylesheet">
+
 
     <!-- Custom fonts for this template -->
-    <link href="../static/vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
+    <link href='{{url_for("static",filename="vendor/fontawesome-free/css/all.min.css")}}' rel="stylesheet" type="text/css">
     <link href='https://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic' rel='stylesheet' type='text/css'>
     <link href='https://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800' rel='stylesheet' type='text/css'>
 
     <!-- Custom styles for this template -->
-    <link href="../static/css/clean-blog.min.css" rel="stylesheet">
+    <link href='{{url_for("static",filename="css/clean-blog.min.css")}}' rel="stylesheet">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-     <script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+     <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
      <script type="text/javascript" src="https://cdn.rawgit.com/carlo/jquery-base64/master/jquery.base64.min.js"></script>
   </head>
   <style type="text/css">
     .background{
       background-color: black;
     }
+  /*  .container{
+      height: 450px;
+    }*/
+
 
   </style>
 
@@ -59,20 +68,32 @@
         </div>
       </div>
     </nav>
-      <!-- Page Header -->
-        <header class="masthead" style="background-image: url('static/img/sea_blue.jpg');">
+
+
+    <!-- Page Header -->
+    <header class="masthead" style="background-image: url('static/img/sea_blue.jpg');">
+
       <div class="overlay"></div>
-      <div class="container">
-        <div class="row">
-          <div class="col-lg-8 col-md-10 mx-auto">
+      <div class="container" >
+        <div class="row" >
+          <div class="col-lg-2 col-md-2 mx-auto">
+            <div class="site-heading">
+              <div class="avatar">
+                    <img alt="image" src="static/img/deepika.jpg" style="border-image-width: 30%;" height="100%" width="100%">
+                </div>
+                <span class="subheading">{{name}}</span>
+            </div>
+          </div>
+          <div class="col-lg-5 col-md-5 mx-auto">
             <div class="site-heading">
               <h1>Blog Title</h1>
               <span class="subheading">A Blog Theme by Start Bootstrap</span>
             </div>
           </div>
-        </div>
+
       </div>
     </header>
+
           <!-- Main Content -->
           <div class="container background">
             <div class="row">
@@ -92,18 +113,25 @@
                     </h5>
                     <p class="post-meta"> {{num_com[i]}} Comments</p>
                     <p class="post-meta" style="color:green;">
+<<<<<<< HEAD
                       <a href="{{url_for('showmore',id = pid[i])}}"> Show More </a>
+=======
+                      <a href={{ url_for('post_comment' ,pid=1 )}}> Show More </a>
+                       <!-- <a class="pull-right" style="font-size: 15px;padding-left: 25vw;color: #0085a1;font-weight: normal;font-family: all;" href="{{url_for('showmore',id = pid[i])}}">READ MORE</a> -->
+                <!--   <a class="pull-right" style="font-size: 15px;color: #0085a1;font-weight: normal;font-family: all;" href="/comment" >Comment</a>  -->
+>>>>>>> ae513eb842152b2fdc51ce9337ef1b72e5a3cb4c
                       <!-- <a href="#"></a> -->
                       <!-- <a class="pull-right" style="font-size: 15px;padding-left: 35vw;color: #0085a1;font-weight: normal;font-family: all;" href="/comment" >Comment</a> -->
                     </p>
                   </div>
                 <hr>
           {% else %}
-              <h1> No User Found!! </h1>
+              <h1> No Posts Found!! </h1>
               {% endfor %}
             <div class="clearfix">
               <a class="btn btn-primary float-right" href="#">Older Posts &rarr;</a>
             </div>
+
           </div>
         </div>
       </div>

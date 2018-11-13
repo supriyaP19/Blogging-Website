@@ -2,7 +2,9 @@ from flask import Flask, render_template, flash, redirect, url_for, session, req
 from wtforms import Form, StringField, TextAreaField, PasswordField, validators
 from passlib.hash import sha256_crypt
 from flask_sqlalchemy import SQLAlchemy
-from sqlalchemy import update
+
+from sqlalchemy import func
+
 from functools import wraps
 import flask_alchemytry #import *
 from functools import wraps
@@ -21,6 +23,7 @@ user = flask_alchemytry.User.query.all()
 print(user)
 keepme = True
 
+
 @app.route('/themeChange/<int:tid>')
 def themeChange(tid):
     theme = flask_alchemytry.User.query.filter_by(user_name=session['username']).first()
@@ -29,6 +32,7 @@ def themeChange(tid):
     flask_alchemytry.db.session.commit()
     # flas.update().where(users.c.id==5).values(name="some name")
     return showPosts()
+
 
 
 
@@ -114,6 +118,7 @@ def showmore(id):
     date_substring=(date[0]).split('/')
     mon=findMonth(date_substring[0])
     title=post_content[0].post_title
+
     id=post_content[0].post_id
     print("content is  ***",post_content[0].post_content)
     
@@ -124,12 +129,17 @@ def showmore(id):
     for i in all_comments:
         comm_content.append(i.comment_content)
 
+
     print "Comments: ",comm_content
+
+    # print("Comments: ",comm_content)
+
 
     
     user_id=[]
     for i in all_comments:
          user_id.append(i.comment_userid)
+
     print "Commented users: ",user_id
     
     names=[]
@@ -141,13 +151,15 @@ def showmore(id):
             names.append(user_name_i.user_name)
 
     print "Commented user names:", names
+    # print("Commented users: ",user_id)
+    
 
     for i,j in zip(comm_content,names):
         temp_det=[]
         temp_det.append(i)
         temp_det.append(j)
         comment_details.append(temp_det)
-    
+
     print "COMMENT DET: ",comment_details
 
 
@@ -161,10 +173,6 @@ def showmore(id):
         return render_template('showmore_2.html',post_content=post_details,comments=comment_details)
     else:
         return render_template("viewPost2.html",num_com=n,pid=postid,post=temp,x=mon,time=time,day=day,year=year,uname=uname,post_title=title)
-
-
-
-    
 
 
 
@@ -183,6 +191,7 @@ def showPosts():
 
 
     # posts=flask_alchemytry.Posts.query.all()
+<<<<<<< HEAD
     # try:
 # for i in posts:
 #     print(i.post_id)
@@ -238,6 +247,7 @@ def showPosts():
     #     return render_template("no_posts.html")
 
 
+
 #check if user is logged in
 def is_logged_in(f):
     @wraps(f)
@@ -249,6 +259,16 @@ def is_logged_in(f):
             return redirect(url_for('login'))
     return wrap
 
+@app.route('/blog_url',methods=['GET', 'POST'])
+def blog_url():
+    name = request.form['searchbar']
+    print("inside blogurl",name)
+    try:
+        user = flask_alchemytry.User.query.filter_by(user_name=session['username'])
+        url = user[0].user_blog_url
+        return render_template(url)
+    except:
+        return "Oops!"
 
 @app.route('/',methods=['GET','POST'])
 def login():

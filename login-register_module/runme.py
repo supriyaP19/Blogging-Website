@@ -69,7 +69,7 @@ def showMore(pid):
 
 @app.route('/showall',methods=['GET','POST'])
 def showPosts():
-    print "in SHOW POSTS"
+    print ("in SHOW POSTS")
     # theme = User.query.filter_by(user_name=)
     userid=flask_alchemytry.User.query.filter_by(user_name=session['username']).first()
     # <User 12>
@@ -77,7 +77,7 @@ def showPosts():
     # print a
 
     posts=flask_alchemytry.Posts.query.filter_by(post_userid=userid.user_id).all()
-    print "Posts: ",posts
+    print ("Posts: ",posts)
 
 
     # posts=flask_alchemytry.Posts.query.all()
@@ -100,13 +100,14 @@ def showPosts():
             # n=session.query(Comments).filter(Comments.post_id.like(i.post_id)).count()
             n=count(i.post_id)
             str = i.post_content
-            print "i=",i,"str: ",i.post_content
+            print ("i=",i,"str: ",i.post_content)
             str = str[0:150]
             # print("date is: ",i.post_published_on)
             date = ((i.post_published_on).strftime('%m/%d/%Y %H:%M:%S')).split(" ")
             # print("secs :",date[1])
             date1 = (date[0]).split('/')
             month = date1[1]
+            print(month)
             year.append(date1[2])
             day.append(date1[0])
             temp.append(Markup(str))
@@ -210,7 +211,7 @@ def logout():
 @app.route('/dashboard')
 @is_logged_in
 def dashboard():
-    return render_template('dashboard.html')
+    return render_template('dashboard.html',username=session['username'])
 
 
 

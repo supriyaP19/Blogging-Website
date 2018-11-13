@@ -8,7 +8,7 @@
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>Post a Comment</title>
+    <title>{{post_content[3]}}</title>
 
     <!-- Bootstrap core CSS -->
     <link href='{{url_for("static",filename="vendor/bootstrap/css/bootstrap.min.css")}}' rel="stylesheet">
@@ -32,7 +32,7 @@
 
   </style>
 
-  <body style="background-color: black;">
+<body style="background-color: black;">
      <h1 style="color:red;font-size: 40%"/>{{message}}
     <!-- Navigation -->
     <nav class="navbar navbar-expand-lg navbar-light fixed-top" id="mainNav">
@@ -61,109 +61,48 @@
       </div>
     </nav>
 
-    <!-- Page Header -->
-    <header class="masthead" style="background-image: url('../../static/img/sea_blue.jpg');">
-      <div class="overlay"></div>
-        <div class="row">
-          <div class="container">
-          <div class="col-lg-8 col-md-10 mx-auto">
+  <!-- Page Header -->
+  <header class="masthead" style="background-image: url('../../static/img/sea_blue.jpg');">
+    <div class="overlay"></div>
+        <div class="container">
             <div class="site-heading">
-              <div class="form-group">
-                  <h3><label for="comment">Share</label></h3>
-                     <p class="post-meta">
-                        on September 18, 2018</p>
-                  <form action = "/comment-result/{{pid}}/" method="post">
-                    
-                    <!-- <p>{{pid}}</p> -->
-                    <a href="post.html">
-                        <h2 class="post-title">
-                          {{post_content}}
-                        </h2>
-                      </a>
-                   
-                    </div>
-                    <h3><label for="comment">Comment</label></h3>
-                    <textarea class="form-control" rows="5" id="comment" name="comment"></textarea>
-                    <button type="submit" class="btn btn-primary">Submit</button>
-                  </form>
-
-                  </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </header>
-
-    <!-- Main Content -->
-    <div class="container background">
-      <div class="row">
-        <div class="col-lg-8 col-md-10 mx-auto">
-
-    
-         <!--  <div class="post-preview">
-            <a href="post.html">
-              <h2 class="post-title">
-                Man must explore, and this is exploration at its greatest
-              </h2>
-              <h3 class="post-subtitle">
-                Problems look mighty small from 150 miles up
+              <h3>
+                {{post_content[3]}}
               </h3>
-            </a>
-            <p class="post-meta">Posted by
-              <a href="#">Start Bootstrap</a>
-              on September 24, 2018</p>
-          </div>
-          <hr> -->
-
-          <!--
-          <div class="post-preview">
-            <a href="post.html">
-              <h2 class="post-title">
-                I believe every human has a finite number of heartbeats. I don't intend to waste any of mine.
+              <h4>
+                <p class="post-meta">
+                <!-- date time -->
+                  {{post_content[0][0]}} {{post_content[1]}}, {{post_content[2]}}
+                </p>
+              </h4>
+            <h2 class="post-content">
+              {{post_content[4]}}
+            </h2>
+          </div>  
+            <div class="post-preview" style="height: 30%;width: 100%;align-content: center;">
+              <h2 class="comment-username" >
+                COMMENTS
+                <!-- username gets printed -->
               </h2>
-            </a>
-            <p class="post-meta">Posted by
-              <a href="#">Start Bootstrap</a>
-              on September 18, 2018</p>
-          </div>
-          <hr>
-          <div class="post-preview">
-            <a href="post.html">
-              <h2 class="post-title">
-                Science has not yet mastered prophecy
-              </h2>
-              <h3 class="post-subtitle">
-                We predict too much for the next year and yet far too little for the next ten.
-              </h3>
-            </a>
-            <p class="post-meta">Posted by
-              <a href="#">Start Bootstrap</a>
-              on August 24, 2018</p>
-          </div>
-          <hr>
-          <div class="post-preview">
-            <a href="post.html">
-              <h2 class="post-title">
-                Failure is not an option
-              </h2>
-              <h3 class="post-subtitle">
-                Many say exploration is part of our destiny, but it’s actually our duty to future generations.
-              </h3>
-            </a>
-            <p class="post-meta">Posted by
-              <a href="#">Start Bootstrap</a>
-              on July 8, 2018</p>
-          </div>
-          <hr> -->
-          <!-- Pager -->
-          <div class="clearfix">
-            <a class="btn btn-primary float-right" href="#">Older Posts &rarr;</a>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <hr>
+              {% for i in comments %}
+              <h4 class="comment-content">
+                  <!-- comment content  -->
+                {{i[1]}} said {{i[0]}} 
+              </h4>
+             {% endfor %}
+              
+              <h5 class="post-subtitle" style="font-style:italic;">
+              </h5>
+            </div> <!--closing post-preview div-->
+            <hr>
+           
+            <form action = "/comment-result/{{pid}}/" method="post">
+              <textarea class="form-control" rows="5" id="comment" name="comment"></textarea>
+              <button type="submit" class="btn btn-primary">Submit</button>
+            </form>
+          </div> <!--closing div container-->
+        </div> <!--closing div row-->
+      </header>
 
     <!-- Footer -->
     <footer>

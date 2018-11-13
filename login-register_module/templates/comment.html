@@ -8,18 +8,23 @@
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>Welcome To Blog</title>
+    <title>Post a Comment</title>
 
     <!-- Bootstrap core CSS -->
-    <link href="../static/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <!-- <link href="../static/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet"> -->
+    <link href="{{ url_for('static', filename='vendor/bootstrap/css/bootstrap.min.css') }}" rel="stylesheet">
 
     <!-- Custom fonts for this template -->
-    <link href="../static/vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
+    <!-- <link href="../static/vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css"> -->
+    <link href="{{ url_for('static', filename='vendor/fontawesome-free/css/all.min.css') }}" rel="stylesheet" type="text/css">
+
     <link href='https://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic' rel='stylesheet' type='text/css'>
     <link href='https://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800' rel='stylesheet' type='text/css'>
 
     <!-- Custom styles for this template -->
-    <link href="../static/css/clean-blog.min.css" rel="stylesheet">
+    <!-- <link href="../static/css/clean-blog.min.css" rel="stylesheet"> -->
+    <link href="{{ url_for('static', filename='css/clean-blog.min.css') }}" rel="stylesheet" type="text/css">
+
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
      <script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
      <script type="text/javascript" src="https://cdn.rawgit.com/carlo/jquery-base64/master/jquery.base64.min.js"></script>
@@ -31,12 +36,12 @@
 
   </style>
 
-  <body style="background-color: black;font-size=12;color:white;">
-     <!-- <h1 style="color:white;">{{message}} -->
-     <!-- Navigation -->
-     <nav class="navbar navbar-expand-lg navbar-light fixed-top" id="mainNav">
+  <body style="background-color: black;">
+     <h1 style="color:red;font-size: 40%"/>{{message}}
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg navbar-light fixed-top" id="mainNav">
       <div class="container">
-        <a class="navbar-brand" href="index.html">Start Bootstrap</a>
+        <a class="navbar-brand" href="index.html">Write a Comment</a>
         <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
           Menu
           <i class="fas fa-bars"></i>
@@ -59,55 +64,32 @@
         </div>
       </div>
     </nav>
-      <!-- Page Header -->
-        <header class="masthead" style="background-image: url('static/img/sea_blue.jpg');">
+
+    <!-- Page Header -->
+
+    <!-- <header class="masthead" style="background-image: "url_for('static', filename='img/sea_blue.jpg')";"> -->
+    <header class="masthead" style="background:pink;">
+
       <div class="overlay"></div>
-      <div class="container">
         <div class="row">
+          <div class="container">
           <div class="col-lg-8 col-md-10 mx-auto">
             <div class="site-heading">
-              <h1>Blog Title</h1>
-              <span class="subheading">A Blog Theme by Start Bootstrap</span>
+              <div class="form-group">
+                  <h3><label for="comment">Comment:</label></h3>
+                  <form action = "/comment-result/{{pid}}" method="post">
+                    <textarea class="form-control" rows="5" id="comment" name="comment"></textarea>
+                    <input type = "submit" value = "Submit" />
+                  </form>
+
+                  </div>
             </div>
           </div>
         </div>
       </div>
     </header>
-          <!-- Main Content -->
-          <div class="container background">
-            <div class="row">
-              <div class="col-lg-11 col-md-10 mx-auto">
-                {%  for i in range(0,post|length) %}
-                  <div class="post-preview" style="height: 30%;width: 100%;align-content: center;">
-                      <a href="post.html">
-                        <h2 class="post-title" >
-                          {{post_title[i]}}
-                        </h2>
-                      </a>
-                    <h4 class="post-meta">
-                      {{post[i]}}
-                    </h4>
-                    <h5 class="post-subtitle" style="font-style:italic;">
-                      Posted by {{uname[i]}} on {{i.post_published_on}}  {{x[i]}} {{day[i]}},{{year[i]}}
-                    </h5>
-                    <p class="post-meta"> {{num_com}} Comments</p>
-                    <p class="post-meta" style="color:green;">
-                      <a href={{ url_for('post_comment' ,pid=1 )}}> Show More </a>
-                      <!-- <a href="#"></a> -->
-                      <!-- <a class="pull-right" style="font-size: 15px;padding-left: 35vw;color: #0085a1;font-weight: normal;font-family: all;" href="/comment" >Comment</a> -->
-                    </p>
-                  </div>
-                <hr>
-          {% else %}
-              <h1> No User Found!! </h1>
-              {% endfor %}
-            <div class="clearfix">
-              <a class="btn btn-primary float-right" href="#">Older Posts &rarr;</a>
-            </div>
-          </div>
-        </div>
-      </div>
     <hr>
+
     <!-- Footer -->
     <footer>
       <div class="container">
@@ -153,6 +135,5 @@
     <script src="js/clean-blog.min.js"></script>
 
   </body>
-
 
 </html>

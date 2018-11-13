@@ -30,7 +30,7 @@ def count(pid):
     numberOfRows = crsr.fetchone()[0]
     connection.commit()
     connection.close()
-    return numberOfRows;
+    return numberOfRows
 
 def findMonth(month):
     mon=[]
@@ -136,7 +136,7 @@ def showmore(id):
 
 @app.route('/showall',methods=['GET','POST'])
 def showPosts():
-    print "in SHOW POSTS"
+    print ("in SHOW POSTS")
     # theme = User.query.filter_by(user_name=)
     userid=flask_alchemytry.User.query.filter_by(user_name=session['username']).first()
     # <User 12>
@@ -144,59 +144,60 @@ def showPosts():
     # print a
 
     posts=flask_alchemytry.Posts.query.filter_by(post_userid=userid.user_id).all()
-    print "Posts: ",posts
+    print ("Posts: ",posts)
 
 
     # posts=flask_alchemytry.Posts.query.all()
-    # try:
+    try:
     # for i in posts:
     #     print(i.post_id)
-    # print("inside showall",session['username'])
-    temp=[]
-    time=[]
-    mon=[]
-    day=[]
-    year=[]
-    uname=[]
-    title=[]
-    postid=[]
-# print posts
+    # print("inside showall",session['username']
+        temp=[]
+        time=[]
+        mon=[]
+        day=[]
+        year=[]
+        uname=[]
+        title=[]
+        postid=[]
+    # print posts
 
-    for i in posts:
-        #find num of Comments
-        # num=flask_alchemytry.Comments.query.filter_by(post_id=i.post_id).all()
-        # n=session.query(Comments).filter(Comments.post_id.like(i.post_id)).count()
-        n=count(i.post_id)
-        str = i.post_content
-        print "i=",i,"str: ",i.post_content
-        str = str[0:150]
-        # print("date is: ",i.post_published_on)
-        postid.append(i.post_id)
-        date = ((i.post_published_on).strftime('%m/%d/%Y %H:%M:%S')).split(" ")
-        print "date: ",date
-        date1 = (date[0]).split('/')
-        # day=date1[0]
-        month = date1[0]
-        year.append(date1[2])
-        day.append(date1[1])
-        temp.append(Markup(str))
-        mon=findMonth(month)
-        time.append(((date[1]).split(":"))[0] + ":" + ((date[1]).split(":"))[1])
-        user = flask_alchemytry.User.query.filter_by(user_id=i.post_userid)
-        title.append(i.post_title)
-        uname.append(user[0].user_name)
-    theme = flask_alchemytry.User.query.filter_by(user_name=session['username'])
-    id = theme[0].user_themeid
-    # print("the id is ",id)
-    print "DATE: ",mon, time, day, year
-    if id == "1":   
-        return render_template("viewPost.html",num_com=n,pid=postid,post=temp,x=mon,time=time,day=day,year=year,uname=uname,post_title=title)
-    elif id == "2":
-        return render_template("viewPost1.html",num_com=n,pid=postid,post=temp,x=mon,time=time,day=day,year=year,uname=uname,post_title=title)
-    else:
-        return render_template("viewPost2.html",num_com=n,pid=postid,post=temp,x=mon,time=time,day=day,year=year,uname=uname,post_title=title)
-    # except:
-    #     return render_template("no_posts.html")
+        for i in posts:
+            #find num of Comments
+            # num=flask_alchemytry.Comments.query.filter_by(post_id=i.post_id).all()
+            # n=session.query(Comments).filter(Comments.post_id.like(i.post_id)).count()
+            n=count(i.post_id)
+            str = i.post_content
+            print "i=",i,"str: ",i.post_content
+            str = str[0:150]
+            # print("date is: ",i.post_published_on)
+            postid.append(i.post_id)
+            date = ((i.post_published_on).strftime('%m/%d/%Y %H:%M:%S')).split(" ")
+            print "date: ",date
+            date1 = (date[0]).split('/')
+            # day=date1[0]
+            month = date1[0]
+            year.append(date1[2])
+            day.append(date1[1])
+            temp.append(Markup(str))
+            mon=findMonth(month)
+            time.append(((date[1]).split(":"))[0] + ":" + ((date[1]).split(":"))[1])
+            user = flask_alchemytry.User.query.filter_by(user_id=i.post_userid)
+            title.append(i.post_title)
+            uname.append(user[0].user_name)
+        theme = flask_alchemytry.User.query.filter_by(user_name=session['username'])
+        id = theme[0].user_themeid
+        # print("the id is ",id)
+        print "DATE: ",mon, time, day, year
+        if id == "1":   
+            return render_template("viewPost.html",num_com=n,pid=postid,post=temp,x=mon,time=time,day=day,year=year,uname=uname,post_title=title)
+        elif id == "2":
+            return render_template("viewPost1.html",num_com=n,pid=postid,post=temp,x=mon,time=time,day=day,year=year,uname=uname,post_title=title)
+        else:
+            return render_template("viewPost2.html",num_com=n,pid=postid,post=temp,x=mon,time=time,day=day,year=year,uname=uname,post_title=title)
+    except:
+        return render_template("no_posts.html")
+
 
 #check if user is logged in
 def is_logged_in(f):
@@ -229,6 +230,11 @@ def login():
             if check_user and sha256_crypt.verify(password, check_user.user_password):
                 session['logged_in']=True
                 session['username']=username
+                if request.form.get('alive'):
+                    session.permanent = True
+                else:
+                    session.permanent = False
+
                 print("hey ",session['username'])
                 flash('you are now logged in!!')
 
@@ -252,7 +258,7 @@ def logout():
 @app.route('/dashboard')
 @is_logged_in
 def dashboard():
-    return render_template('dashboard.html')
+    return render_template('dashboard.html',username=session['username'])
 
 
 

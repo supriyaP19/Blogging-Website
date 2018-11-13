@@ -11,27 +11,23 @@
     <title>Post a Comment</title>
 
     <!-- Bootstrap core CSS -->
-    <!-- <link href="../static/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet"> -->
-    <link href="{{ url_for('static', filename='vendor/bootstrap/css/bootstrap.min.css') }}" rel="stylesheet">
+    <link href='{{url_for("static",filename="vendor/bootstrap/css/bootstrap.min.css")}}' rel="stylesheet">
 
     <!-- Custom fonts for this template -->
-    <!-- <link href="../static/vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css"> -->
-    <link href="{{ url_for('static', filename='vendor/fontawesome-free/css/all.min.css') }}" rel="stylesheet" type="text/css">
-
+    <link href='{{url_for("static",filename="vendor/fontawesome-free/css/all.min.css")}}' rel="stylesheet" type="text/css">
     <link href='https://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic' rel='stylesheet' type='text/css'>
     <link href='https://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800' rel='stylesheet' type='text/css'>
 
     <!-- Custom styles for this template -->
-    <!-- <link href="../static/css/clean-blog.min.css" rel="stylesheet"> -->
-    <link href="{{ url_for('static', filename='css/clean-blog.min.css') }}" rel="stylesheet" type="text/css">
-
+    <link href='{{url_for("static",filename="css/clean-blog.min.css")}}' rel="stylesheet">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-     <script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+     <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
      <script type="text/javascript" src="https://cdn.rawgit.com/carlo/jquery-base64/master/jquery.base64.min.js"></script>
   </head>
   <style type="text/css">
     .background{
       background-color: black;
+      background-image: url('../../static/img/sea_blue.jpg');
     }
 
   </style>
@@ -41,7 +37,7 @@
     <!-- Navigation -->
     <nav class="navbar navbar-expand-lg navbar-light fixed-top" id="mainNav">
       <div class="container">
-        <a class="navbar-brand" href="index.html">Write a Comment</a>
+        <a class="navbar-brand" href="index.html">Post Title</a>
         <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
           Menu
           <i class="fas fa-bars"></i>
@@ -66,20 +62,29 @@
     </nav>
 
     <!-- Page Header -->
-
-    <!-- <header class="masthead" style="background-image: "url_for('static', filename='img/sea_blue.jpg')";"> -->
-    <header class="masthead" style="background:pink;">
-
+    <header class="masthead" style="background-image: url('../../static/img/sea_blue.jpg');">
       <div class="overlay"></div>
         <div class="row">
           <div class="container">
           <div class="col-lg-8 col-md-10 mx-auto">
             <div class="site-heading">
               <div class="form-group">
-                  <h3><label for="comment">Comment:</label></h3>
-                  <form action = "/comment-result/{{pid}}" method="post">
+                  <h3><label for="comment">Share</label></h3>
+                     <p class="post-meta">
+                        on September 18, 2018</p>
+                  <form action = "/comment-result/{{pid}}/" method="post">
+                    
+                    <!-- <p>{{pid}}</p> -->
+                    <a href="post.html">
+                        <h2 class="post-title">
+                          {{post_content}}
+                        </h2>
+                      </a>
+                   
+                    </div>
+                    <h3><label for="comment">Comment</label></h3>
                     <textarea class="form-control" rows="5" id="comment" name="comment"></textarea>
-                    <input type = "submit" value = "Submit" />
+                    <button type="submit" class="btn btn-primary">Submit</button>
                   </form>
 
                   </div>
@@ -88,6 +93,76 @@
         </div>
       </div>
     </header>
+
+    <!-- Main Content -->
+    <div class="container background">
+      <div class="row">
+        <div class="col-lg-8 col-md-10 mx-auto">
+
+    
+         <!--  <div class="post-preview">
+            <a href="post.html">
+              <h2 class="post-title">
+                Man must explore, and this is exploration at its greatest
+              </h2>
+              <h3 class="post-subtitle">
+                Problems look mighty small from 150 miles up
+              </h3>
+            </a>
+            <p class="post-meta">Posted by
+              <a href="#">Start Bootstrap</a>
+              on September 24, 2018</p>
+          </div>
+          <hr> -->
+
+          <!--
+          <div class="post-preview">
+            <a href="post.html">
+              <h2 class="post-title">
+                I believe every human has a finite number of heartbeats. I don't intend to waste any of mine.
+              </h2>
+            </a>
+            <p class="post-meta">Posted by
+              <a href="#">Start Bootstrap</a>
+              on September 18, 2018</p>
+          </div>
+          <hr>
+          <div class="post-preview">
+            <a href="post.html">
+              <h2 class="post-title">
+                Science has not yet mastered prophecy
+              </h2>
+              <h3 class="post-subtitle">
+                We predict too much for the next year and yet far too little for the next ten.
+              </h3>
+            </a>
+            <p class="post-meta">Posted by
+              <a href="#">Start Bootstrap</a>
+              on August 24, 2018</p>
+          </div>
+          <hr>
+          <div class="post-preview">
+            <a href="post.html">
+              <h2 class="post-title">
+                Failure is not an option
+              </h2>
+              <h3 class="post-subtitle">
+                Many say exploration is part of our destiny, but it’s actually our duty to future generations.
+              </h3>
+            </a>
+            <p class="post-meta">Posted by
+              <a href="#">Start Bootstrap</a>
+              on July 8, 2018</p>
+          </div>
+          <hr> -->
+          <!-- Pager -->
+          <div class="clearfix">
+            <a class="btn btn-primary float-right" href="#">Older Posts &rarr;</a>
+          </div>
+        </div>
+      </div>
+    </div>
+
     <hr>
 
     <!-- Footer -->
@@ -128,11 +203,11 @@
     </footer>
 
     <!-- Bootstrap core JavaScript -->
-    <script src="vendor/jquery/jquery.min.js"></script>
-    <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <script src="../static/vendor/jquery/jquery.min.js"></script>
+    <script src="../static/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
 
     <!-- Custom scripts for this template -->
-    <script src="js/clean-blog.min.js"></script>
+    <script src="../static/js/clean-blog.min.js"></script>
 
   </body>
 

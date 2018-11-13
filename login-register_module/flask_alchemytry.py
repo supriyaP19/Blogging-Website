@@ -57,7 +57,7 @@ class Comments(db.Model):
     comment_date = db.Column('comment_date',db.DateTime, default = datetime.utcnow)
     comment_content = db.Column('comment_content',db.Unicode,nullable=False)
 
-    def __init__(self, id, postid, useid, date, content):
+    def __init__(self, id, postid, userid, date, content):
         self.comment_id = id
         self.comment_postid = postid
         self.comment_userid = userid

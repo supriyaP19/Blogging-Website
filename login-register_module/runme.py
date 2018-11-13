@@ -2,7 +2,9 @@ from flask import Flask, render_template, flash, redirect, url_for, session, req
 from wtforms import Form, StringField, TextAreaField, PasswordField, validators
 from passlib.hash import sha256_crypt
 from flask_sqlalchemy import SQLAlchemy
+
 from sqlalchemy import func
+
 from functools import wraps
 import flask_alchemytry #import *
 from functools import wraps
@@ -20,6 +22,18 @@ db.init_app(app)
 user = flask_alchemytry.User.query.all()
 print(user)
 keepme = True
+
+
+@app.route('/themeChange/<int:tid>')
+def themeChange(tid):
+    theme = flask_alchemytry.User.query.filter_by(user_name=session['username']).first()
+    theme.user_themeid=tid
+    flask_alchemytry.db.session.add(theme)
+    flask_alchemytry.db.session.commit()
+    # flas.update().where(users.c.id==5).values(name="some name")
+    return showPosts(session['username'])
+
+
 
 
 def count(pid):
@@ -74,11 +88,23 @@ def publish_comment(id):
     if request.method == 'POST':
         user_com = request.form['comment']
         ts1 = datetime.now()
-        userid=flask_alchemytry.User.query.filter_by(user_name=session['username']).first()
-        new_com = flask_alchemytry.Comments(random.randint(1,101),id,userid.user_id,ts1,user_com)
-        flask_alchemytry.db.session.add(new_com)
-        flask_alchemytry.db.session.commit()
-        flash('Record was successfully added')
+        cid=0
+        max_comment_id = db.session.query(func.max(flask_alchemytry.Comments.comment_id)).scalar()
+        if max_comment_id:
+            cid=max_comment_id+1
+        else:
+            cid=1
+        try:
+            userid=flask_alchemytry.User.query.filter_by(user_name=session['username']).first()
+            
+            new_com = flask_alchemytry.Comments(cid,id,userid.user_id,ts1,user_com)
+            flask_alchemytry.db.session.add(new_com)
+            flask_alchemytry.db.session.commit()
+            flash('Record was successfully added')
+        except:
+            new_com = flask_alchemytry.Comments(cid,id,-1,ts1,user_com)
+            flask_alchemytry.db.session.add(new_com)
+            flask_alchemytry.db.session.commit()
         return redirect(url_for('showPosts'))
     # return "RECORD ADDED"
 # @app.route('/')
@@ -99,37 +125,61 @@ def showmore(id):
     date_substring=(date[0]).split('/')
     mon=findMonth(date_substring[0])
     title=post_content[0].post_title
+
+    id=post_content[0].post_id
     print("content is  ***",post_content[0].post_content)
     
-    post_details=[mon,date_substring[1],date_substring[2],title,content]
+    post_details=[mon,date_substring[1],date_substring[2],title,content,id]
 
     all_comments=flask_alchemytry.Comments.query.filter_by(comment_postid=id).all()
     comm_content=[]
     for i in all_comments:
         comm_content.append(i.comment_content)
 
+
     print("Comments: ",comm_content)
+
+    # print("Comments: ",comm_content)
+
 
     
     user_id=[]
     for i in all_comments:
          user_id.append(i.comment_userid)
+
     print("Commented users: ",user_id)
     
     names=[]
     for i in user_id:
-        user_name_i=flask_alchemytry.User.query.filter_by(user_id=i).first()
-        names.append(user_name_i.user_name)
+        if i==-1:
+            names.append("Anonymous")
+        else:
+            user_name_i=flask_alchemytry.User.query.filter_by(user_id=i).first()
+            names.append(user_name_i.user_name)
+
     print("Commented user names:", names)
+    # print("Commented users: ",user_id)
+    
 
     for i,j in zip(comm_content,names):
         temp_det=[]
         temp_det.append(i)
         temp_det.append(j)
         comment_details.append(temp_det)
-    
+
     print("COMMENT DET: ",comment_details)
-    return render_template('showmore.html',post_content=post_details,comments=comment_details)
+
+
+    theme = flask_alchemytry.User.query.filter_by(user_name=session['username'])
+    id = theme[0].user_themeid
+    
+    if id == "1":   
+        return render_template('showmore.html',post_content=post_details,comments=comment_details)
+    elif id == "2":
+       
+        return render_template('showmore_2.html',post_content=post_details,comments=comment_details)
+    else:
+        return render_template("viewPost2.html",num_com=n,pid=postid,post=temp,x=mon,time=time,day=day,year=year,uname=uname,post_title=title)
 
 
 
@@ -148,7 +198,9 @@ def showPosts(uname):
 
 
     # posts=flask_alchemytry.Posts.query.all()
-    if posts:
+
+
+    try:
     # for i in posts:
     #     print(i.post_id)
     # print("inside showall",session['username']
@@ -160,13 +212,15 @@ def showPosts(uname):
         uname=[]
         title=[]
         postid=[]
+        n=[]
     # print posts
 
         for i in posts:
             #find num of Comments
             # num=flask_alchemytry.Comments.query.filter_by(post_id=i.post_id).all()
             # n=session.query(Comments).filter(Comments.post_id.like(i.post_id)).count()
-            n=count(i.post_id)
+            num=count(i.post_id)
+            n.append(num)
             str = i.post_content
             print("i=",i,"str: ",i.post_content)
             str = str[0:150]
@@ -179,7 +233,7 @@ def showPosts(uname):
             month = date1[0]
             year.append(date1[2])
             day.append(date1[1])
-            temp.append(Markup(str))
+            temp.append(Markup(str)) #has post content
             mon=findMonth(month)
             time.append(((date[1]).split(":"))[0] + ":" + ((date[1]).split(":"))[1])
             user = flask_alchemytry.User.query.filter_by(user_id=i.post_userid)
@@ -187,17 +241,17 @@ def showPosts(uname):
             uname.append(user[0].user_name)
         theme = flask_alchemytry.User.query.filter_by(user_name=session['username'])
         id = theme[0].user_themeid
-        name = session['username']
         # print("the id is ",id)
-        print ("DATE: ",mon, time, day, year)
+        print("DATE: ",mon, time, day, year)
         if id == "1":   
-            return render_template("viewPost.html",num_com=n,pid=postid,post=temp,x=mon,time=time,day=day,year=year,uname=uname,post_title=title,name=name)
+            return render_template("viewPost.html",num_com=n,pid=postid,post=temp,x=mon,time=time,day=day,year=year,uname=uname,post_title=title)
         elif id == "2":
-            return render_template("viewPost1.html",num_com=n,pid=postid,post=temp,x=mon,time=time,day=day,year=year,uname=uname,post_title=title,name=name)
+            colors=["card blue-grey darken-1","card blue darken-1","card green darken-1"]
+           
+            return render_template("viewPost1.html",colors=colors,num_com=n,pid=postid,post=temp,x=mon,time=time,day=day,year=year,uname=uname,post_title=title)
         else:
-            return render_template("viewPost2.html",num_com=n,pid=postid,post=temp,x=mon,time=time,day=day,year=year,uname=uname,post_title=title,name=name)
-    else:
-        print("inside no posts=============")
+            return render_template("viewPost2.html",num_com=n,pid=postid,post=temp,x=mon,time=time,day=day,year=year,uname=uname,post_title=title)
+    except:
         return render_template("no_posts.html")
 
 

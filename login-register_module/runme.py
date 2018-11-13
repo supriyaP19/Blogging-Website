@@ -46,6 +46,16 @@ def count(pid):
     connection.close()
     return numberOfRows
 
+def count_without_where():
+    connection = sqlite3.connect("blogger_db1.db")
+    crsr = connection.cursor()
+    # command="""select count(*) from comments where comment_postid=1"""
+    crsr.execute("select count(*) from posts")
+    numberOfRows = crsr.fetchone()[0]
+    connection.commit()
+    connection.close()
+    return numberOfRows
+
 def findMonth(month):
     mon=[]
     if month=="1" or month=="01":
@@ -169,17 +179,19 @@ def showmore(id):
 
     print "COMMENT DET: ",comment_details
 
-
-    theme = flask_alchemytry.User.query.filter_by(user_name=session['username'])
-    id = theme[0].user_themeid
-    
-    if id == "1":   
+    try:
+        theme = flask_alchemytry.User.query.filter_by(user_name=session['username'])
+        id = theme[0].user_themeid
+        
+        if id == "1":   
+            return render_template('showmore.html',post_content=post_details,comments=comment_details)
+        elif id == "2":
+           
+            return render_template('showmore_2.html',post_content=post_details,comments=comment_details)
+        else:
+            return render_template("viewPost2.html",num_com=n,pid=postid,post=temp,x=mon,time=time,day=day,year=year,uname=uname,post_title=title)
+    except:
         return render_template('showmore.html',post_content=post_details,comments=comment_details)
-    elif id == "2":
-       
-        return render_template('showmore_2.html',post_content=post_details,comments=comment_details)
-    else:
-        return render_template("viewPost2.html",num_com=n,pid=postid,post=temp,x=mon,time=time,day=day,year=year,uname=uname,post_title=title)
 
 
 
@@ -282,9 +294,31 @@ def login():
     if 'logged_in' in session:
             return redirect(url_for('dashboard'))
     else:
+        num_posts=count_without_where()
+        post_all = flask_alchemytry.Posts.query.all()
+        print("Number of Posts: ",num_posts)
+        index1=random.randint(0,num_posts/2)
+        index2=random.randint(num_posts/2+1,num_posts-1)
+        print("index1: ",index1,"index2: ",index2)
         print("here i am")
+        published_by=[]
+        user_0=flask_alchemytry.User.query.filter_by(user_id=post_all[index1].post_userid).first()
+        print "HERE: ", post_all[index1].post_userid
+        published_by.append(user_0.user_name)
+        print "P[0]",published_by
+        user_1=flask_alchemytry.User.query.filter_by(user_id=post_all[index2].post_userid).first()
+        published_by.append(user_1.user_name)
         # form = LoginForm(request.form)
+        post1 = flask_alchemytry.Posts.query.filter_by(post_id = post_all[index1].post_id).first()
+        print("post1: ",post1)
+        content1 =post1.post_content
+        content1  = Markup(content1 [0:150])
 
+        post2 = flask_alchemytry.Posts.query.filter_by(post_id = post_all[index2].post_id).first()
+        print("post2: ",post2)
+        content2 = post2.post_content
+        # print "i=",i,"str: ",i.post_content
+        content2 = Markup(content2 [0:150])
         print(request.method)
         if request.method == 'POST':
             username = request.form['username']
@@ -309,7 +343,7 @@ def login():
 
             else:
                 flash('Please enter valid username and password', 'failure')
-    return render_template("index.html")
+    return render_template("index.html",post1=post1,post2=post2,c1=content1,c2=content2,publishedBy=published_by)
 
 
 

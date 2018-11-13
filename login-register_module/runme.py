@@ -2,11 +2,13 @@ from flask import Flask, render_template, flash, redirect, url_for, session, req
 from wtforms import Form, StringField, TextAreaField, PasswordField, validators
 from passlib.hash import sha256_crypt
 from flask_sqlalchemy import SQLAlchemy
+
 from functools import wraps
 import flask_alchemytry #import *
 from functools import wraps
-
-
+from datetime import datetime
+import random
+import sqlite3
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///blogger_db1.db'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
@@ -18,8 +20,37 @@ db.init_app(app)
 user = flask_alchemytry.User.query.all()
 print(user)
 keepme = True
+def count(pid):
+    connection = sqlite3.connect("blogger_db1.db")
+    crsr = connection.cursor()
+    # command="""select count(*) from comments where comment_postid=1"""
+    crsr.execute("select count(*) from comments where comment_postid = %d"%pid)
+    numberOfRows = crsr.fetchone()[0]
+    connection.commit()
+    connection.close()
+    return numberOfRows;
 
+@app.route('/comment/<int:pid>')
+def post_comment(pid):
+    # if pid is None:
+    #     return "OOPS"
+    # else:
+    #     # return "<h2 style=color:green>Hello %s !</h2>" % name
+    return render_template("comment.html",pid=pid)
 
+@app.route('/comment-result/<int:id>',methods=['POST', 'GET'])
+def publish_comment(id):
+
+    if request.method == 'POST':
+        user_com = request.form['comment']
+        ts1 = datetime.now()
+        userid=flask_alchemytry.User.query.filter_by(user_name=session['username']).first()
+        new_com = flask_alchemytry.Comments(random.randint(1,101),id,userid.user_id,ts1,user_com)
+        flask_alchemytry.db.session.add(new_com)
+        flask_alchemytry.db.session.commit()
+        flash('Record was successfully added')
+        return redirect(url_for('showPosts'))
+    # return "RECORD ADDED"
 # @app.route('/')
 # def index():
 #     return render_template("index.html")
@@ -27,14 +58,32 @@ keepme = True
 # class LoginForm(Form):
 #     username = StringField('Username', [validators.Length(min=4, max=25),validators.Required()])
 #     password = PasswordField('Password')
+@app.route('/fullBlog/<int:pid>')
+def showMore(pid):
+    # if pid is None:
+    #     return "OOPS"
+    # else:
+    #     # return "<h2 style=color:green>Hello %s !</h2>" % name
+    return render_template("comment.html",pid=pid)
+
 
 @app.route('/showall',methods=['GET','POST'])
 def showPosts():
-    
+    print "in SHOW POSTS"
     # theme = User.query.filter_by(user_name=)
-    posts=flask_alchemytry.Posts.query.all()
-    for i in posts:
-        print(i.post_id)
+    userid=flask_alchemytry.User.query.filter_by(user_name=session['username']).first()
+    # <User 12>
+    # a= str(s)
+    # print a
+
+    posts=flask_alchemytry.Posts.query.filter_by(post_userid=userid.user_id).all()
+    print "Posts: ",posts
+
+
+    # posts=flask_alchemytry.Posts.query.all()
+    # try:
+    # for i in posts:
+    #     print(i.post_id)
     # print("inside showall",session['username'])
     temp=[]
     time=[]
@@ -43,12 +92,19 @@ def showPosts():
     year=[]
     uname=[]
     title=[]
+# print posts
+
     for i in posts:
+        #find num of Comments
+        # num=flask_alchemytry.Comments.query.filter_by(post_id=i.post_id).all()
+        # n=session.query(Comments).filter(Comments.post_id.like(i.post_id)).count()
+        n=count(i.post_id)
         str = i.post_content
-        str = str[0:200]
+        print "i=",i,"str: ",i.post_content
+        str = str[0:150]
         # print("date is: ",i.post_published_on)
         date = ((i.post_published_on).strftime('%m/%d/%Y %H:%M:%S')).split(" ")
-        print("secs :",date[1])
+        # print("secs :",date[1])
         date1 = (date[0]).split('/')
         month = date1[1]
         year.append(date1[2])
@@ -84,15 +140,16 @@ def showPosts():
         uname.append(user[0].user_name)
     theme = flask_alchemytry.User.query.filter_by(user_name=session['username'])
     id = theme[0].user_themeid
-    print("the id is ",id)
+    # print("the id is ",id)
 
     if id == "1":
-        return render_template("viewPost.html",post=temp,x=mon,time=time,day=day,year=year,uname=uname,post_title=title)
+        return render_template("viewPost.html",num_com=n,post=temp,x=mon,time=time,day=day,year=year,uname=uname,post_title=title)
     elif id == "2":
-        return render_template("viewPost1.html",post=temp,x=mon,time=time,day=day,year=year,uname=uname,post_title=title)
+        return render_template("viewPost1.html",num_com=n,post=temp,x=mon,time=time,day=day,year=year,uname=uname,post_title=title)
     else:
-        return render_template("viewPost2.html",post=temp,x=mon,time=time,day=day,year=year,uname=uname,post_title=title)
-
+        return render_template("viewPost2.html",num_com=n,post=temp,x=mon,time=time,day=day,year=year,uname=uname,post_title=title)
+    # except:
+    #     return render_template("no_posts.html")
 
 #check if user is logged in
 def is_logged_in(f):
@@ -119,18 +176,18 @@ def login():
             username = request.form['username']
 
             password = request.form['user_password']
-    
+
             check_user = flask_alchemytry.User.query.filter_by(user_name = username).first()
             print("post")
-            if check_user and sha256_crypt.verify(password, check_user.user_password):  
+            if check_user and sha256_crypt.verify(password, check_user.user_password):
                 session['logged_in']=True
                 session['username']=username
                 print("hey ",session['username'])
                 flash('you are now logged in!!')
 
-               
+
                 return redirect(url_for('dashboard'))
-                
+
             else:
                 flash('Please enter valid username and password', 'failure')
     return render_template("index.html")
@@ -177,10 +234,10 @@ def register():
         user_data = flask_alchemytry.User.query.all()
         get_index = user_data[len(user_data)-1]
         get_index = get_index.user_id + 1
-        new_user = flask_alchemytry.User(get_index,username,email,password,username+'.com','my blog',1) 
+        new_user = flask_alchemytry.User(get_index,username,email,password,username+'.com','my blog',1)
         flask_alchemytry.db.session.add(new_user)
         flask_alchemytry.db.session.commit()
-		
+
 
         flash('You are now registered and can log in', 'success')
 
@@ -192,4 +249,3 @@ def register():
 if(__name__) == '__main__':
     app.secret_key='secret123'
     app.run(debug=True)
-    

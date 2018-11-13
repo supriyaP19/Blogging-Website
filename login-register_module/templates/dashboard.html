@@ -145,6 +145,57 @@ Blogger Clone
         }
 </style>
 
+
+
+
+<script>
+
+    function scrolldown()
+     {
+        $('html,body').animate({
+            scrollTop: $("#downpost").offset().top},
+            'slow');
+     }
+  
+    </script>
+
+
+  <!-- SCRIPTS -->
+  <!-- JQuery -->
+  <script type="text/javascript prefetch" src='{{url_for("static",filename="js/jquery-3.3.1.min.js")}}'></script>
+  <!-- Bootstrap tooltips -->
+  <script type="text/javascript prefetch" src='{{url_for("static",filename="js/popper.min.js")}}'></script>
+  <!-- Bootstrap core JavaScript -->
+  <script type="text/javascript prefetch" src='{{url_for("static",filename="js/bootstrap.min.js")}}'></script>
+  <!-- MDB core JavaScript -->
+  <script type="text/javascript prefetch" src='{{url_for("static",filename="js/mdb.min.js")}}'></script>
+  <!-- Initializations -->
+  <script src="http://cdnjs.cloudflare.com/ajax/libs/wow/0.1.12/wow.min.js"></script>
+
+  <script type="text/javascript">
+    // Animations initialization
+    new WOW().init();
+
+
+      function openNav() {
+          document.getElementById("mySidenav").style.width = "250px";
+          document.getElementById("main").style.marginRight = "250px";	      }
+
+      function closeNav() {
+          document.getElementById("mySidenav").style.width = "0";
+          document.getElementById("main").style.marginRight = "0";	      }
+
+        // jQuery( "li:has(ul)" ).click(function(){ // When a li that has a ul is clicked ...
+	      // jQuery(this).toggleClass('active'); // then toggle (add/remove) the class 'active' on it. 
+        // });
+
+        function openlist()
+        {
+          $('#postlist').toggleClass('active');
+        }
+
+  </script>
+
 {% endblock %}
 
 
@@ -165,7 +216,7 @@ Blogger Clone
           <a href="#">view post</a>
           <div id="mylist" style="color:white;font-size:20px; cursor: pointer;">
           <ul>
-            <li>Posts
+            <li onclick="openlist()" id="postlist">Posts
               <ul>
               <li>All</li>
               <li>Drafts</li>
@@ -173,8 +224,10 @@ Blogger Clone
               </ul>
             </li>
             <li>Comments</li>
+            
+                <li onclick="scrolldown()">Theme </li>
 
-            <li>Theme</li>
+           
           </ul>
           </div>
         
@@ -333,11 +386,12 @@ Blogger Clone
   </div>
   <!-- Full Page Intro -->
 <main>
-    <div class="container-fluid">
+    <div class="container" >
 
     
 
-    <section style="padding-top:30px;"> 
+        <section class="mt-5 wow fadeIn" id="downpost" >
+
         <div class="card mb-3 ">
             <img class="card-img-top" src='{{url_for("static",filename="img/hrithik1.jpg")}}' alt="Card image cap">
             <div class="card-body">
@@ -348,11 +402,42 @@ Blogger Clone
           </div>
 
     </section>
-    <hr class="my-5">
+      <!-- <hr class="my-5"> -->
 
  
     </div>
+<div class="container">
+    <div class="row">
+        <div class="col mb-6">  
+  
+              <div class="card mb-3 ">
+                  <img class="card-img-top" src='{{url_for("static",filename="img/theme1.jpg")}}' alt="Card image cap">
+                  <div class="card-body">
+                    <h5 class="card-title">Card title</h5>
+                    <p class="card-text">This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>
+                    <p class="card-text"><small class="text-muted">Last updated 3 mins ago</small></p>
+                  </div>
+                </div>
+      
 
+
+      </div>
+      <div class="col mb-6">
+
+          <div class="card mb-3 ">
+              <img class="card-img-top" src='{{url_for("static",filename="img/theme1.jpg")}}' alt="Card image cap">
+              <div class="card-body">
+                <h5 class="card-title">Card title</h5>
+                <p class="card-text">This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>
+                <p class="card-text"><small class="text-muted">Last updated 3 mins ago</small></p>
+              </div>
+            </div>
+
+        </div>
+
+
+    </div>
+</div>
   </main>
 
   <!--Footer-->
@@ -382,35 +467,6 @@ Blogger Clone
   </footer>
   <!--/.Footer-->
 
-  <!-- SCRIPTS -->
-  <!-- JQuery -->
-  <script type="text/javascript" src='static/js/jquery-3.3.1.min.js'></script>
-  <!-- Bootstrap tooltips -->
-  <script type="text/javascript" src='static/js/popper.min.js'></script>
-  <!-- Bootstrap core JavaScript -->
-  <script type="text/javascript" src='static/js/bootstrap.min.js'></script>
-  <!-- MDB core JavaScript -->
-  <script type="text/javascript" src='static/js/mdb.min.js'></script>
-  <!-- Initializations -->
-  <script type="text/javascript">
-    // Animations initialization
-    new WOW().init();
-
-
-      function openNav() {
-          document.getElementById("mySidenav").style.width = "250px";
-          document.getElementById("main").style.marginRight = "250px";	      }
-
-      function closeNav() {
-          document.getElementById("mySidenav").style.width = "0";
-          document.getElementById("main").style.marginRight = "0";	      }
-
-        jQuery( "li:has(ul)" ).click(function(){ // When a li that has a ul is clicked ...
-	      jQuery(this).toggleClass('active'); // then toggle (add/remove) the class 'active' on it. 
-        });
-
-
-  </script>
 
 <div class="menu pmd-floating-action"  role="navigation"> 
     <a href="javascript:void(0);" class="pmd-floating-action-btn btn btn-sm pmd-btn-fab pmd-btn-raised pmd-ripple-effect btn-default" data-title="Publish"> 

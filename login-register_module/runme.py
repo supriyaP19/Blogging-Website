@@ -138,7 +138,7 @@ def showmore(id):
 def showPosts(uname):
     print ("in SHOW POSTS")
     # theme = User.query.filter_by(user_name=)
-    userid=flask_alchemytry.User.query.filter_by(user_name=session['username']).first()
+    userid=flask_alchemytry.User.query.filter_by(user_name=uname).first()
     # <User 12>
     # a= str(s)
     # print a
@@ -148,7 +148,7 @@ def showPosts(uname):
 
 
     # posts=flask_alchemytry.Posts.query.all()
-    try:
+    if posts:
     # for i in posts:
     #     print(i.post_id)
     # print("inside showall",session['username']
@@ -196,7 +196,8 @@ def showPosts(uname):
             return render_template("viewPost1.html",num_com=n,pid=postid,post=temp,x=mon,time=time,day=day,year=year,uname=uname,post_title=title,name=name)
         else:
             return render_template("viewPost2.html",num_com=n,pid=postid,post=temp,x=mon,time=time,day=day,year=year,uname=uname,post_title=title,name=name)
-    except:
+    else:
+        print("inside no posts=============")
         return render_template("no_posts.html")
 
 
@@ -216,10 +217,11 @@ def blog_url():
     name = request.form['searchbar']
     print("inside blogurl",name)
     try:
-        user = flask_alchemytry.User.query.filter_by(user_name=session['username'])
+        user = flask_alchemytry.User.query.filter_by(user_name=name)
         url = user[0].user_blog_url
         print("url is : ",url)
         return redirect(url)
+        # return showPosts(name)
     except:
         return "Oops!"
 
@@ -313,7 +315,7 @@ def register():
             return redirect(url_for('login'))
         except:
 
-            new_user = flask_alchemytry.User(1,username,email,password,username+'.blogspot.com','my blog',1)
+            new_user = flask_alchemytry.User(1,username,email,password,'http://127.0.0.1:5000/showall/'+username+'/','my blog',1)
             flask_alchemytry.db.session.add(new_user)
             flask_alchemytry.db.session.commit()
             flash('You are now registered and can log in', 'success')

@@ -88,16 +88,23 @@ def publish_comment(id):
     if request.method == 'POST':
         user_com = request.form['comment']
         ts1 = datetime.now()
-        # try:
-        userid=flask_alchemytry.User.query.filter_by(user_name=session['username']).first()
-        new_com = flask_alchemytry.Comments(random.randint(1,101),id,userid.user_id,ts1,user_com)
-        flask_alchemytry.db.session.add(new_com)
-        flask_alchemytry.db.session.commit()
-        flash('Record was successfully added')
-        # except:
-        #     new_com = flask_alchemytry.Comments(random.randint(1,101),id,-1,ts1,user_com)
-        #     flask_alchemytry.db.session.add(new_com)
-        #     flask_alchemytry.db.session.commit()
+        cid=0
+        max_comment_id = db.session.query(func.max(flask_alchemytry.Comments.comment_id)).scalar()
+        if max_comment_id:
+            cid=max_comment_id+1
+        else:
+            cid=1
+        try:
+            userid=flask_alchemytry.User.query.filter_by(user_name=session['username']).first()
+            
+            new_com = flask_alchemytry.Comments(cid,id,userid.user_id,ts1,user_com)
+            flask_alchemytry.db.session.add(new_com)
+            flask_alchemytry.db.session.commit()
+            flash('Record was successfully added')
+        except:
+            new_com = flask_alchemytry.Comments(cid,id,-1,ts1,user_com)
+            flask_alchemytry.db.session.add(new_com)
+            flask_alchemytry.db.session.commit()
         return redirect(url_for('showPosts'))
     # return "RECORD ADDED"
 # @app.route('/')
@@ -191,7 +198,7 @@ def showPosts():
 
 
     # posts=flask_alchemytry.Posts.query.all()
-<<<<<<< HEAD
+
     # try:
 # for i in posts:
 #     print(i.post_id)

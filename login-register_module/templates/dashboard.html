@@ -201,12 +201,12 @@ Blogger Clone
         <!-- Left -->
         <ul class="navbar-nav mr-auto">
           <li class="nav-item active">
-            <a class="nav-link" href="#">Home
+            <a class="nav-link" href="/dashboard">Home
               <span class="sr-only">(current)</span>
             </a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="/showall" >Read post</a>
+            <a class="nav-link" href="/showall" target="_blank" >Read post</a>
             <!-- <strong>Show all User</strong> <a href="/showall"> Click here to see all users</a> -->
           </li>
           
@@ -216,10 +216,13 @@ Blogger Clone
     
         </ul>
 
+   
+
         <!-- Right -->
         <ul class="navbar-nav nav-flex-icons">
             <li class="nav-item" > 
  
+
           <form class="form-inline" action="{{url_for('blog_url')}}" method="POST" style='position: relative; top: 1vh; right:5vw;font-size:30px;color:azure; padding-left: 30px;'>
                 <input class="form-control mr-sm-2" type="search" placeholder="Search" name="searchbar" aria-label="Search" value={{request.form.searchbar}} >
 
@@ -227,15 +230,28 @@ Blogger Clone
                 <!-- <a ><i class="fa fa-search" style='color: rgb(186, 185, 179)' ></i></a> -->
                 <button class="btn btn-indigo"  type="submit">Search</button>
           </form>
+
             </li>
+
+
+          <li class="nav-item">
+              <a class="nav-link border border-white rounded"  href="/logout" style="position: relative; top:2vh; right:2vw; " ><strong>Logout</strong></a>
+              
+          </li>
           
           <li class="nav-item">
             <a href="https://github.com/mdbootstrap/bootstrap-material-design" class="nav-link"
               target="_blank">
-              <i class="fab fa-blogger" style="font-size:40px"></i>
+              <i class="fab fa-blogger" style="font-size:40px; position: relative; top:1vh;"></i>
             </a>
             
           </li>
+
+          <li class="nav-item">
+           <strong style="position: relative; top:3vh; font-size:20px;color:azure; font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif">{{username}}</strong>
+            
+          </li>
+
           <li class="nav-item">
               <div id="main">
             
@@ -253,7 +269,7 @@ Blogger Clone
   
   </nav>
   <!-- Navbar -->
-</div>
+
 
 
 
@@ -314,49 +330,30 @@ Blogger Clone
   <!-- Mask & flexbox options-->
 <!-- Floating Action Button like Google Material -->
 
-
-
-
   </div>
   <!-- Full Page Intro -->
+<main>
+    <div class="container-fluid">
 
-  <!--Main layout-->
-  <main>
     
-    <div class="container">
 
-      <!-- <button type="button" style="position: relative; top: 50%; left:20%;">New Post</button>> -->
+    <section style="padding-top:30px;"> 
+        <div class="card mb-3 ">
+            <img class="card-img-top" src='{{url_for("static",filename="img/hrithik1.jpg")}}' alt="Card image cap">
+            <div class="card-body">
+              <h5 class="card-title">Card title</h5>
+              <p class="card-text">This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>
+              <p class="card-text"><small class="text-muted">Last updated 3 mins ago</small></p>
+            </div>
+          </div>
 
-      
-      <!--Section: More-->
-      <section id="posts">
+    </section>
+    <hr class="my-5">
 
-        <h2 class="my-5 h3 text-center">Posts</h2>
-
-
-      </section>
-      <!--Section: More-->
-
-
-
-      <hr class="my-5">
-
-
-      <!--Section: Main features & Quick Start-->
-      <section>
-
-            <h3 class="h3 text-center mb-5">About MDB</h3>
-
-          </section>
-          <!--Section: Main features & Quick Start-->
-
-          
-
-
-
+ 
     </div>
+
   </main>
-  <!--Main layout-->
 
   <!--Footer-->
   <footer class="page-footer text-center font-small mt-4 wow fadeIn">

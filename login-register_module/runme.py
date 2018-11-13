@@ -17,16 +17,8 @@ db.init_app(app)
 
 user = flask_alchemytry.User.query.all()
 print(user)
-keepme = True
 
 
-# @app.route('/')
-# def index():
-#     return render_template("index.html")
-
-# class LoginForm(Form):
-#     username = StringField('Username', [validators.Length(min=4, max=25),validators.Required()])
-#     password = PasswordField('Password')
 
 @app.route('/showall',methods=['GET','POST'])
 def showPosts():
@@ -125,6 +117,11 @@ def login():
             if check_user and sha256_crypt.verify(password, check_user.user_password):  
                 session['logged_in']=True
                 session['username']=username
+                if request.form.get('alive'):
+                    session.permanent = True
+                else:
+                    session.permanent = False
+
                 print("hey ",session['username'])
                 flash('you are now logged in!!')
 

@@ -1,0 +1,390 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Blog Title</title>  
+
+    <!-- Compiled and minified CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+
+    <!-- Compiled and minified JavaScript -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+    <!--Import Google Icon Font-->
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <!--Import materialize.css-->
+    <!-- <link type="text/css" rel="stylesheet" href="css/materialize.min.css"  media="screen,projection"/> -->
+
+    <!--Let browser know website is optimized for mobile-->
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+
+
+     
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/5.0.0/normalize.min.css">
+
+  <link rel='stylesheet prefetch' href='https://cdnjs.cloudflare.com/ajax/libs/materialize/0.98.2/css/materialize.min.css'>
+<link rel='stylesheet prefetch' href='https://fonts.googleapis.com/icon?family=Material+Icons'>
+<link rel='stylesheet prefetch' href='https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.5.2/animate.min.css'>
+<link rel='stylesheet prefetch' href='https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css'>
+
+
+<script src='https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.1/jquery.min.js'></script>
+<script src='https://cdnjs.cloudflare.com/ajax/libs/materialize/0.98.2/js/materialize.min.js'></script>
+
+
+
+<style>
+
+body {
+  background-color: #555;
+}
+ 
+.navbar-fixed {
+  position: absolute;
+  z-index: 999999999;
+}
+ 
+/*** T H E - M A G I C - O F - O B J E C T - F I T ***/
+/*****************************************************/
+.video-container {
+  height: 50vh;
+  position: relative;
+  overflow: hidden;
+  padding-bottom: inherit;
+}
+@media (min-width: 600px) {
+  .video-container {
+    height: 100vh;
+  }
+}
+ 
+video {
+  -o-object-fit: cover;
+     object-fit: cover;
+  position: absolute;
+  height: 100%;
+  width: 100%;
+  top: 0;
+  left: 0;
+}
+ 
+/*** A E S T H E T I C S ***/
+/***************************/
+* {
+  box-sizing: border-box;
+}
+ 
+body {
+  background: #333;
+  color: white;
+}
+ 
+.video-container:after {
+  content: '';
+  display: block;
+  height: 100%;
+  width: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
+  background: rgba(0, 0, 0, 0.2);
+  z-index: 1;
+}
+ 
+h1 {
+  text-transform: uppercase;
+  font-weight: 900;
+  margin: 0 0 1rem;
+  padding: 0;
+  line-height: 1;
+  font-size: 5vw;
+}
+@media (max-width: 400px) {
+  h1 {
+    font-size: 22px;
+  }
+}
+@media (min-width: 1200px) {
+  h1 {
+    font-size: 75px;
+  }
+}
+ 
+.callout {
+  position: relative;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  height: 100%;
+  text-align: center;
+  position: relative;
+  z-index: 10;
+}
+ 
+.support {
+  position: fixed;
+  bottom: 60px;
+  right: 20px;
+  text-transform: uppercase;
+  font-size: 9px;
+  letter-spacing: 1px;
+  text-align: right;
+  position: relative;
+  z-index: 10;
+}
+.support a {
+  color: white;
+  text-decoration: none;
+  position: relative;
+  display: inline-block;
+  margin-top: 10px;
+}
+.support a:before {
+  display: block;
+  position: absolute;
+  content: '';
+  bottom: -2px;
+  width: 0;
+  height: 1px;
+  background-color: rgba(255, 255, 255, 0.3);
+  -webkit-transition: .3s;
+  transition: .3s;
+}
+.support a:hover:before {
+  width: 100%;
+}
+
+</style>
+
+
+<script>
+$(document).ready(function(){
+  // MODAL
+//   $('.modal').modal();
+  // DROPDOWNS
+  $(".dropdown-button").dropdown(
+    {
+      belowOrigin: true
+    }
+  );
+  // TABS
+  $('ul.tabs').tabs();
+  // SCROLLSPY
+  $('.scrollspy').scrollSpy();
+  //SIDENAV
+  $(".button-collapse").sideNav();
+});
+
+
+
+</script>
+
+</head>
+<body  style='background-image: url("../static/img/HD-Texture-Backgrounds-033.jpg"); background-size:  cover;  background-attachment: fixed;'>
+
+<div class="container-fluid">
+
+    <div class="navbar-fixed">
+            <nav class="transparent z-depth-0">
+              <div class="nav-wrapper">
+                <div class="row">
+                  <div class="col s12">
+                    <a href="#" data-activates="mobile-demo" class="button-collapse show-on-large"><i class="material-icons">menu</i></a>
+                    <a href="https://codepen.io/collection/nbBqgY/" class="brand-logo" target="_blank">Blog Title</a>
+                    <ul class="right hide-on-med-and-down">
+                      <li><a href="https://codepen.io/collection/nbBqgY/" target="_blank">Home</a></li>
+                      <li><a href="https://codepen.io/collection/nbBqgY/" target="_blank">About</a></li>
+                      <li><a href="https://codepen.io/collection/nbBqgY/" target="_blank">Contact</a></li>
+                    </ul>
+                  </div>
+                </div>
+                <ul class="side-nav" id="mobile-demo">
+                  <li><a href="https://codepen.io/collection/nbBqgY/" target="_blank">Home</a></li>
+                  <li><a href="https://codepen.io/collection/nbBqgY/" target="_blank">About</a></li>
+                  <li><a href="https://codepen.io/collection/nbBqgY/" target="_blank">Contact</a></li>
+                </ul>
+              </div>
+            </nav>
+          </div>
+        </div>
+
+
+  
+
+
+     <div  style="padding-top:125px;">
+
+            <div class="container" >
+
+                <div class="row wow fadeIn" >
+
+                    <div class="col m8" >
+                                                
+                            <div class="card blue-grey darken-1">
+                                    <div class="card-content white-text">
+                                    <span class="card-title">Card Title</span>
+                                    <p>I am a very simple card. I am good at containing small bits of information.
+                                    I am convenient because I require little markup to use effectively.</p>
+                                    </div>
+                                    <div class="card-action">
+                                    <a href="#">This is a link</a>
+                                    <a href="#">This is a link</a>
+                                    </div>
+                              
+                            </div>
+
+                            <div class="card blue darken-1">
+                                    <div class="card-content white-text">
+                                    <span class="card-title">Card Title</span>
+                                    <p>I am a very simple card. I am good at containing small bits of information.
+                                    I am convenient because I require little markup to use effectively.</p>
+                                    </div>
+                                    <div class="card-action">
+                                    <a href="#">This is a link</a>
+                                    <a href="#">This is a link</a>
+                                    </div>
+                              
+                            </div>
+
+
+                            <div class="card white darken-1">
+                                    <div class="card-content black-text">
+                                    <span class="card-title">Card Title</span>
+                                    <p>I am a very simple card. I am good at containing small bits of information.
+                                    I am convenient because I require little markup to use effectively.</p>
+                                    </div>
+                                    <div class="card-action">
+                                    <a href="#">This is a link</a>
+                                    <a href="#">This is a link</a>
+                                    </div>
+                              
+                            </div>
+
+                            <div class="card green darken-1">
+                                    <div class="card-content white-text">
+                                    <span class="card-title">Card Title</span>
+                                    <p>I am a very simple card. I am good at containing small bits of information.
+                                    I am convenient because I require little markup to use effectively.</p>
+                                    </div>
+                                    <div class="card-action">
+                                    <a href="#">This is a link</a>
+                                    <a href="#">This is a link</a>
+                                    </div>
+                              
+                            </div>
+
+                            <div class="card grey darken-1">
+                                    <div class="card-content white-text">
+                                    <span class="card-title">Card Title</span>
+                                    <p>I am a very simple card. I am good at containing small bits of information.
+                                    I am convenient because I require little markup to use effectively.</p>
+                                    </div>
+                                    <div class="card-action">
+                                    <a href="#">This is a link</a>
+                                    <a href="#">This is a link</a>
+                                    </div>
+                              
+                            </div>
+
+                    </div>
+
+
+                    <div class="col m4" >
+                       
+                                      <div class="card" style="position: relative; right:0px;">
+                                        <div class="card-image">
+                                          <img src="../static/img/5cc9b8a97d0d5a57b2ccdb5b0cd38610.jpg">
+                                          <!-- <span class="card-title">Card Title</span> -->
+                                        </div>
+                                        <div class="card-content black-text">
+                                          <p>I am a very simple card. I am good at containing small bits of information.
+                                          I am convenient because I require little markup to use effectively.</p>
+                                        </div>
+                                        <div class="card-action">
+                                          <a href="#">This is a link</a>
+                                        </div>
+                                      </div>
+                                   
+
+                    </div>
+
+                </div>
+
+            </div>  
+         
+
+
+    </div>
+
+
+
+    <!-- Footer -->
+<footer class="page-footer font-small cyan darken-3">
+
+        <!-- Footer Elements -->
+        <div class="container">
+    
+          <!-- Grid row-->
+          <div class="row">
+    
+            <!-- Grid column -->
+            <div class="col-md-12 py-5">
+              <div class="mb-5 flex-center">
+    
+                <!-- Facebook -->
+                <a class="fb-ic">
+                  <i class="fa fa-facebook fa-lg white-text mr-md-5 mr-3 fa-2x"> </i>
+                </a>
+                <!-- Twitter -->
+                <a class="tw-ic">
+                  <i class="fa fa-twitter fa-lg white-text mr-md-5 mr-3 fa-2x"> </i>
+                </a>
+                <!-- Google +-->
+                <a class="gplus-ic">
+                  <i class="fa fa-google-plus fa-lg white-text mr-md-5 mr-3 fa-2x"> </i>
+                </a>
+                <!--Linkedin -->
+                <a class="li-ic">
+                  <i class="fa fa-linkedin fa-lg white-text mr-md-5 mr-3 fa-2x"> </i>
+                </a>
+                <!--Instagram-->
+                <a class="ins-ic">
+                  <i class="fa fa-instagram fa-lg white-text mr-md-5 mr-3 fa-2x"> </i>
+                </a>
+                <!--Pinterest-->
+                <a class="pin-ic">
+                  <i class="fa fa-pinterest fa-lg white-text fa-2x"> </i>
+                </a>
+              </div>
+            </div>
+            <!-- Grid column -->
+    
+          </div>
+          <!-- Grid row-->
+    
+        </div>
+        <!-- Footer Elements -->
+    
+        <!-- Copyright -->
+        <div class="footer-copyright text-center py-3">© 2018 Copyright:
+          <a href="https://mdbootstrap.com/education/bootstrap/"> MDBootstrap.com</a>
+        </div>
+        <!-- Copyright -->
+    
+      </footer>
+      <!-- Footer -->
+
+</body>
+
+</html>

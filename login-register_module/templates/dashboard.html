@@ -220,10 +220,13 @@ Blogger Clone
         <ul class="navbar-nav nav-flex-icons">
             <li class="nav-item" > 
  
-          <form class="form-inline" style='position: relative; top: 1vh; right:5vw;font-size:30px;color:azure; padding-left: 30px;'>
-                <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
-                <a href="#"><i class="fa fa-search" style='color: rgb(186, 185, 179)' ></i></a>
-              </form>
+          <form class="form-inline" action="{{url_for('blog_url')}}" method="POST" style='position: relative; top: 1vh; right:5vw;font-size:30px;color:azure; padding-left: 30px;'>
+                <input class="form-control mr-sm-2" type="search" placeholder="Search" name="searchbar" aria-label="Search" value={{request.form.searchbar}} >
+
+                <!-- value={{request.form.searchbar}}> -->
+                <!-- <a ><i class="fa fa-search" style='color: rgb(186, 185, 179)' ></i></a> -->
+                <button class="btn btn-indigo"  type="submit">Search</button>
+          </form>
             </li>
           
           <li class="nav-item">

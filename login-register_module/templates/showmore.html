@@ -8,8 +8,9 @@
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>Clean Blog - Start Bootstrap Theme</title>
- <!-- Bootstrap core CSS -->
+    <title>Post a Comment</title>
+
+    <!-- Bootstrap core CSS -->
     <link href='{{url_for("static",filename="vendor/bootstrap/css/bootstrap.min.css")}}' rel="stylesheet">
 
     <!-- Custom fonts for this template -->
@@ -26,11 +27,8 @@
   <style type="text/css">
     .background{
       background-color: black;
+      background-image: url('../../static/img/sea_blue.jpg');
     }
-  /*  .container{
-      height: 450px;
-    }*/
-
 
   </style>
 
@@ -39,7 +37,7 @@
     <!-- Navigation -->
     <nav class="navbar navbar-expand-lg navbar-light fixed-top" id="mainNav">
       <div class="container">
-        <a class="navbar-brand" href="index.html">Start Bootstrap</a>
+        <a class="navbar-brand" href="index.html">Post Title</a>
         <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
           Menu
           <i class="fas fa-bars"></i>
@@ -64,93 +62,44 @@
     </nav>
 
     <!-- Page Header -->
-    <header class="masthead" style="background-image: url('static/img/sea_blue.jpg');">
-
+    <header class="masthead" style="background-image: url('../../static/img/sea_blue.jpg');">
       <div class="overlay"></div>
-      <div class="container" >
-        <div class="row" >
-          <div class="col-lg-2 col-md-2 mx-auto">
+        <div class="row">
+          <div class="container">
+          <div class="col-lg-8 col-md-10 mx-auto">
             <div class="site-heading">
-              <div class="avatar">
-                    <img alt="image" src="static/img/deepika.jpg" style="border-image-width: 30%;" height="100%" width="100%">
-                </div>
-                <span class="subheading">{{name}}</span>
-            </div>
-          </div>
-          <div class="col-lg-5 col-md-5 mx-auto">
-            <div class="site-heading">
-              <h1>Blog Title</h1>
-              <span class="subheading">A Blog Theme by Start Bootstrap</span>
-            </div>
-          </div>
+              <div class="form-group">
+                  <h3><label for="comment">Share</label></h3>
+                     <p class="post-meta">
+                        on September 18, 2018</p>
+                  <form action = "/comment-result/{{pid}}/" method="post">
+                    
+                    <!-- <p>{{pid}}</p> -->
+                    <a href="post.html">
+                        <h2 class="post-title">
+                          {{post_content}}
+                        </h2>
+                      </a>
+                   
+                    </div>
+                    <h3><label for="comment">Comment</label></h3>
+                    <textarea class="form-control" rows="5" id="comment" name="comment"></textarea>
+                    <button type="submit" class="btn btn-primary">Submit</button>
+                  </form>
 
+                  </div>
+            </div>
+          </div>
+        </div>
       </div>
     </header>
 
     <!-- Main Content -->
     <div class="container background">
       <div class="row">
-        <div class="col-lg-11 col-md-10 mx-auto">
-         
-            
-         
-          {% for i in range(0,post|length) %}
-            <div class="post-preview" style="height: 30%;width: 100%;align-content: center;">
+        <div class="col-lg-8 col-md-10 mx-auto">
 
-              <a href="post.html">
-                   
-                <h2 class="post-title" >
-                  <!-- Man must explore, and this is exploration at its greatest -->
-                 <!--  {% if i.post_content|length < 2%}
-                      {{i.post_content}}
-                  {% else %}
-                      {{i.post_id}}
-                  {% endif %} -->
-                  {{post_title[i]}}
-                </h2>
-
-                <!-- <iframe id="output" frameborder="1" style="width: 50vw;height: 70vh;margin-left: 0cm;"> -->
-                    <!-- <body>
-                        {{i.post_content}}  
-                    </body> -->
-                    
-                <!-- </iframe> -->
-                <h3 class="post-subtitle" style="font-style:italic;">
-                  <!-- Problems look mighty small from 150 miles up -->
-                  {{post[i]}}
-                </h3>
-              </a><!-- 
-              <div class="row">
-                <div class="col-md-6"> -->
-                
-                  <p class="post-meta">Posted by
-                   
-                      
-                          <a href="#">{{uname[i]}}</a> on
-                          {{x[i]}} {{day[i]}},{{year[i]}},{{pid[i]}} 
-              <!--   </div>
-                <div class="col-md-6"> -->
-                  <!-- &ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp; -->
-                  <!-- &ensp;&ensp;&ensp;&ensp;&ensp; -->
-                  <a class="pull-right" style="font-size: 15px;padding-left: 25vw;color: #0085a1;font-weight: normal;font-family: all;" href="{{url_for('showmore',id = pid[i])}}">READ MORE</a>
-                  <a class="pull-right" style="font-size: 15px;color: #0085a1;font-weight: normal;font-family: all;" href="/comment" >Comment</a> 
-               
-                
-                 </p>
-                  
-             <!--   </div>
-              </div> -->
-       
-        
-
-            </div>
-            <hr>
-
-
-          {% else %}
-              <h1 style="color:#0085a1;"> No Posts Found!! </h1>
-          {% endfor %}
-
+    
          <!--  <div class="post-preview">
             <a href="post.html">
               <h2 class="post-title">
@@ -166,7 +115,7 @@
           </div>
           <hr> -->
 
-          <!-- 
+          <!--
           <div class="post-preview">
             <a href="post.html">
               <h2 class="post-title">
@@ -254,13 +203,12 @@
     </footer>
 
     <!-- Bootstrap core JavaScript -->
-    <script src="vendor/jquery/jquery.min.js"></script>
-    <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <script src="../static/vendor/jquery/jquery.min.js"></script>
+    <script src="../static/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
 
     <!-- Custom scripts for this template -->
-    <script src="js/clean-blog.min.js"></script>
+    <script src="../static/js/clean-blog.min.js"></script>
 
   </body>
-
 
 </html>

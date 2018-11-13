@@ -1,11 +1,14 @@
 from flask import Flask, render_template, flash, redirect, url_for, session, request, logging, Markup
 from wtforms import Form, StringField, TextAreaField, PasswordField, validators
 from passlib.hash import sha256_crypt
+
 from flask_sqlalchemy import SQLAlchemy
+from sqlalchemy import func
 from functools import wraps
 import flask_alchemytry #import *
 
 
+# app = Flask(__name__,static_url_path='/static')
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///blogger_db1.db'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
@@ -31,7 +34,8 @@ def index():
 def showPosts():
     
     # theme = User.query.filter_by(user_name=)
-    posts=flask_alchemytry.Posts.query.all()
+    posts=flask_alchemytry.Posts.query.filter_by(post_userid=session['username'])
+
     for i in posts:
         print(i.post_id)
     # print("inside showall",session['username'])
@@ -42,8 +46,10 @@ def showPosts():
     year=[]
     uname=[]
     title=[]
+    postid=[]
     for i in posts:
         str = i.post_content
+        str = Markup(str)
         str = str[0:200]
         # print("date is: ",i.post_published_on)
         date = ((i.post_published_on).strftime('%m/%d/%Y %H:%M:%S')).split(" ")
@@ -52,7 +58,7 @@ def showPosts():
         month = date1[1]
         year.append(date1[2])
         day.append(date1[0])
-        temp.append(Markup(str))
+        temp.append(str)
         if month=="1" or month=="01":
             mon.append("January")
         elif month=="2" or month=="02":
@@ -81,17 +87,50 @@ def showPosts():
         user = flask_alchemytry.User.query.filter_by(user_id=i.post_userid)
         title.append(i.post_title)
         uname.append(user[0].user_name)
+        postid.append(i.post_id)
     theme = flask_alchemytry.User.query.filter_by(user_name=session['username'])
     id = theme[0].user_themeid
-    print("the id is ",id)
+    name = theme[0].user_name
+    # print("the id is ",id)
 
     if id == "1":
-        return render_template("viewPost.html",post=temp,x=mon,time=time,day=day,year=year,uname=uname,post_title=title)
+        return render_template("viewPost.html",post=temp,x=mon,time=time,day=day,year=year,uname=uname,post_title=title,pid=postid,name=name)
     elif id == "2":
-        return render_template("viewPost1.html",post=temp,x=mon,time=time,day=day,year=year,uname=uname,post_title=title)
+        return render_template("viewPost1.html",post=temp,x=mon,time=time,day=day,year=year,uname=uname,post_title=title,pid=postid,name=name)
     else:
-        return render_template("viewPost2.html",post=temp,x=mon,time=time,day=day,year=year,uname=uname,post_title=title)
+        return render_template("viewPost2.html",post=temp,x=mon,time=time,day=day,year=year,uname=uname,post_title=title,pid=postid,name=name)
 
+@app.route('/blog_url',methods=['GET', 'POST'])
+def blog_url():
+    name = request.form['searchbar']
+    # print("inside blogurl",name)
+    user = flask_alchemytry.User.query.filter_by(user_name=session['username'])
+    url = user[0].user_blog_url
+    return render_template(url)
+
+@app.route('/showmore/<int:id>/', methods=['GET', 'POST'])
+def showmore(id):
+    post_content = flask_alchemytry.Posts.query.filter_by(post_id=id)
+
+    print("content is  *****",post_content[0].post_content)
+    content = Markup(post_content[0].post_content)
+
+    return render_template('showmore.html',post_content=content)
+
+
+@app.route('/comment-result/<int:id>/', methods=['GET', 'POST'])
+def comment(id):
+    print("the id is: ",id)
+    current_user = flask_alchemytry.User.query.filter_by(user_name=session['username'])
+    userid = current_user[0].user_id
+    # print(" user idis -=============",userid)
+    max_comment_id = db.session.query(func.max(flask_alchemytry.Comments.comment_id)).scalar()
+    if max_comment_id:
+        print("yes")
+    else:
+        print("no")
+   
+    return render_template('showmore.html',id=id)
 
 @app.route('/login',methods=['GET','POST'])
 def login():
@@ -111,7 +150,7 @@ def login():
             session['username']=username
             flash('you are now logged in!!')
 
-            print("hey t=rajjo",session['username'])
+            # print("hey t=rajjo",session['username'])
             return render_template('dashboard.html')
         	
         else:
@@ -152,6 +191,7 @@ def register():
 
         return redirect(url_for('login'))
     return render_template('reg.html', form=form)
+
 
 
 

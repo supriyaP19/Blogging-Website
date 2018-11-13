@@ -6,10 +6,11 @@ insert into theme values(3);
 
 user
 -------
-insert into user values(1,'supriya19','sup@gmail.com','123','sup.com','Sups blog','admin',1);
-insert into user values(2,'harshita12','hotness@gmail.com','123','papaya.com','Papayaz blog','user',1);
-insert into user values(3,'rajat09','gadha@gmail.com','123','gadha_verma.com','rjz blog','user',3);
-insert into user values(4,'shruti19','tooty_fruity@gmail.com','123','fruity.com','Shrutiz blog','admin',2);
+insert into user values(1,'supriya19','sup@gmail.com','123','sup.com','Sups blog',1);
+insert into user values(2,'harshita12','hotness@gmail.com','123','papaya.com','Papayaz blog',1);
+insert into user values(3,'rajat09','gadha@gmail.com','123','gadha_verma.com','rjz blog',3);
+insert into user values(4,'shruti19','tooty_fruity@gmail.com','123','fruity.com','Shrutiz blog',2);
+insert into user values(12,'amishapatel','amisha@gmail.com','123','https://fvtvtf.blogspot.com/','amishaz blog',1);
 
 comments
 --------

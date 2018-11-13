@@ -35,11 +35,12 @@ class Posts(db.Model):
     post_title = db.Column('post_title',db.Unicode)
 #    __table_args__ = (ForeignKeyConstraint(onupdate = 'CASCADE', ondelete = 'CASCADE') )
 
-    def __init__(self, id, userid,published_on, content):
+    def __init__(self, id, userid,published_on, content, title):
         self.post_id = id
         self.userid = userid
         self.published_on = published_on
-        self.post_content = content        
+        self.post_content = content
+        self.post_title = title     
 
 class Theme(db.Model):
     __tablename__ = 'theme'

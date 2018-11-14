@@ -32,9 +32,11 @@ def themeChange(tid):
     flask_alchemytry.db.session.commit()
     # flas.update().where(users.c.id==5).values(name="some name")
     return showPosts()
-
-
-
+@app.route('/showmoreTitle/<string:ptitle>')
+def from_title(ptitle):
+    post_req=flask_alchemytry.Posts.query.filter_by(post_title=ptitle).first()
+    id=post_req.post_id
+    return showmore(id)
 
 def count(pid):
     connection = sqlite3.connect("blogger_db1.db")
@@ -111,11 +113,13 @@ def publish_comment(id):
             flask_alchemytry.db.session.add(new_com)
             flask_alchemytry.db.session.commit()
             flash('Record was successfully added')
+            return redirect(url_for('showPosts'))
         except:
             new_com = flask_alchemytry.Comments(cid,id,-1,ts1,user_com)
             flask_alchemytry.db.session.add(new_com)
             flask_alchemytry.db.session.commit()
-        return redirect(url_for('showPosts'))
+            return redirect(url_for('showmore',id=id))
+        
     # return "RECORD ADDED"
 # @app.route('/')
 # def index():
@@ -135,11 +139,12 @@ def showmore(id):
     date_substring=(date[0]).split('/')
     mon=findMonth(date_substring[0])
     title=post_content[0].post_title
-
     id=post_content[0].post_id
+
+    publisher=flask_alchemytry.User.query.filter_by(user_id=post_content[0].post_userid).first()
     print("content is  ***",post_content[0].post_content)
     
-    post_details=[mon,date_substring[1],date_substring[2],title,content,id]
+    post_details=[mon,date_substring[1],date_substring[2],title,content,id,publisher.user_name]
 
     all_comments=flask_alchemytry.Comments.query.filter_by(comment_postid=id).all()
     comm_content=[]
@@ -200,6 +205,7 @@ def showmore(id):
 def showPosts():
     print ("in SHOW POSTS")
     # theme = User.query.filter_by(user_name=)
+
     userid=flask_alchemytry.User.query.filter_by(user_name=session['username']).first()
     # <User 12>
     # a= str(s)
@@ -209,61 +215,61 @@ def showPosts():
     print ("Posts: ",posts)
 
 
-    # posts=flask_alchemytry.Posts.query.all()
+        # posts=flask_alchemytry.Posts.query.all()
 
-    # try:
-# for i in posts:
-#     print(i.post_id)
-# print("inside showall",session['username']
-    temp=[]
-    time=[]
-    mon=[]
-    day=[]
-    year=[]
-    uname=[]
-    title=[]
-    postid=[]
-    n=[]
-# print posts
+    try:
+    # for i in posts:
+    #     print(i.post_id)
+    # print("inside showall",session['username']
+        temp=[]
+        time=[]
+        mon=[]
+        day=[]
+        year=[]
+        uname=[]
+        title=[]
+        postid=[]
+        n=[]
+    # print posts
 
-    for i in posts:
-        #find num of Comments
-        # num=flask_alchemytry.Comments.query.filter_by(post_id=i.post_id).all()
-        # n=session.query(Comments).filter(Comments.post_id.like(i.post_id)).count()
-        num=count(i.post_id)
-        n.append(num)
-        str = i.post_content
-        print "i=",i,"str: ",i.post_content
-        str = str[0:150]
-        # print("date is: ",i.post_published_on)
-        postid.append(i.post_id)
-        date = ((i.post_published_on).strftime('%m/%d/%Y %H:%M:%S')).split(" ")
-        print "date: ",date
-        date1 = (date[0]).split('/')
-        # day=date1[0]
-        month = date1[0]
-        year.append(date1[2])
-        day.append(date1[1])
-        temp.append(Markup(str)) #has post content
-        mon=findMonth(month)
-        time.append(((date[1]).split(":"))[0] + ":" + ((date[1]).split(":"))[1])
-        user = flask_alchemytry.User.query.filter_by(user_id=i.post_userid)
-        title.append(i.post_title)
-        uname.append(user[0].user_name)
-    theme = flask_alchemytry.User.query.filter_by(user_name=session['username'])
-    id = theme[0].user_themeid
-    # print("the id is ",id)
-    print "DATE: ",mon, time, day, year
-    if id == "1":   
-        return render_template("viewPost.html",num_com=n,pid=postid,post=temp,x=mon,time=time,day=day,year=year,uname=uname,post_title=title)
-    elif id == "2":
-        colors=["card blue-grey darken-1","card blue darken-1","card green darken-1"]
-       
-        return render_template("viewPost1.html",colors=colors,num_com=n,pid=postid,post=temp,x=mon,time=time,day=day,year=year,uname=uname,post_title=title)
-    else:
-        return render_template("viewPost2.html",num_com=n,pid=postid,post=temp,x=mon,time=time,day=day,year=year,uname=uname,post_title=title)
-    # except:
-    #     return render_template("no_posts.html")
+        for i in posts:
+            #find num of Comments
+            # num=flask_alchemytry.Comments.query.filter_by(post_id=i.post_id).all()
+            # n=session.query(Comments).filter(Comments.post_id.like(i.post_id)).count()
+            num=count(i.post_id)
+            n.append(num)
+            str = i.post_content
+            print "i=",i,"str: ",i.post_content
+            str = str[0:150]
+            # print("date is: ",i.post_published_on)
+            postid.append(i.post_id)
+            date = ((i.post_published_on).strftime('%m/%d/%Y %H:%M:%S')).split(" ")
+            print "date: ",date
+            date1 = (date[0]).split('/')
+            # day=date1[0]
+            month = date1[0]
+            year.append(date1[2])
+            day.append(date1[1])
+            temp.append(Markup(str)) #has post content
+            mon=findMonth(month)
+            time.append(((date[1]).split(":"))[0] + ":" + ((date[1]).split(":"))[1])
+            user = flask_alchemytry.User.query.filter_by(user_id=i.post_userid)
+            title.append(i.post_title)
+            uname.append(user[0].user_name)
+        theme = flask_alchemytry.User.query.filter_by(user_name=session['username'])
+        id = theme[0].user_themeid
+        # print("the id is ",id)
+        print "DATE: ",mon, time, day, year
+        if id == "1":   
+            return render_template("viewPost.html",num_com=n,pid=postid,post=temp,x=mon,time=time,day=day,year=year,uname=uname,post_title=title)
+        elif id == "2":
+            colors=["card blue-grey darken-1","card blue darken-1","card green darken-1"]
+           
+            return render_template("viewPost1.html",colors=colors,num_com=n,pid=postid,post=temp,x=mon,time=time,day=day,year=year,uname=uname,post_title=title)
+        else:
+            return render_template("viewPost2.html",num_com=n,pid=postid,post=temp,x=mon,time=time,day=day,year=year,uname=uname,post_title=title)
+    except:
+        return render_template("no_posts.html")
 
 
 
@@ -303,11 +309,15 @@ def login():
         print("here i am")
         published_by=[]
         user_0=flask_alchemytry.User.query.filter_by(user_id=post_all[index1].post_userid).first()
-        print "HERE: ", post_all[index1].post_userid
+        print ("user0 id; ",user_0)
         published_by.append(user_0.user_name)
-        print "P[0]",published_by
+        print ("P[0]: ",published_by)
         user_1=flask_alchemytry.User.query.filter_by(user_id=post_all[index2].post_userid).first()
+        print ("user1 id; ",user_1)
+
         published_by.append(user_1.user_name)
+        print ("P[1]: ",published_by)
+
         # form = LoginForm(request.form)
         post1 = flask_alchemytry.Posts.query.filter_by(post_id = post_all[index1].post_id).first()
         print("post1: ",post1)
@@ -358,7 +368,16 @@ def logout():
 @app.route('/dashboard')
 @is_logged_in
 def dashboard():
-    return render_template('dashboard.html',username=session['username'])
+    user_logged_in=flask_alchemytry.User.query.filter_by(user_name = session['username']).first()
+    print ("User login: ",user_logged_in)
+    all_posts=flask_alchemytry.Posts.query.filter_by(post_userid =user_logged_in.user_id).all()
+    print ("His posts:",all_posts)
+    posts=[]
+    for i in all_posts:
+        temp=i.post_title
+        posts.append(temp)
+    print("Posts: ",posts)
+    return render_template('dashboard.html',username=session['username'],posts_of_this_user=posts)
 
 
 

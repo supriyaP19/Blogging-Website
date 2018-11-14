@@ -183,9 +183,7 @@ body{
           document.getElementById("mySidenav").style.width = "0";
           document.getElementById("main").style.marginRight = "0";	      }
 
-        // jQuery( "li:has(ul)" ).click(function(){ // When a li that has a ul is clicked ...
-	      // jQuery(this).toggleClass('active'); // then toggle (add/remove) the class 'active' on it. 
-        // });
+
 
         function openlist()
         {
@@ -234,7 +232,6 @@ body{
   <!-- Navbar -->
   <nav class="navbar fixed-top navbar-expand-lg navbar-dark scrolling-navbar" >
       <div id="mySidenav" class="sidenav">
-          <!-- <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a> -->
           <i class="fa fa-angle-right" style="font-size:30px;color:azure;cursor:pointer; position: absolute; left:15%; top:  4vh; " onclick="closeNav()"></i>
 
           <a href="#">
@@ -268,7 +265,7 @@ body{
       
 
       <!-- Brand -->
-          <strong style="font-size: 30px; color:azure;align-content: left">Blogger </strong>
+          <strong style="font-size: 30px; color:azure;align-content: left">BlogMe </strong>
 
       <!-- Collapse -->
       <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
@@ -290,10 +287,6 @@ body{
             <!-- <strong>Show all User</strong> <a href="/showall"> Click here to see all users</a> -->
             <a class="nav-link" href="{{url_for('showPosts',uname=username)}}" target="_blank" >Read post</a>
           </li>
-          
-            <li class="nav-item">
-                <a class="nav-link" href="https://mdbootstrap.com/material-design-for-bootstrap/" target="_blank">About Blogger clone</a>
-            </li>
     
         </ul>
 
@@ -513,11 +506,11 @@ body{
 
     <!--Call to action-->
     <div class="pt-4">
-      <a class="btn btn-outline-white" href="https://mdbootstrap.com/getting-started/" target="_blank" role="button">Download MDB
-        <i class="fa fa-download ml-2"></i>
+      <a class="btn btn-outline-white" href="/about" role="button">About BlogMe
+        <i class="fa fa-info ml-2"></i>
       </a>
-      <a class="btn btn-outline-white" href="https://mdbootstrap.com/education/bootstrap/" target="_blank" role="button">Register
-        <i class="fa fa-book ml-2"></i>
+      <a class="btn btn-outline-white" href="/" role="button">Feedback
+        <i class="fa fa-comment-alt ml-2"></i>
       </a>
     </div>
     <!--/.Call to action-->
@@ -528,7 +521,7 @@ body{
     <!--Copyright-->
     <div class="footer-copyright py-3">
       © 2018 Copyright:
-      <a href="https://mdbootstrap.com/education/bootstrap/" target="_blank"> bloggerclone.com </a>
+      <a href="" ></a> blogMe.com </a>
     </div>
     <!--/.Copyright-->
 

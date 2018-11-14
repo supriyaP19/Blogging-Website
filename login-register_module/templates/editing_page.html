@@ -1,0 +1,19 @@
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>CKEditor</title>
+		<script src="https://cdn.ckeditor.com/4.11.1/standard/ckeditor.js"></script>
+	</head>
+	<body>
+		<form action="{{url_for('dashboard_edit',id=id)}}" method="POST">
+			<label>Post Title: </label> <input type="text" name="post_title" id="post_title" value="{{title}}">
+			<textarea name="editor1" id='editor'>{{content}}</textarea>
+			<input type="submit" name="submit" value="Save Changes">
+		</form>
+		
+		<script>
+			
+			CKEDITOR.replace( 'editor1' );
+		</script>
+	</body>
+</html>

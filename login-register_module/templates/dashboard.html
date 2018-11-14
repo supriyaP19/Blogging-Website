@@ -214,7 +214,13 @@ body{
 
         function openlist()
         {
+          // alert('clicked')
+
           $('#postlist').toggleClass('active');
+          // location.reload()
+        }
+        function afterclick(){
+          location.reload()
         }
 
 
@@ -271,9 +277,9 @@ body{
           <ul>
             <li onclick="openlist()" id="postlist">Posts
               <ul>
-              <li>All</li>
-              <li>Drafts</li>
-              <li>Published</li>
+              <a href={{url_for('detector_all')}}><li >All</li></a>
+              <a  href={{url_for('detector_draft')}}><li>Drafts</li></a>
+              <a href={{url_for('detector_pub')}}><li>Published</li></a>
               </ul>
             </li>
             <li> <a href="{{url_for('showcomments')}}">Comments</a></li>
@@ -430,22 +436,38 @@ body{
           
         </div>
       </div>
+
       </form>
 
       <div class="col-md-9 text-md-left">
         <div class="card text-white bg-dark">
+     
           <div class="card-header">
-            Featured
+            
+            {{ session['status'] }}
           </div>
           <ul class="list-group list-group-flush text-dark">
             {% for i in list_of_posts %}
-              <a href="{{url_for('detect_function',id=i.post_id)}}"><li class="list-group-item">{{i.post_title}}</li></a>
+              {% if session['status']=="All" %}
+                <a href="{{url_for('detect_function',id=i.post_id)}}"><li class="list-group-item">{{i.post_title}}</li></a>
+              {% endif %}
+              {%  if session['status']=="Drafts" %}
+                {% if i.post_status=="draft" %}
+                  <a href="{{url_for('detect_function',id=i.post_id)}}"><li class="list-group-item">{{i.post_title}}</li></a>
+                {% endif %}
+              {% endif %}
+              {%  if session['status']=="Published" %}
+                {% if i.post_status=="publish" %}
+                  <a href="{{url_for('detect_function',id=i.post_id)}}"><li class="list-group-item">{{i.post_title}}</li></a>
+                {% endif %}
+              {% endif %}
             <!-- <a><li class="list-group-item">Dapibus ac facilisis in</li></a>
             <a><li class="list-group-item">Vestibulum at eros</li></a> -->
             {% else %}
               <a><li class="list-group-item"></li></a>
             {% endfor %}
           </ul>
+       
         </div>  
         
       </div>

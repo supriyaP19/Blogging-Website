@@ -281,16 +281,16 @@ body{
           <a href="#">view post</a>
           <div id="mylist" style="color:white;font-size:20px; cursor: pointer;">
           <ul>
-            <li onclick="openlist()" id="postlist">Posts
-              <ul>
-              <a href={{url_for('detector_all')}}><li >All</li></a>
-              <a  href={{url_for('detector_draft')}}><li>Drafts</li></a>
-              <a href={{url_for('detector_pub')}}><li>Published</li></a>
+            <li onclick="openlist()" id="postlist"><a style="font-size: 20px;">Posts</a>
+              <ul >
+                <li><a href="{{url_for('detector_all')}}" style="font-size: 15px;">All</a></li>
+                <li><a  href="{{url_for('detector_draft')}}" style="font-size: 15px;">Drafts</a></li>
+                <li><a href="{{url_for('detector_pub')}}" style="font-size: 15px;">Published</li></a></li>
               </ul>
             </li>
-            <li> <a href="{{url_for('showcomments')}}">Comments</a></li>
+            <li> <a href="{{url_for('showcomments')}}" style="font-size: 20px;">Comments</a></li>
             
-                <li onclick="scrolldown()">Theme </li>
+                <li onclick="scrolldown()"><a style="font-size: 20px;">Theme</a>  </li>
 
            
           </ul>

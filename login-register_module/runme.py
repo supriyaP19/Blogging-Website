@@ -327,7 +327,14 @@ def logout():
 @app.route('/dashboard')
 @is_logged_in
 def dashboard():
-    return render_template('dashboard.html',username=session['username'])
+    user= flask_alchemytry.User.query.filter_by(user_name=session['username'])
+    posts = flask_alchemytry.Posts.query.filter_by(post_userid=user[0].user_id)
+    list_of_posts=[]
+
+    for i in posts:
+        list_of_posts.append(i.post_title)
+
+    return render_template('dashboard.html',username=session['username'],list_of_posts=list_of_posts)
 
 
 

@@ -272,7 +272,7 @@ body{
               <li>Published</li>
               </ul>
             </li>
-            <li> <a href="{{url_for('showcomments')}}">Comments</a></li>
+            <li>Comments</li>
             
                 <li onclick="scrolldown()">Theme </li>
 
@@ -309,7 +309,7 @@ body{
           </li>
           <li class="nav-item">
             <!-- <strong>Show all User</strong> <a href="/showall"> Click here to see all users</a> -->
-            <a class="nav-link" href="{{url_for('showPosts',uname=username)}}" target="_blank" >Read post</a>
+            <a class="nav-link" href="{{url_for('showPosts',uname=session['username'])}}" target="_blank" >Read post</a>
           </li>
           
             <li class="nav-item">
@@ -425,16 +425,27 @@ body{
       <div class="col-md-9 text-md-left">
         <div class="card text-white bg-dark">
           <div class="card-header">
-            Featured
+           Comments: 
           </div>
           <ul class="list-group list-group-flush text-dark">
-            {% for i in list_of_posts %}
-              <a><li class="list-group-item">{{i}}</li></a>
-            <!-- <a><li class="list-group-item">Dapibus ac facilisis in</li></a>
-            <a><li class="list-group-item">Vestibulum at eros</li></a> -->
-            {% else %}
-              <a><li class="list-group-item"></li></a>
-            {% endfor %}
+            <!--for each post title-->
+             {%  for i in ulist%}
+              <li class="list-group-item" style="text-transform: none;">
+                On post title: {{i[2]}},
+               {{i[0]}} wrote {{i[1]}}
+                </li>
+                {%endfor%}
+          </ul>
+          <div class="card-header">
+           Anonymous Comments: 
+          </div>
+          <ul class="list-group list-group-flush text-dark">
+            <!--for each post title-->
+             {%  for i in alist%}
+              <li class="list-group-item" style="text-transform: none;">
+                On post title: {{i[1]}}, Anonymous wrote  {{i[0]}}
+                </li>
+                {%endfor%}
           </ul>
         </div>  
         

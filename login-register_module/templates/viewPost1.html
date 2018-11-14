@@ -203,7 +203,7 @@ $(document).ready(function(){
                     <a href="#" data-activates="mobile-demo" class="button-collapse show-on-large"><i class="material-icons">menu</i></a>
                     <a href="https://codepen.io/collection/nbBqgY/" class="brand-logo" target="_blank">Blogger.com</a>
                     <ul class="right hide-on-med-and-down">
-                      <li><a href="{{url_for('dashboard')}}">Home</a></li>
+                      <li><a href="{{url_for('showPosts',uname=session['username'])}}">Home</a></li>
                       <li><a href="https://codepen.io/collection/nbBqgY/" target="_blank">About</a></li>
                       <li><a href="https://codepen.io/collection/nbBqgY/" target="_blank">Contact</a></li>
                     </ul>
@@ -235,8 +235,9 @@ $(document).ready(function(){
 							</span>
 						</a>     
 						<p> {{post[i]}} </p>
+            <p class="post-meta"> {{num_com[i]}} Comments </p>
 					</div>
-			
+			   
 				<hr>
 			</div>
 			{% endfor%}
@@ -249,21 +250,11 @@ $(document).ready(function(){
 						<!-- <span class="card-title">Card Title</span> -->
 				</div>
 				<div class="card-content black-text">
-					<pre>
-						Born          10 January 1974
-						(age 44)
-						Mumbai, 
-						Maharashtra, 
-						India
-						Occupation    Actor
-						Years active  1986–present
-						Spouse(s)     Sussanne Khan
-						(m. 2000;div.
-						2014)
-						Children      2
-						Parent(s)     Rakesh Roshan
-						Pinky Roshan
-						Awards	      Full list</pre>
+<pre>
+I have written {{num_posts}} posts
+My posts have got {{num_comments}} comments! 
+
+</pre>
 				</div>
 			</div>
 		</div> <!--col m4-->

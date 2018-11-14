@@ -31,12 +31,8 @@ def themeChange(tid):
     flask_alchemytry.db.session.add(theme)
     flask_alchemytry.db.session.commit()
     # flas.update().where(users.c.id==5).values(name="some name")
-    return showPosts()
-@app.route('/showmoreTitle/<string:ptitle>')
-def from_title(ptitle):
-    post_req=flask_alchemytry.Posts.query.filter_by(post_title=ptitle).first()
-    id=post_req.post_id
-    return showmore(id)
+    return showPosts(session['username'])
+
 
 def count(pid):
     connection = sqlite3.connect("blogger_db1.db")
@@ -152,7 +148,7 @@ def showmore(id):
         comm_content.append(i.comment_content)
 
 
-    print "Comments: ",comm_content
+    print("Comments: ",comm_content)
 
     # print("Comments: ",comm_content)
 
@@ -162,7 +158,7 @@ def showmore(id):
     for i in all_comments:
          user_id.append(i.comment_userid)
 
-    print "Commented users: ",user_id
+    print("Commented users: ",user_id)
     
     names=[]
     for i in user_id:
@@ -172,7 +168,7 @@ def showmore(id):
             user_name_i=flask_alchemytry.User.query.filter_by(user_id=i).first()
             names.append(user_name_i.user_name)
 
-    print "Commented user names:", names
+    print("Commented user names:", names)
     # print("Commented users: ",user_id)
     
 
@@ -182,7 +178,7 @@ def showmore(id):
         temp_det.append(j)
         comment_details.append(temp_det)
 
-    print "COMMENT DET: ",comment_details
+    print("COMMENT DET: ",comment_details)
 
     try:
         theme = flask_alchemytry.User.query.filter_by(user_name=session['username'])
@@ -201,12 +197,13 @@ def showmore(id):
 
 
 
-@app.route('/showall',methods=['GET','POST'])
-def showPosts():
+@app.route('/showall/<string:uname>/',methods=['GET','POST'])
+def showPosts(uname):
     print ("in SHOW POSTS")
     # theme = User.query.filter_by(user_name=)
 
-    userid=flask_alchemytry.User.query.filter_by(user_name=session['username']).first()
+    userid=flask_alchemytry.User.query.filter_by(user_name=uname).first()
+
     # <User 12>
     # a= str(s)
     # print a
@@ -216,7 +213,6 @@ def showPosts():
 
 
         # posts=flask_alchemytry.Posts.query.all()
-
     try:
     # for i in posts:
     #     print(i.post_id)
@@ -272,7 +268,6 @@ def showPosts():
         return render_template("no_posts.html")
 
 
-
 #check if user is logged in
 def is_logged_in(f):
     @wraps(f)
@@ -289,15 +284,18 @@ def blog_url():
     name = request.form['searchbar']
     print("inside blogurl",name)
     try:
-        user = flask_alchemytry.User.query.filter_by(user_name=session['username'])
+        user = flask_alchemytry.User.query.filter_by(user_name=name)
         url = user[0].user_blog_url
-        return render_template(url)
+        print("url is : ",url)
+        return redirect(url)
+        # return showPosts(name)
     except:
         return "Oops!"
 
 @app.route('/',methods=['GET','POST'])
 def login():
     if 'logged_in' in session:
+            # uname = session['username']
             return redirect(url_for('dashboard'))
     else:
         num_posts=count_without_where()
@@ -368,16 +366,14 @@ def logout():
 @app.route('/dashboard')
 @is_logged_in
 def dashboard():
-    user_logged_in=flask_alchemytry.User.query.filter_by(user_name = session['username']).first()
-    print ("User login: ",user_logged_in)
-    all_posts=flask_alchemytry.Posts.query.filter_by(post_userid =user_logged_in.user_id).all()
-    print ("His posts:",all_posts)
-    posts=[]
-    for i in all_posts:
-        temp=i.post_title
-        posts.append(temp)
-    print("Posts: ",posts)
-    return render_template('dashboard.html',username=session['username'],posts_of_this_user=posts)
+    user= flask_alchemytry.User.query.filter_by(user_name=session['username'])
+    posts = flask_alchemytry.Posts.query.filter_by(post_userid=user[0].user_id)
+    list_of_posts=[]
+
+    for i in posts:
+        list_of_posts.append(i.post_title)
+
+    return render_template('dashboard.html',username=session['username'],list_of_posts=list_of_posts)
 
 
 
@@ -433,19 +429,32 @@ def register():
         
 
 
-        user_data = flask_alchemytry.User.query.all()
-        get_index = user_data[len(user_data)-1]
-        get_index = get_index.user_id + 1
-        new_user = flask_alchemytry.User(get_index,username,email,password,username+'.com','my blog',1)
-        flask_alchemytry.db.session.add(new_user)
-        flask_alchemytry.db.session.commit()
+        # user_data = flask_alchemytry.User.query.all()
+        # get_index = user_data[len(user_data)-1]
+        userid = db.session.query(func.max(flask_alchemytry.User.user_id)).scalar()
+        try:
+            get_index = userid+1
+            # get_index = get_index.user_id + 1
+            new_user = flask_alchemytry.User(get_index,username,email,password,username+'.blogspot.com','my blog',1)
+            flask_alchemytry.db.session.add(new_user)
+            flask_alchemytry.db.session.commit()
 
 
-        flash('You are now registered and can log in', 'success')
+            flash('You are now registered and can log in', 'success')
+
+            return redirect(url_for('login'))
+        except:
+
+            new_user = flask_alchemytry.User(1,username,email,password,'http://127.0.0.1:5000/showall/'+username+'/','my blog',1)
+            flask_alchemytry.db.session.add(new_user)
+            flask_alchemytry.db.session.commit()
+            flash('You are now registered and can log in', 'success')
+
+            return redirect(url_for('login'))
 
         return redirect(url_for('login'))
     return render_template('reg.html', form=form,post1=post1,post2=post2,c1=content1,c2=content2,publishedBy=published_by)
-    # return render_template('reg.html', form=form) 
+    
 
 
 

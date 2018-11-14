@@ -21,6 +21,11 @@ Blogger Clone
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"></script>
 
+<!-- SummerNote CDN -->
+<!-- include summernote css/js -->
+<link href="http://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.9/summernote-bs4.css" rel="stylesheet">
+<script src="http://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.9/summernote-bs4.js"></script>
+<!-- SummerNote CDN -->
 <style type="text/css">
 
 
@@ -40,10 +45,10 @@ Blogger Clone
 /* Propeller css for Floating Action Button*/
 .pmd-floating-action { bottom: 50px; position: fixed;  margin:1em;  left: 15px;
  }
-.pmd-floating-action-btn { background-image: url("static/img/button3.jpg"); display:block; position: relative; transition: all .2s ease-out;}
+.pmd-floating-action-btn { background-color:  indigo; display:block; position: relative; transition: all .2s ease-out;}
 .pmd-floating-action-btn:before { bottom: 10%; content: attr(data-title); opacity: 0; position: absolute; left: 110%; transition: all .2s ease-out .5s;  white-space: nowrap; background-color:#fff; padding:6px 12px; border-radius:2px; color:#333; font-size:12px; margin-right:5px; display:inline-block; box-shadow: 0px 2px 3px -2px rgba(0, 0, 0, 0.18), 0px 2px 2px -7px rgba(0, 0, 0, 0.15);}
 .pmd-floating-action-btn:last-child:before { font-size: 14px; bottom: 25%;}
-.pmd-floating-action-btn:active, .pmd-floating-action-btn:focus, .pmd-floating-action-btn:hover {  background-image: url("static/img/button3.jpg"); box-shadow: 0px 5px 11px -2px rgba(0, 0, 0, 0.18), 0px 4px 12px -7px rgba(0, 0, 0, 0.15);}
+.pmd-floating-action-btn:active, .pmd-floating-action-btn:focus, .pmd-floating-action-btn:hover { background-color: indigo; box-shadow: 0px 5px 11px -2px rgba(0, 0, 0, 0.18), 0px 4px 12px -7px rgba(0, 0, 0, 0.15);}
 .pmd-floating-action-btn:not(:last-child){   opacity: 0; -ms-transform: translateY(20px) scale(0.3); transform: translateY(20px) scale(0.3); margin-bottom:15px; margin-left:8px; position:absolute; bottom:0;}
 .pmd-floating-action-btn:not(:last-child):nth-last-child(1) { transition-delay: 50ms;}
 .pmd-floating-action-btn:not(:last-child):nth-last-child(2) { transition-delay: 100ms;}
@@ -143,21 +148,35 @@ Blogger Clone
                 background: #1C2331!important;
             }
         }
+
+
+body{
+  background-image:url('static/img/37999553-white-background-image.jpg');
+  background-size:  cover;  background-attachment: fixed; 
+}
+
+.list-group-item {
+              background-color: rgb(254, 253, 241);
+              color: black;
+              padding: 1em 1.5em;
+              text-decoration: none;
+              text-transform: uppercase;
+}
+
+.list-group-item:hover {
+  background-color: #555;
+}
+
+.list-group-item:active {
+  background-color: black;
+}
+
+.list-group-item:visited {
+  background-color: #ccc;
+}
+
+
 </style>
-
-
-
-
-<script>
-
-    function scrolldown()
-     {
-        $('html,body').animate({
-            scrollTop: $("#downpost").offset().top},
-            'slow');
-     }
-  
-    </script>
 
 
   <!-- SCRIPTS -->
@@ -193,6 +212,36 @@ Blogger Clone
         {
           $('#postlist').toggleClass('active');
         }
+
+
+        function modal_save(){
+          var markupStr = $('#summernote' ).summernote('code'); 
+          
+        }
+
+        function new_post_fun(){
+            $('#summernote').summernote({
+              placeholder: 'Write your content here...',
+              dialogsInBody: true
+            });
+        }
+        // var markupStr = $('#summernote' ).summernote('code');
+
+        // function modal_close(){
+        //   // alert(retVal);
+        //   var retVal = confirm("All your data will be lost!");
+        //     if( retVal == true ){
+        //       $('#modal').modal('hide')
+        //     }
+        // }
+
+        function scrolldown()
+         {
+            $('html,body').animate({
+                scrollTop: $("#downpost").offset().top},
+                'slow');
+         }
+  
 
   </script>
 
@@ -259,8 +308,8 @@ Blogger Clone
             </a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="/showall" target="_blank" >Read post</a>
             <!-- <strong>Show all User</strong> <a href="/showall"> Click here to see all users</a> -->
+            <a class="nav-link" href="{{url_for('showPosts',uname=username)}}" target="_blank" >Read post</a>
           </li>
           
             <li class="nav-item">
@@ -338,35 +387,56 @@ Blogger Clone
     <div class="container">
 
       <!--Grid row-->
-      <div class="row wow fadeIn">
+      <div class="row wow ">
     
 
       <div class="col-md-2">
-        <a class="waves-effect waves-light btn" style=' background-image: url("static/img/button3.jpg"); color:rgb(255, 255, 255) ; '><strong>New Post</strong></a>
-       
-       
+
+       <button class="btn btn-indigo" data-toggle="modal" data-target="#new_post_modal" onclick='new_post_fun()'>New Post</button>
       </div>
+      
+      <!-- Modal -->
+      <div class="modal" id="new_post_modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+
+        <!-- Add .modal-dialog-centered to .modal-dialog to vertically center the modal -->
+        <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h1 class="modal-title" id="exampleModalLongTitle">Write Your Post!</h1>
+              
+              <button 
+              type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+          <div class="modal-body">
+            <div id="summernote">
+              <p></p>
+            </div> 
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss = "modal">Close</button>
+            <button type="button" class="btn btn-primary" onclick="modal_save()">Save changes</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
       <div class="col-md-9 text-md-left">
-          <table class="table table-hover">
-              <thead>
-                <tr>
-                  <th><strong>All posts</strong></th>
-                </tr>
-
-              </thead>
-              <tbody>
-                {% for i in posts_of_this_user %}
-                <tr>
-                  
-                  <td><a href ="{{url_for('from_title',ptitle=i)}}"> {{i}} </td>
-
- 
-                </tr>
-                {% endfor %}
-
-                </tr>
-              </tbody>
-            </table>
+        <div class="card text-white bg-dark">
+          <div class="card-header">
+            Featured
+          </div>
+          <ul class="list-group list-group-flush text-dark">
+            {% for i in list_of_posts %}
+              <a><li class="list-group-item">{{i}}</li></a>
+            <!-- <a><li class="list-group-item">Dapibus ac facilisis in</li></a>
+            <a><li class="list-group-item">Vestibulum at eros</li></a> -->
+            {% else %}
+              <a><li class="list-group-item"></li></a>
+            {% endfor %}
+          </ul>
+        </div>  
         
       </div>
      

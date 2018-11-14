@@ -431,7 +431,65 @@ def detector_edit():
     print("inside detector edit")
     session['detect']=4
     print("value",session['detect'])
-    return dashboard()
+    return dashboard_edit(id)
+
+@app.route('/editing_post/<int:id>')
+def editing_post(id):
+    current_post = flask_alchemytry.Posts.query.filter_by(post_id = id).first()
+    print(current_post.post_title)
+    title = current_post.post_title
+    content = current_post.post_content
+    print("i did come here")
+    return render_template('editing_page.html',title=title,content=content,id=id)
+
+@app.route('/edit_post/<int:id>',methods=['GET','POST'])
+def dashboard_edit(id):
+    form = add_post_form(request.form)
+    if request.method == 'POST':
+        title = form.post_title.data
+        content = form.post_content.data
+        print('edit-i think i came here')
+        print("edit-wtfffffffffff")
+        print(title)
+        print(content)
+        
+        post = flask_alchemytry.Posts.query.filter_by(post_id=id).first()
+        # post_id = post.post_id
+
+        # current_username = session['username']
+        # user_obj = flask_alchemytry.User.query.filter_by(user_name = current_username).first()
+        # userid_here = user_obj.user_id
+
+        # print("edit-post_index-----------------:",post_index)
+        # print("edit-userid-----------------:",userid_here)
+
+        post.post_content=content
+        post.post_title=title
+        flask_alchemytry.db.session.commit()
+
+
+        # new_post = flask_alchemytry.Posts(int(post_index),int(userid_here),datetime.now(),content,title,'publish')
+        # new_post = flask_alchemytry.Posts(int(post_index),int(userid_here),datetime.now(),content,title,'draft')
+
+
+            # new_post = flask_alchemytry.Posts(int(102),int(15),datetime.now(),'trying','hello')
+        # flask_alchemytry.db.session.add(new_post)
+        # flask_alchemytry.db.session.commit()
+        
+        return redirect(url_for('dashboard'))
+
+    list_of_posts=[]
+    print("inside dash")
+    user= flask_alchemytry.User.query.filter_by(user_name=session['username'])
+    print(user[0].user_id)
+    posts = flask_alchemytry.Posts.query.filter_by(post_userid=user[0].user_id)
+
+    for i in posts:
+        list_of_posts.append(i)
+
+    return render_template('dashboard.html',username=session['username'],form=form,list_of_posts=list_of_posts)
+
+
 @app.route('/detector_add')
 def detector_add():
     print("inside detector")
@@ -478,8 +536,10 @@ def detector_pub():
     print("value",session['status'])
     return dashboard()
 
+
 @app.route('/detect/<int:id>/',methods=['GET','POST'])
 def detect_function(id):
+    print("in here---------------------------------")
     if session['detect']==1:
         print("inside publish")
     elif session['detect']==2:
@@ -497,6 +557,11 @@ def detect_function(id):
         return redirect(url_for('dashboard'))
     elif session['detect']==4:
         print("inside edit")
+        print('================================================================')
+        print(id)
+        session['detect'] = 2
+        return editing_post(id)
+
     elif session['detect']==5:
         print("inside add")
     return dashboard()
@@ -555,7 +620,6 @@ class add_post_form(Form):
 @app.route('/dashboard',methods=['GET','POST'])
 @is_logged_in
 def dashboard():
-
     form = add_post_form(request.form)
     if request.method == 'POST':
         title = form.post_title.data
@@ -589,17 +653,12 @@ def dashboard():
         flask_alchemytry.db.session.add(new_post)
         flask_alchemytry.db.session.commit()
 
-
-        # user_data = flask_alchemytry.User.query.all()
-        # get_index = user_data[len(user_data)-1]
-        # get_index = get_index.user_id + 1
-        # new_user = flask_alchemytry.User(get_index,username,email,password,username+'.com','my blog',1)
-        # flask_alchemytry.db.session.add(new_user)
-        # flask_alchemytry.db.session.commit()
         return redirect(url_for('dashboard'))
 
     list_of_posts=[]
+    print("inside dash")
     user= flask_alchemytry.User.query.filter_by(user_name=session['username'])
+    print(user[0].user_id)
     posts = flask_alchemytry.Posts.query.filter_by(post_userid=user[0].user_id)
 
     for i in posts:

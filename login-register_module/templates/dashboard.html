@@ -227,28 +227,13 @@ body{
           location.reload()
         }
 
-
-        function modal_save(){
-          var my_html = CKEDITOR.instances.editor.getData();
-          alert(my_html);
-          var mypost_content = $('#summernote' ).summernote('code');
-          alert(mypost_content); 
-          document.getElementById('#hidden_p').value=mypost_content;
-        }
-
-
         function new_post_fun(){
             CKEDITOR.replace('editor');
         }
-        // var markupStr = $('#summernote' ).summernote('code');
 
-        // function modal_close(){
-        //   // alert(retVal);
-        //   var retVal = confirm("All your data will be lost!");
-        //     if( retVal == true ){
-        //       $('#modal').modal('hide')
-        //     }
-        // }
+        function edit_post_modal(){
+          CKEDITOR.replace('editor'); 
+        }
 
         function scrolldown()
          {
@@ -450,27 +435,38 @@ body{
             
             {{ session['status'] }}
           </div>
-          <ul class="list-group list-group-flush text-dark " id="scroll">
-            {% for i in list_of_posts %}
-              {% if session['status']=="All" %}
-                <a href="{{url_for('detect_function',id=i.post_id)}}"><li class="list-group-item">{{i.post_title}}</li></a>
-              {% endif %}
-              {%  if session['status']=="Drafts" %}
-                {% if i.post_status=="draft" %}
-                  <a href="{{url_for('detect_function',id=i.post_id)}}"><li class="list-group-item">{{i.post_title}}</li></a>
+          
+            <ul class="list-group list-group-flush text-dark " id="scroll">
+              {% for i in list_of_posts %}
+                {% if session['detect']!=4 %}
+                  {% if session['status']=="All" %}
+                    <a href="{{url_for('detect_function',id=i.post_id)}}"><li class="list-group-item">{{i.post_title}}</li></a>
+                  {% endif %}
+                  {%  if session['status']=="Drafts" %}
+                    {% if i.post_status=="draft" %}
+                      <a href="{{url_for('detect_function',id=i.post_id)}}"><li class="list-group-item">{{i.post_title}}</li></a>
+                    {% endif %}
+                  {% endif %}
+                  {%  if session['status']=="Published" %}
+                    {% if i.post_status=="publish" %}
+                      <a href="{{url_for('detect_function',id=i.post_id)}}"><li class="list-group-item">{{i.post_title}}</li></a>
+                    {% endif %}
+                  {% endif %}
                 {% endif %}
-              {% endif %}
-              {%  if session['status']=="Published" %}
-                {% if i.post_status=="publish" %}
-                  <a href="{{url_for('detect_function',id=i.post_id)}}"><li class="list-group-item">{{i.post_title}}</li></a>
+                {% if session['detect']==4 %}
+                    <a href="{{url_for('detect_function',id=i.post_id)}}" ><li class="list-group-item">{{i.post_title}}</li></a> 
+                    <p>{{content,title}}</p>
+                  
                 {% endif %}
-              {% endif %}
-            <!-- <a><li class="list-group-item">Dapibus ac facilisis in</li></a>
-            <a><li class="list-group-item">Vestibulum at eros</li></a> -->
-            {% else %}
-              <a><li class="list-group-item"></li></a>
-            {% endfor %}
-          </ul>
+              <!-- <a><li class="list-group-item">Dapibus ac facilisis in</li></a>
+              <a><li class="list-group-item">Vestibulum at eros</li></a> -->
+              {% else %}
+                <a><li class="list-group-item"></li></a>
+              {% endfor %}
+            </ul>
+          
+          
+
        
         </div>  
         
@@ -595,7 +591,7 @@ body{
       <span class="pmd-floating-hidden">Edit</span> 
       <i class="material-icons">edit</i> 
     </a> 
-    <a class="pmd-floating-action-btn btn pmd-btn-fab pmd-btn-raised pmd-ripple-effect btn-primary" data-title="Add Post" href="{{url_for('detector_add')}}"> 
+    <a class="pmd-floating-action-btn btn pmd-btn-fab pmd-btn-raised pmd-ripple-effect btn-primary" data-title="Add Post" href="{{url_for('detector_add')}}" > 
       <span class="pmd-floating-hidden">Primary</span>
       <i class="material-icons pmd-sm" >add</i> 
     </a> 

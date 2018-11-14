@@ -502,10 +502,6 @@ def dashboard():
 
     return render_template('dashboard.html',username=session['username'],form=form,list_of_posts=list_of_posts)
 
-
-
-
-
 # Register Form Class
 class RegisterForm(Form):
     name = StringField('Name', [validators.Length(min=1, max=50),validators.Required()])

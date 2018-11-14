@@ -439,7 +439,10 @@ def save():
     # print("inside save")
     # return "OOPS"
     form = add_post_form(request.form)
-    if request.method == 'POST':
+    print(form.post_title)
+    print(request.method)
+    if request.method:
+        print('not sure i came here')
         title = form.post_title.data
         content = form.post_content.data
 
@@ -479,6 +482,8 @@ def logout():
 class add_post_form(Form):
     post_title = StringField('post_title',[validators.Required()])
     post_content = TextAreaField('post_content',[validators.Required()])
+    print(post_title)
+    print(post_content)
 
 @app.route('/dashboard',methods=['GET','POST'])
 @is_logged_in
@@ -486,6 +491,7 @@ def dashboard():
 
     form = add_post_form(request.form)
     if request.method == 'POST':
+        print('i think i came here')
         title = form.post_title.data
         content = form.post_content.data
         print("wtfffffffffff")

@@ -512,7 +512,9 @@ body{
       <div class="col mb-6">
 
           <div class="card mb-3 ">
-              <img class="card-img-top" src='{{url_for("static",filename="img/theme1.jpg")}}' alt="Card image cap">
+              <a href="{{url_for('themeChange',tid=3)}}">
+              <img class="card-img-top" src='{{url_for("static",filename="img/theme3.jpg")}}' alt="Card image cap">
+              </a>
               <div class="card-body">
                 <h5 class="card-title">Theme 3</h5>
                <!--  <p class="card-text">This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>

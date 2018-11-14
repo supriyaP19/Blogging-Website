@@ -213,6 +213,14 @@ $(document).ready(function(){
                 <ul class="side-nav" id="mobile-demo">
                     <a href="{{url_for('dashboard')}}">Dashboard</a>
                     <li><a href="/about">About</a></li>
+                    {%  for i in range(0,post|length) %}       
+                    <li> 
+                      <a href="{{url_for('showmore',id = pid[i])}}"> 
+                      {{post_title[i]}} 
+                    </a>
+                    </li>
+                    <br>
+                    {% endfor %}
                 </ul>
               </div>
             </nav>

@@ -100,6 +100,7 @@ def count_posts(uid):
 
 def user_posts(uid):
     print("uid: ",uid)
+
     try:
         all_posts=flask_alchemytry.Posts.query.filter_by(post_userid=uid).all()
         print("all_posts: ",all_posts)
@@ -110,6 +111,7 @@ def user_posts(uid):
         return c
     except:
         return 0
+
 
 def count_without_where():
     connection = sqlite3.connect("blogger_db1.db")
@@ -255,10 +257,10 @@ def showmore(id):
             return render_template('showmore.html',post_content=post_details,comments=comment_details)
         elif id == "2":
             return render_template('showmore_2.html',post_content=post_details,comments=comment_details)
-        elif id==3:
+        elif id=="3":
             return render_template("showmore_3.html",post_content=post_details,comments=comment_details)
     except:
-        return render_template('showmore.html',post_content=post_details,comments=comment_details)
+        return render_template('showmore_anonymous.html',post_content=post_details,comments=comment_details)
 
 
 

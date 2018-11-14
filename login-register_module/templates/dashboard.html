@@ -454,9 +454,6 @@ body{
           </div>
           <ul class="list-group list-group-flush text-dark " id="scroll">
             {% for i in list_of_posts %}
-<<<<<<< HEAD
-              <a href="{{url_for('detect_function',id=i.post_id)}}"><li class="list-group-item ">{{i.post_title}}</li></a>
-=======
               {% if session['status']=="All" %}
                 <a href="{{url_for('detect_function',id=i.post_id)}}"><li class="list-group-item">{{i.post_title}}</li></a>
               {% endif %}
@@ -470,7 +467,6 @@ body{
                   <a href="{{url_for('detect_function',id=i.post_id)}}"><li class="list-group-item">{{i.post_title}}</li></a>
                 {% endif %}
               {% endif %}
->>>>>>> eed763129566cc699cbc590f93f48f1700cff2aa
             <!-- <a><li class="list-group-item">Dapibus ac facilisis in</li></a>
             <a><li class="list-group-item">Vestibulum at eros</li></a> -->
             {% else %}

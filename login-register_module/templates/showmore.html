@@ -23,21 +23,27 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
      <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
      <script type="text/javascript" src="https://cdn.rawgit.com/carlo/jquery-base64/master/jquery.base64.min.js"></script>
-  </head>
-  <style type="text/css">
-    .background{
-      background-color: black;
-      background-image: url('../../static/img/sea_blue.jpg');
-    }
+ 
+   <!-- Bootstrap core JavaScript -->
+   <script src="../static/vendor/jquery/jquery.min.js"></script>
+   <script src="../static/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
 
-  </style>
-
-<body style="background-color: black;">
-     <h1 style="color:red;font-size: 40%"/>{{message}}
+   <!-- Custom scripts for this template -->
+   <script src="../static/js/clean-blog.min.js"></script>
+ 
+    </head>
+ 
+<body style=' background-image: url("../../static/img/sea_blue.jpg"); background-size:cover; background-repeat: no-repeat; '>
     <!-- Navigation -->
+    <div class="container">
+
+
+    
+    
     <nav class="navbar navbar-expand-lg navbar-light fixed-top" id="mainNav">
       <div class="container">
-        <h1 style="color: white;">Blogger.com</h1>
+        <h1 style="color: white;">{{session['username']}}.BlogMe.com
+          </h1>
         <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
           Menu
           <i class="fas fa-bars"></i>
@@ -45,7 +51,7 @@
         <div class="collapse navbar-collapse" id="navbarResponsive">
           <ul class="navbar-nav ml-auto">
             <li class="nav-item">
-              <a href="{{url_for('dashboard')}}"> Home</a>
+              <a href="/showall/{{session['username']}}/"> Home</a>
             </li>
             <li class="nav-item">
               <a href="/about">About</a>
@@ -55,75 +61,77 @@
         </div>
       </div>
     </nav>
+    </div>
 
   <!-- Page Header -->
-  <header class="masthead" style="background-image: url('../../static/img/sea_blue.jpg');">
-    <div class="overlay"></div>
-        <div class="container">
-            <div class="site-heading">
-              <h3>
-                {{post_content[3]}}
-              </h3>
-              <h4>
-                <p class="post-meta">
-                  By {{post_content[6]}}
-                </p>
-                <p class="post-meta">
-                <!-- date time -->
-                  {{post_content[0][0]}} {{post_content[1]}}, {{post_content[2]}}
-                </p>
-              </h4>
-            <h2 class="post-content">
-              {{post_content[4]}}
-            </h2>
-          </div>  
-            <div class="post-preview" style="height: 30%;width: 100%;align-content: center;">
-              <h4 class="comment-username" >
-                COMMENTS
-                <!-- username gets printed -->
-              </h4>
-              <ul>
-              {% for i in comments %}
-              
-              <li><h5 class="comment-content">
-                  <!-- comment content  -->
-                {{i[1]}} said {{i[0]}} 
-              </h5>
-            </li>
-             {% endfor %}
-           </ul>s
-              
-              <h5 class="post-subtitle" style="font-style:italic;">
-              </h5>
-            </div> <!--closing post-preview div-->
-            <hr>
-           
-           <div class="form-group">
-                  <h3><label for="comment">Write a comment:</label></h3>
-                  <form  action = "{{url_for('publish_comment',id=post_content[5])}}" method="post">
-                     <div class="col-lg-4">
-                    <textarea class="form-control" rows="1" id="comment" name="comment"></textarea>
-                    
-                    <input type = "submit" value = "Submit" style="color:red;"/>
-                    </div> 
-                  </form>
+  
 
-          </div> <!--ends form-group-->
+
+
+  <div  style="padding-top:100px;">
+      <div class="container" >
+        <div class="row wow fadeIn" >
+          
+
+
+         
+          <div class="card" style="width: 100%;" >
+              <h5 class="card-header">{{post_content[3]}}</h5>
+              <div class="card-body">
+                <h5 class="card-title"> {{post_content[4]}}
+                  </h5>
+                <p class="card-text" style="font-size: 15px;">-By {{post_content[6]}}</p>
+                <p style="font-size: 12px;">{{post_content[0][0]}} {{post_content[1]}}, {{post_content[2]}}</p>  
+             
+
+     
+              <div class="post-preview" style="height: 30%;width: 100%;align-content: center;">
+                  <h5 class="comment-username" >
+                    COMMENTS...
+                    <hr>
+                    <!-- username gets printed -->
+                  </h5>
+                  {% for i in comments %}
+                  <p class="comment-content">
+                      <!-- comment content  -->
+                    {{i[1]}}: {{i[0]}} 
+                  </p>
+                 {% endfor %}
                   
-<!-- 
-                    <div class="form-group">
-   <label for="user-message" class="col-lg-2 control-label">Message
-   </label>
-   <div class="col-lg-10">
-       <textarea name="user-message" id="user-message" class="form-control" cols="20" rows="10" placeholder="Enter your Message"></textarea>
-   </div>end col 10
- </div>  -->
-          </div> <!--closing div container-->
-        <!-- </div> closing div row -->
-      </header>
+                  <h5 class="post-subtitle" style="font-style:italic;">
+                  </h5>
+                </div> <!--closing post-preview div-->
+              </div>
 
-    <!-- Footer -->
-    <footer>
+              <div class="card-action" style="height: 60px;">
+        
+
+        
+        
+                  <div class="row" >
+                   	
+                    <div class="col m11">
+                      <form action = "/comment-result/{{post_content[5]}}" method="post">
+                      <!-- <input type="text" placeholder="comment" id="comment" name="comment" style="position: relative; top:-15px;"> -->
+                      <input type="text" class="form-control" rows="1" id="comment" name="comment" placeholder="comment">
+
+                    </div>
+                    <div class="col m1">
+                        <input type = "submit" value = "Submit" style="color:red;"/>
+                      </form>
+                    </div>
+                  </div>
+                </div>
+
+
+            </div>
+         </div>
+  
+         </div>
+         </div>
+        </div>         
+
+    <footer class="page-footer" >
       <div class="container">
         <div class="row">
           <div class="col-lg-8 col-md-10 mx-auto">
@@ -159,12 +167,7 @@
       </div>
     </footer>
 
-    <!-- Bootstrap core JavaScript -->
-    <script src="../static/vendor/jquery/jquery.min.js"></script>
-    <script src="../static/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
-
-    <!-- Custom scripts for this template -->
-    <script src="../static/js/clean-blog.min.js"></script>
+  
 
   </body>
 

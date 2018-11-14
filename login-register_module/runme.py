@@ -395,12 +395,42 @@ class RegisterForm(Form):
 @app.route('/reg', methods=['GET', 'POST'])
 def register():
     form = RegisterForm(request.form)
+    num_posts=count_without_where()
+    post_all = flask_alchemytry.Posts.query.all()
+    print("Number of Posts: ",num_posts)
+    index1=random.randint(0,num_posts/2)
+    index2=random.randint(num_posts/2+1,num_posts-1)
+    print("index1: ",index1,"index2: ",index2)
+    print("here i am")
+    published_by=[]
+    user_0=flask_alchemytry.User.query.filter_by(user_id=post_all[index1].post_userid).first()
+    print ("user0 id; ",user_0)
+    published_by.append(user_0.user_name)
+    print ("P[0]: ",published_by)
+    user_1=flask_alchemytry.User.query.filter_by(user_id=post_all[index2].post_userid).first()
+    print ("user1 id; ",user_1)
+
+    published_by.append(user_1.user_name)
+    print ("P[1]: ",published_by)
+
+    # form = LoginForm(request.form)
+    post1 = flask_alchemytry.Posts.query.filter_by(post_id = post_all[index1].post_id).first()
+    print("post1: ",post1)
+    content1 =post1.post_content
+    content1  = Markup(content1 [0:150])
+
+    post2 = flask_alchemytry.Posts.query.filter_by(post_id = post_all[index2].post_id).first()
+    print("post2: ",post2)
+    content2 = post2.post_content
+    # print "i=",i,"str: ",i.post_content
+    content2 = Markup(content2 [0:150])
     if request.method == 'POST' and form.validate():
         name = form.name.data
         email = form.email.data
         username = form.username.data
         password = sha256_crypt.encrypt(str(form.password.data))
-
+        
+        
 
 
         user_data = flask_alchemytry.User.query.all()
@@ -414,7 +444,8 @@ def register():
         flash('You are now registered and can log in', 'success')
 
         return redirect(url_for('login'))
-    return render_template('reg.html', form=form)
+    return render_template('reg.html', form=form,post1=post1,post2=post2,c1=content1,c2=content2,publishedBy=published_by)
+    # return render_template('reg.html', form=form) 
 
 
 

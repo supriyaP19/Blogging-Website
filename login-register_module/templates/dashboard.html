@@ -1,7 +1,7 @@
 {% extends 'default.html' %}
 
 {% block title %}
-Blogger Clone
+BlogMe
 {% endblock %}
 
 {% block style %}
@@ -210,13 +210,17 @@ body{
           document.getElementById("mySidenav").style.width = "0";
           document.getElementById("main").style.marginRight = "0";	      }
 
-        // jQuery( "li:has(ul)" ).click(function(){ // When a li that has a ul is clicked ...
-	      // jQuery(this).toggleClass('active'); // then toggle (add/remove) the class 'active' on it. 
-        // });
+
 
         function openlist()
         {
+          // alert('clicked')
+
           $('#postlist').toggleClass('active');
+          // location.reload()
+        }
+        function afterclick(){
+          location.reload()
         }
 
 
@@ -262,7 +266,6 @@ body{
   <!-- Navbar -->
   <nav class="navbar fixed-top navbar-expand-lg navbar-dark scrolling-navbar" >
       <div id="mySidenav" class="sidenav">
-          <!-- <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a> -->
           <i class="fa fa-angle-right" style="font-size:30px;color:azure;cursor:pointer; position: absolute; left:15%; top:  4vh; " onclick="closeNav()"></i>
 
           <a href="#">
@@ -274,9 +277,9 @@ body{
           <ul>
             <li onclick="openlist()" id="postlist">Posts
               <ul>
-              <li>All</li>
-              <li>Drafts</li>
-              <li>Published</li>
+              <a href={{url_for('detector_all')}}><li >All</li></a>
+              <a  href={{url_for('detector_draft')}}><li>Drafts</li></a>
+              <a href={{url_for('detector_pub')}}><li>Published</li></a>
               </ul>
             </li>
             <li>Comments</li>
@@ -296,7 +299,7 @@ body{
       
 
       <!-- Brand -->
-          <strong style="font-size: 30px; color:azure;align-content: left">Blogger </strong>
+          <strong style="font-size: 30px; color:azure;align-content: left">BlogMe </strong>
 
       <!-- Collapse -->
       <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
@@ -318,10 +321,6 @@ body{
             <!-- <strong>Show all User</strong> <a href="/showall"> Click here to see all users</a> -->
             <a class="nav-link" href="{{url_for('showPosts',name=username)}}" target="_blank" >Read post</a>
           </li>
-          
-            <li class="nav-item">
-                <a class="nav-link" href="https://mdbootstrap.com/material-design-for-bootstrap/" target="_blank">About Blogger clone</a>
-            </li>
     
         </ul>
 
@@ -437,22 +436,38 @@ body{
           
         </div>
       </div>
+
       </form>
 
       <div class="col-md-9 text-md-left">
         <div class="card text-white bg-dark">
+     
           <div class="card-header">
-            Featured
+            
+            {{ session['status'] }}
           </div>
           <ul class="list-group list-group-flush text-dark">
             {% for i in list_of_posts %}
-              <a href="{{url_for('detect_function',id=i.post_id)}}"><li class="list-group-item">{{i.post_title}}</li></a>
+              {% if session['status']=="All" %}
+                <a href="{{url_for('detect_function',id=i.post_id)}}"><li class="list-group-item">{{i.post_title}}</li></a>
+              {% endif %}
+              {%  if session['status']=="Drafts" %}
+                {% if i.post_status=="draft" %}
+                  <a href="{{url_for('detect_function',id=i.post_id)}}"><li class="list-group-item">{{i.post_title}}</li></a>
+                {% endif %}
+              {% endif %}
+              {%  if session['status']=="Published" %}
+                {% if i.post_status=="publish" %}
+                  <a href="{{url_for('detect_function',id=i.post_id)}}"><li class="list-group-item">{{i.post_title}}</li></a>
+                {% endif %}
+              {% endif %}
             <!-- <a><li class="list-group-item">Dapibus ac facilisis in</li></a>
             <a><li class="list-group-item">Vestibulum at eros</li></a> -->
             {% else %}
               <a><li class="list-group-item"></li></a>
             {% endfor %}
           </ul>
+       
         </div>  
         
       </div>
@@ -463,7 +478,7 @@ body{
     </div>
     <!-- Content -->
 
-  </div>
+    </div>
   <!-- Mask & flexbox options-->
 <!-- Floating Action Button like Google Material -->
 
@@ -513,7 +528,9 @@ body{
       <div class="col mb-6">
 
           <div class="card mb-3 ">
-              <img class="card-img-top" src='{{url_for("static",filename="img/theme1.jpg")}}' alt="Card image cap">
+              <a href="{{url_for('themeChange',tid=3)}}">
+              <img class="card-img-top" src='{{url_for("static",filename="img/theme3.jpg")}}' alt="Card image cap">
+              </a>
               <div class="card-body">
                 <h5 class="card-title">Theme 3</h5>
                <!--  <p class="card-text">This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>
@@ -533,11 +550,11 @@ body{
 
     <!--Call to action-->
     <div class="pt-4">
-      <a class="btn btn-outline-white" href="https://mdbootstrap.com/getting-started/" target="_blank" role="button">Download MDB
-        <i class="fa fa-download ml-2"></i>
+      <a class="btn btn-outline-white" href="/about" role="button">About BlogMe
+        <i class="fa fa-info ml-2"></i>
       </a>
-      <a class="btn btn-outline-white" href="https://mdbootstrap.com/education/bootstrap/" target="_blank" role="button">Register
-        <i class="fa fa-book ml-2"></i>
+      <a class="btn btn-outline-white" href="/" role="button">Feedback
+        <i class="fa fa-comment-alt ml-2"></i>
       </a>
     </div>
     <!--/.Call to action-->
@@ -548,7 +565,7 @@ body{
     <!--Copyright-->
     <div class="footer-copyright py-3">
       © 2018 Copyright:
-      <a href="https://mdbootstrap.com/education/bootstrap/" target="_blank"> bloggerclone.com </a>
+      <a href="" ></a> blogMe.com </a>
     </div>
     <!--/.Copyright-->
 

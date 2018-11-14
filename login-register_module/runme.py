@@ -184,11 +184,11 @@ def showmore(id):
 
 
 
-@app.route('/showall/<string:uname>/',methods=['GET','POST'])
-def showPosts(uname):
+@app.route('/showall/<string:name>/',methods=['GET','POST'])
+def showPosts(name):
     print ("in SHOW POSTS")
     # theme = User.query.filter_by(user_name=)
-    userid=flask_alchemytry.User.query.filter_by(user_name=uname).first()
+    userid=flask_alchemytry.User.query.filter_by(user_name=name).first()
     # <User 12>
     # a= str(s)
     # print a
@@ -244,13 +244,13 @@ def showPosts(uname):
         # print("the id is ",id)
         print("DATE: ",mon, time, day, year)
         if id == "1":   
-            return render_template("viewPost.html",num_com=n,pid=postid,post=temp,x=mon,time=time,day=day,year=year,uname=uname,post_title=title)
+            return render_template("viewPost.html",num_com=n,pid=postid,post=temp,x=mon,time=time,day=day,year=year,uname=uname,post_title=title,name=name)
         elif id == "2":
             colors=["card blue-grey darken-1","card blue darken-1","card green darken-1"]
            
-            return render_template("viewPost1.html",colors=colors,num_com=n,pid=postid,post=temp,x=mon,time=time,day=day,year=year,uname=uname,post_title=title)
+            return render_template("viewPost1.html",colors=colors,num_com=n,pid=postid,post=temp,x=mon,time=time,day=day,year=year,uname=uname,post_title=title,name=name)
         else:
-            return render_template("viewPost2.html",num_com=n,pid=postid,post=temp,x=mon,time=time,day=day,year=year,uname=uname,post_title=title)
+            return render_template("viewPost2.html",num_com=n,pid=postid,post=temp,x=mon,time=time,day=day,year=year,uname=uname,post_title=title,name=name)
     except:
         return render_template("no_posts.html")
 
@@ -277,7 +277,7 @@ def blog_url():
         return redirect(url)
         # return showPosts(name)
     except:
-        return "Oops!"
+        return dashboard()
 
 @app.route('/',methods=['GET','POST'])
 def login():
@@ -314,7 +314,58 @@ def login():
                 flash('Please enter valid username and password', 'failure')
     return render_template("index.html")
 
+@app.route('/detector_edit')
+def detector_edit():
+    print("inside detector edit")
+    session['detect']=4
+    print("value",session['detect'])
+    return dashboard()
+@app.route('/detector_add')
+def detector_add():
+    print("inside detector")
+    session['detect']=5
+    print("value",session['detect'])
+    return dashboard()
+@app.route('/detector_view')
+def detector_view():
+    print("inside detector")
+    session['detect']=2
+    print("value",session['detect'])
+    return dashboard()
+@app.route('/detector_publish')
+def detector_publish():
+    print("inside detector")
+    session['detect']=1
+    print("value",session['detect'])
+    return dashboard()
+@app.route('/detector_delete')
+def detector_delete():
+    print("inside detector")
+    session['detect']=3
+    print("value",session['detect'])
+    return dashboard()
 
+@app.route('/detect/<int:id>/',methods=['GET','POST'])
+def detect_function(id):
+    if session['detect']==1:
+        print("inside publish")
+    elif session['detect']==2:
+        print("inside view")
+        return showmore(id)
+    elif session['detect']==3:
+        print("inside delete")
+        # postid = db.session.query(func.max(flask_alchemytry.User.user_id)).scalar()
+        # d = flask_alchemytry.Posts.delete(flask_alchemytry.Posts.post_id==id)
+        # d.execute()sk_sqlalchemy.BaseQuery' is not mapped
+        post = flask_alchemytry.Posts.query.filter_by(post_id=id)
+        flask_alchemytry.db.session.delete(post[0])
+        flask_alchemytry.db.session.commit()
+        return dashboard()
+    elif session['detect']==4:
+        print("inside edit")
+    elif session['detect']==5:
+        print("inside add")
+    return dashboard()
 
 
 @app.route('/logout')
@@ -332,7 +383,7 @@ def dashboard():
     list_of_posts=[]
 
     for i in posts:
-        list_of_posts.append(i.post_title)
+        list_of_posts.append(i)
 
     return render_template('dashboard.html',username=session['username'],list_of_posts=list_of_posts)
 
@@ -366,7 +417,7 @@ def register():
         try:
             get_index = userid+1
             # get_index = get_index.user_id + 1
-            new_user = flask_alchemytry.User(get_index,username,email,password,username+'.blogspot.com','my blog',1)
+            new_user = flask_alchemytry.User(get_index,username,email,password,'http://127.0.0.1:5000/showall/'+username+'/',username+"'"+"s Blog",1)
             flask_alchemytry.db.session.add(new_user)
             flask_alchemytry.db.session.commit()
 
@@ -376,7 +427,7 @@ def register():
             return redirect(url_for('login'))
         except:
 
-            new_user = flask_alchemytry.User(1,username,email,password,'http://127.0.0.1:5000/showall/'+username+'/','my blog',1)
+            new_user = flask_alchemytry.User(1,username,email,password,'http://127.0.0.1:5000/showall/'+username+'/',username+"'"+"s Blog",1)
             flask_alchemytry.db.session.add(new_user)
             flask_alchemytry.db.session.commit()
             flash('You are now registered and can log in', 'success')

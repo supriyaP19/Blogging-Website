@@ -227,7 +227,9 @@ $(document).ready(function(){
 		<div class="row wow fadeIn" >
 			<div class="col m8" >
 				{%  for i in range(0,post|length) %}             
-				<div class="{{colors[i]}}">
+				<div class="{{colors[i%3]}}">
+
+
 					<div class="card-content white-text">
 						<a href="{{url_for('showmore',id = pid[i])}}">
 							<span class="card-title">

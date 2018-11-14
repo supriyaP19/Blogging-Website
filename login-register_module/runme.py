@@ -100,15 +100,17 @@ def count_posts(uid):
 
 def user_posts(uid):
     print("uid: ",uid)
-    try:
-        all_posts=flask_alchemytry.Posts.query.filter_by(post_userid=uid).all()
-        print("all_posts: ",all_posts)
-        for i in all_posts:
-            comment_ids=flask_alchemytry.Comments.query.filter_by(comment_postid=i.post_id).all()
-            
-        return len(comment_ids)
-    except:
-        return 0
+    # try:
+    all_posts=flask_alchemytry.Posts.query.filter_by(post_userid=uid).all()
+    print("all_posts: ",all_posts)
+    c=0
+    comment_ids=[]
+    for i in all_posts:
+        tempcomment_ids=flask_alchemytry.Comments.query.filter_by(comment_postid=i.post_id).all()
+        c = c+len(tempcomment_ids)
+    return c
+    # except:
+    #     return 0
 
 def count_without_where():
     connection = sqlite3.connect("blogger_db1.db")
@@ -254,7 +256,7 @@ def showmore(id):
             return render_template('showmore.html',post_content=post_details,comments=comment_details)
         elif id == "2":
             return render_template('showmore_2.html',post_content=post_details,comments=comment_details)
-        elif id==3:
+        elif id=="3":
             return render_template("showmore_3.html",post_content=post_details,comments=comment_details)
     except:
         return render_template('showmore.html',post_content=post_details,comments=comment_details)
@@ -282,59 +284,59 @@ def showPosts(name):
     n=[]
     my_posts=count_posts(userid.user_id)
     my_comments=user_posts(userid.user_id)
-    try:
-        temp=[]
-        time=[]
-        mon=[]
-        day=[]
-        year=[]
-        uname=[]
-        title=[]
-        postid=[]
-        n=[]
+    # try:
+    temp=[]
+    time=[]
+    mon=[]
+    day=[]
+    year=[]
+    uname=[]
+    title=[]
+    postid=[]
+    n=[]
 
-        for i in posts:
-            
-
-            num=count(i.post_id)
-            n.append(num)
-            str = i.post_content
-            print("i=",i,"str: ",i.post_content)
-            str = str[0:150]
-            
-            postid.append(i.post_id)
-            date = ((i.post_published_on).strftime('%m/%d/%Y %H:%M:%S')).split(" ")
-            print("date: ",date)
-            date1 = (date[0]).split('/')
-            
-            month = date1[0]
-            year.append(date1[2])
-            day.append(date1[1])
-            temp.append(Markup(str)) #has post content
-            mon=findMonth(month)
-            time.append(((date[1]).split(":"))[0] + ":" + ((date[1]).split(":"))[1])
-            user = flask_alchemytry.User.query.filter_by(user_id=i.post_userid)
-            title.append(i.post_title)
-            uname.append(user[0].user_name)
-            #end for
-
-        theme = flask_alchemytry.User.query.filter_by(user_name=session['username'])
-        id = theme[0].user_themeid
+    for i in posts:
         
-        if len(posts)!=0:
-            if id == "1":   
-                return render_template("viewPost.html",num_posts=my_posts,num_comments=my_comments,num_com=n,pid=postid,post=temp,x=mon,time=time,day=day,year=year,uname=uname,post_title=title,name=name)
-            elif id == "2":
-                colors=["card blue-grey darken-1","card blue darken-1","card green darken-1"]
-                return render_template("viewPost1.html",num_posts=my_posts,num_comments=my_comments,colors=colors,num_com=n,pid=postid,post=temp,x=mon,time=time,day=day,year=year,uname=uname,post_title=title,name=name)
-            elif id == "3":
-                colors=["card blue-grey darken-1","card blue darken-1","card green darken-1"]       
-                return render_template("viewPost2.html",num_posts=my_posts,num_comments=my_comments,colors=colors,num_com=n,pid=postid,post=temp,x=mon,time=time,day=day,year=year,uname=uname,post_title=title,name=name)
-        elif len(posts)==0:
-            return render_template("no_posts.html")    
-    except:
-        print("in EXCEPT NO POSTS")
-        return render_template("no_posts.html")
+
+        num=count(i.post_id)
+        n.append(num)
+        str = i.post_content
+        print("i=",i,"str: ",i.post_content)
+        str = str[0:150]
+        
+        postid.append(i.post_id)
+        date = ((i.post_published_on).strftime('%m/%d/%Y %H:%M:%S')).split(" ")
+        print("date: ",date)
+        date1 = (date[0]).split('/')
+        
+        month = date1[0]
+        year.append(date1[2])
+        day.append(date1[1])
+        temp.append(Markup(str)) #has post content
+        mon=findMonth(month)
+        time.append(((date[1]).split(":"))[0] + ":" + ((date[1]).split(":"))[1])
+        user = flask_alchemytry.User.query.filter_by(user_id=i.post_userid)
+        title.append(i.post_title)
+        uname.append(user[0].user_name)
+        #end for
+
+    theme = flask_alchemytry.User.query.filter_by(user_name=session['username'])
+    id = theme[0].user_themeid
+    
+    if len(posts)!=0:
+        if id == "1":   
+            return render_template("viewPost.html",num_posts=my_posts,num_comments=my_comments,num_com=n,pid=postid,post=temp,x=mon,time=time,day=day,year=year,uname=uname,post_title=title,name=name)
+        elif id == "2":
+            colors=["card blue-grey darken-1","card blue darken-1","card green darken-1"]
+            return render_template("viewPost1.html",num_posts=my_posts,num_comments=my_comments,colors=colors,num_com=n,pid=postid,post=temp,x=mon,time=time,day=day,year=year,uname=uname,post_title=title,name=name)
+        elif id == "3":
+            colors=["card blue-grey darken-1","card blue darken-1","card green darken-1"]       
+            return render_template("viewPost2.html",num_posts=my_posts,num_comments=my_comments,colors=colors,num_com=n,pid=postid,post=temp,x=mon,time=time,day=day,year=year,uname=uname,post_title=title,name=name)
+    elif len(posts)==0:
+        return render_template("no_posts.html")    
+    # except:
+    #     print("in EXCEPT NO POSTS")
+    #     return render_template("no_posts.html")
 
 
 

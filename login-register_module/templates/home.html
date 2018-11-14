@@ -207,15 +207,16 @@ Blogger Clone
 
             <!--Section: More-->
             <section class="mt-5 wow fadeIn" id="downpost" >
-
+              <a href="{{url_for('showmore',id=post2.post_id)}}">
                 <div class="card mb-3">
                     <img class="card-img" src='{{url_for("static",filename="img/pexels-photo-56759-810x539.jpeg")}}' alt="Card image cap">
                     <div class="card-body">
-                      <h5 class="card-title">Card title</h5>
-                      <p class="card-text">This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>
-                      <p class="card-text"><small class="text-muted">Last updated 3 mins ago</small></p>
+                      <h5 class="card-title">{{post2.post_title}}</h5>
+                      <p class="card-text">{{c2}}</p>
+                      <p class="card-text"><small class="text-muted">{{publishedBy[1]}}</small></p>
                     </div>
                   </div>
+                </a>
 
             </section>
             <!--Section: More-->
@@ -233,16 +234,17 @@ Blogger Clone
           </div>
           <div class="col-md-6 mb-4">
               <section class="mt-5 wow fadeIn">
-                  
+                  <a href="{{url_for('showmore',id=post1.post_id)}}">
                   <div class="card mb-3">
+                        
                         <img class="card-img" src='{{url_for("static",filename="img/workspaces-designers-05.jpg")}}' alt="Card image cap">
                         <div class="card-body">
-                          <h5 class="card-title">Card title</h5>
-                          <p class="card-text">This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>
-                          <p class="card-text"><small class="text-muted">Last updated 3 mins ago</small></p>
+                          <h5 class="card-title">{{post1.post_title}}</h5>
+                          <p class="card-text">{{c1}}</p>
+                          <p class="card-text"><small class="text-muted">{{publishedBy[0]}}</small></p>
                         </div>
                       </div>
-  
+                    </a>
                 </section>
           
           

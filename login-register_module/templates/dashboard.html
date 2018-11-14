@@ -161,6 +161,27 @@ body{
   background-size:  cover;  background-attachment: fixed; 
 }
 
+.list-group-item {
+              background-color: rgb(254, 253, 241);
+              color: black;
+              padding: 1em 1.5em;
+              text-decoration: none;
+              text-transform: uppercase;
+}
+
+.list-group-item:hover {
+  background-color: #555;
+}
+
+.list-group-item:active {
+  background-color: black;
+}
+
+.list-group-item:visited {
+  background-color: #ccc;
+}
+
+
 </style>
 
 
@@ -294,8 +315,8 @@ body{
             </a>
           <!-- </li> -->
           <li class="nav-item">
-            <a class="nav-link" href="/showall" target="_blank" >Read post</a>
             <!-- <strong>Show all User</strong> <a href="/showall"> Click here to see all users</a> -->
+            <a class="nav-link" href="{{url_for('showPosts',name=username)}}" target="_blank" >Read post</a>
           </li>
           
             <li class="nav-item">
@@ -441,39 +462,19 @@ body{
       </div>
       </form>
 
-
-
       <div class="col-md-9 text-md-left">
         <div class="card text-white bg-dark">
           <div class="card-header">
             Featured
           </div>
           <ul class="list-group list-group-flush text-dark">
-            <style>
-              .list-group-item {
-    background-color: rgb(254, 253, 241);
-  color: black;
-  padding: 1em 1.5em;
-  text-decoration: none;
-  text-transform: uppercase;
-}
-
-.list-group-item:hover {
-  background-color: #555;
-}
-
-.list-group-item:active {
-  background-color: black;
-}
-
-.list-group-item:visited {
-  background-color: #ccc;
-}
-
-              </style>
-            <a><li class="list-group-item">Cras justo odio</li></a>
-            <a><li class="list-group-item">Dapibus ac facilisis in</li></a>
-            <a><li class="list-group-item">Vestibulum at eros</li></a>
+            {% for i in list_of_posts %}
+              <a href="{{url_for('detect_function',id=i.post_id)}}"><li class="list-group-item">{{i.post_title}}</li></a>
+            <!-- <a><li class="list-group-item">Dapibus ac facilisis in</li></a>
+            <a><li class="list-group-item">Vestibulum at eros</li></a> -->
+            {% else %}
+              <a><li class="list-group-item"></li></a>
+            {% endfor %}
           </ul>
         </div>  
         
@@ -503,9 +504,9 @@ body{
             <img class="card-img-top" src='{{url_for("static",filename="img/hrithik1.jpg")}}' alt="Card image cap">
             </a>
             <div class="card-body">
-              <h5 class="card-title">Card title</h5>
-              <p class="card-text">This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>
-              <p class="card-text"><small class="text-muted">Last updated 3 mins ago</small></p>
+              <h5 class="card-title">Theme 1</h5>
+             <!--  <p class="card-text">This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>
+              <p class="card-text"><small class="text-muted">Last updated 3 mins ago</small></p> -->
             </div>
           </div>
 
@@ -519,11 +520,13 @@ body{
         <div class="col mb-6">  
   
               <div class="card mb-3 ">
-                  <img class="card-img-top" src='{{url_for("static",filename="img/theme1.jpg")}}' alt="Card image cap">
+                <a href="{{url_for('themeChange',tid=1)}}"> 
+                  <img class="card-img-top" src='{{url_for("static",filename="img/theme1.jpg")}}' alt="Card image cap"></a>
                   <div class="card-body">
-                    <h5 class="card-title">Card title</h5>
-                    <p class="card-text">This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>
-                    <p class="card-text"><small class="text-muted">Last updated 3 mins ago</small></p>
+
+                    <h5 class="card-title">  Theme 2 </h5>
+                    <!-- <p class="card-text">This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>
+                    <p class="card-text"><small class="text-muted">Last updated 3 mins ago</small></p> -->
                   </div>
                 </div>
       
@@ -535,9 +538,9 @@ body{
           <div class="card mb-3 ">
               <img class="card-img-top" src='{{url_for("static",filename="img/theme1.jpg")}}' alt="Card image cap">
               <div class="card-body">
-                <h5 class="card-title">Card title</h5>
-                <p class="card-text">This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>
-                <p class="card-text"><small class="text-muted">Last updated 3 mins ago</small></p>
+                <h5 class="card-title">Theme 3</h5>
+               <!--  <p class="card-text">This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>
+                <p class="card-text"><small class="text-muted">Last updated 3 mins ago</small></p> -->
               </div>
             </div>
 
@@ -577,24 +580,24 @@ body{
 
 
 <div class="menu pmd-floating-action"  role="navigation"> 
-    <a href="javascript:void(0);" class="pmd-floating-action-btn btn btn-sm pmd-btn-fab pmd-btn-raised pmd-ripple-effect btn-default" data-title="Publish"> 
+    <a href="{{url_for('detector_publish')}}"  class="pmd-floating-action-btn btn btn-sm pmd-btn-fab pmd-btn-raised pmd-ripple-effect btn-default" data-title="Publish"> 
       <span class="pmd-floating-hidden">Publish</span>
       <i class="material-icons">publish</i>
     </a> 
-    <a href="javascript:void(0);" class="pmd-floating-action-btn btn btn-sm pmd-btn-fab pmd-btn-raised pmd-ripple-effect btn-default" data-title="View"> 
+    <a href="{{url_for('detector_view')}}" class="pmd-floating-action-btn btn btn-sm pmd-btn-fab pmd-btn-raised pmd-ripple-effect btn-default" data-title="View"> 
       <span class="pmd-floating-hidden">View</span> 
       <i class="material-icons">ondemand_video
         </i> 
     </a> 
-    <a href="javascript:void(0);" class="pmd-floating-action-btn btn btn-sm pmd-btn-fab pmd-btn-raised pmd-ripple-effect btn-default" data-title="Delete"> 
+    <a href="{{url_for('detector_delete')}}" class="pmd-floating-action-btn btn btn-sm pmd-btn-fab pmd-btn-raised pmd-ripple-effect btn-default" data-title="Delete"> 
       <span class="pmd-floating-hidden">Delete</span> 
       <i class="material-icons">delete</i>
     </a> 
-    <a href="javascript:void(0);" class="pmd-floating-action-btn btn btn-sm pmd-btn-fab pmd-btn-raised pmd-ripple-effect btn-default" data-title="Edit"> 
+    <a href="{{url_for('detector_edit')}}" class="pmd-floating-action-btn btn btn-sm pmd-btn-fab pmd-btn-raised pmd-ripple-effect btn-default" data-title="Edit"> 
       <span class="pmd-floating-hidden">Edit</span> 
       <i class="material-icons">edit</i> 
     </a> 
-    <a class="pmd-floating-action-btn btn pmd-btn-fab pmd-btn-raised pmd-ripple-effect btn-primary" data-title="Add Post" href="javascript:void(0);"> 
+    <a class="pmd-floating-action-btn btn pmd-btn-fab pmd-btn-raised pmd-ripple-effect btn-primary" data-title="Add Post" href="{{url_for('detector_add')}}"> 
       <span class="pmd-floating-hidden">Primary</span>
       <i class="material-icons pmd-sm" >add</i> 
     </a> 

@@ -34,13 +34,21 @@ def themeChange(tid):
     return showPosts(session['username'])
 
 
-
-
 def count(pid):
     connection = sqlite3.connect("blogger_db1.db")
     crsr = connection.cursor()
     # command="""select count(*) from comments where comment_postid=1"""
     crsr.execute("select count(*) from comments where comment_postid = %d"%pid)
+    numberOfRows = crsr.fetchone()[0]
+    connection.commit()
+    connection.close()
+    return numberOfRows
+
+def count_without_where():
+    connection = sqlite3.connect("blogger_db1.db")
+    crsr = connection.cursor()
+    # command="""select count(*) from comments where comment_postid=1"""
+    crsr.execute("select count(*) from posts")
     numberOfRows = crsr.fetchone()[0]
     connection.commit()
     connection.close()
@@ -101,11 +109,13 @@ def publish_comment(id):
             flask_alchemytry.db.session.add(new_com)
             flask_alchemytry.db.session.commit()
             flash('Record was successfully added')
+            return redirect(url_for('showPosts',name=userid.user_name))
         except:
             new_com = flask_alchemytry.Comments(cid,id,-1,ts1,user_com)
             flask_alchemytry.db.session.add(new_com)
             flask_alchemytry.db.session.commit()
-        return redirect(url_for('showPosts'))
+            return redirect(url_for('showmore',id=id))
+        
     # return "RECORD ADDED"
 # @app.route('/')
 # def index():
@@ -125,11 +135,12 @@ def showmore(id):
     date_substring=(date[0]).split('/')
     mon=findMonth(date_substring[0])
     title=post_content[0].post_title
-
     id=post_content[0].post_id
+
+    publisher=flask_alchemytry.User.query.filter_by(user_id=post_content[0].post_userid).first()
     print("content is  ***",post_content[0].post_content)
     
-    post_details=[mon,date_substring[1],date_substring[2],title,content,id]
+    post_details=[mon,date_substring[1],date_substring[2],title,content,id,publisher.user_name]
 
     all_comments=flask_alchemytry.Comments.query.filter_by(comment_postid=id).all()
     comm_content=[]
@@ -169,26 +180,30 @@ def showmore(id):
 
     print("COMMENT DET: ",comment_details)
 
-
-    theme = flask_alchemytry.User.query.filter_by(user_name=session['username'])
-    id = theme[0].user_themeid
-    
-    if id == "1":   
+    try:
+        theme = flask_alchemytry.User.query.filter_by(user_name=session['username'])
+        id = theme[0].user_themeid
+        
+        if id == "1":   
+            return render_template('showmore.html',post_content=post_details,comments=comment_details)
+        elif id == "2":
+           
+            return render_template('showmore_2.html',post_content=post_details,comments=comment_details)
+        else:
+            return render_template("viewPost2.html",num_com=n,pid=postid,post=temp,x=mon,time=time,day=day,year=year,uname=uname,post_title=title)
+    except:
         return render_template('showmore.html',post_content=post_details,comments=comment_details)
-    elif id == "2":
-       
-        return render_template('showmore_2.html',post_content=post_details,comments=comment_details)
-    else:
-        return render_template("viewPost2.html",num_com=n,pid=postid,post=temp,x=mon,time=time,day=day,year=year,uname=uname,post_title=title)
 
 
 
 
-@app.route('/showall/<string:uname>/',methods=['GET','POST'])
-def showPosts(uname):
+@app.route('/showall/<string:name>/',methods=['GET','POST'])
+def showPosts(name):
     print ("in SHOW POSTS")
     # theme = User.query.filter_by(user_name=)
-    userid=flask_alchemytry.User.query.filter_by(user_name=uname).first()
+
+    userid=flask_alchemytry.User.query.filter_by(user_name=name).first()
+
     # <User 12>
     # a= str(s)
     # print a
@@ -197,9 +212,7 @@ def showPosts(uname):
     print ("Posts: ",posts)
 
 
-    # posts=flask_alchemytry.Posts.query.all()
-
-
+        # posts=flask_alchemytry.Posts.query.all()
     try:
     # for i in posts:
     #     print(i.post_id)
@@ -244,13 +257,15 @@ def showPosts(uname):
         # print("the id is ",id)
         print("DATE: ",mon, time, day, year)
         if id == "1":   
-            return render_template("viewPost.html",num_com=n,pid=postid,post=temp,x=mon,time=time,day=day,year=year,uname=uname,post_title=title)
+            return render_template("viewPost.html",num_com=n,pid=postid,post=temp,x=mon,time=time,day=day,year=year,uname=uname,post_title=title,name=name)
         elif id == "2":
             colors=["card blue-grey darken-1","card blue darken-1","card green darken-1"]
            
-            return render_template("viewPost1.html",colors=colors,num_com=n,pid=postid,post=temp,x=mon,time=time,day=day,year=year,uname=uname,post_title=title)
-        else:
-            return render_template("viewPost2.html",num_com=n,pid=postid,post=temp,x=mon,time=time,day=day,year=year,uname=uname,post_title=title)
+            return render_template("viewPost1.html",colors=colors,num_com=n,pid=postid,post=temp,x=mon,time=time,day=day,year=year,uname=uname,post_title=title,name=name)
+        elif id == "3":
+            colors=["card blue-grey darken-1","card blue darken-1","card green darken-1"]
+           
+            return render_template("viewPost2.html",colors=colors,num_com=n,pid=postid,post=temp,x=mon,time=time,day=day,year=year,uname=uname,post_title=title,name=name)
     except:
         return render_template("no_posts.html")
 
@@ -277,17 +292,44 @@ def blog_url():
         return redirect(url)
         # return showPosts(name)
     except:
-        return "Oops!"
+        return dashboard()
 
 @app.route('/',methods=['GET','POST'])
 def login():
+    session['detect']=2
     if 'logged_in' in session:
             # uname = session['username']
             return redirect(url_for('dashboard'))
     else:
+        num_posts=count_without_where()
+        post_all = flask_alchemytry.Posts.query.all()
+        print("Number of Posts: ",num_posts)
+        index1=random.randint(0,int(num_posts/2))
+        index2=random.randint(int(num_posts/2)+1,num_posts-1)
+        print("index1: ",index1,"index2: ",index2)
         print("here i am")
-        # form = LoginForm(request.form)
+        published_by=[]
+        user_0=flask_alchemytry.User.query.filter_by(user_id=post_all[index1].post_userid).first()
+        print ("user0 id; ",user_0)
+        published_by.append(user_0.user_name)
+        print ("P[0]: ",published_by)
+        user_1=flask_alchemytry.User.query.filter_by(user_id=post_all[index2].post_userid).first()
+        print ("user1 id; ",user_1)
 
+        published_by.append(user_1.user_name)
+        print ("P[1]: ",published_by)
+
+        # form = LoginForm(request.form)
+        post1 = flask_alchemytry.Posts.query.filter_by(post_id = post_all[index1].post_id).first()
+        print("post1: ",post1)
+        content1 =post1.post_content
+        content1  = Markup(content1 [0:150])
+
+        post2 = flask_alchemytry.Posts.query.filter_by(post_id = post_all[index2].post_id).first()
+        print("post2: ",post2)
+        content2 = post2.post_content
+        # print "i=",i,"str: ",i.post_content
+        content2 = Markup(content2 [0:150])
         print(request.method)
         if request.method == 'POST':
             username = request.form['username']
@@ -312,9 +354,61 @@ def login():
 
             else:
                 flash('Please enter valid username and password', 'failure')
-    return render_template("index.html")
+    return render_template("index.html",post1=post1,post2=post2,c1=content1,c2=content2,publishedBy=published_by)
 
+@app.route('/detector_edit')
+def detector_edit():
+    print("inside detector edit")
+    session['detect']=4
+    print("value",session['detect'])
+    return dashboard()
+@app.route('/detector_add')
+def detector_add():
+    print("inside detector")
+    session['detect']=5
+    print("value",session['detect'])
+    return dashboard()
+@app.route('/detector_view')
+def detector_view():
+    print("inside detector")
+    session['detect']=2
+    print("value",session['detect'])
+    return dashboard()
+@app.route('/detector_publish')
+def detector_publish():
+    print("inside detector")
+    session['detect']=1
+    print("value",session['detect'])
+    return dashboard()
+@app.route('/detector_delete')
+def detector_delete():
+    print("inside detector")
+    session['detect']=3
+    print("value",session['detect'])
+    return dashboard()
 
+@app.route('/detect/<int:id>/',methods=['GET','POST'])
+def detect_function(id):
+    if session['detect']==1:
+        print("inside publish")
+    elif session['detect']==2:
+        print("inside view")
+        return showmore(id)
+    elif session['detect']==3:
+        print("inside delete")
+        # postid = db.session.query(func.max(flask_alchemytry.User.user_id)).scalar()
+        # d = flask_alchemytry.Posts.delete(flask_alchemytry.Posts.post_id==id)
+        # d.execute()sk_sqlalchemy.BaseQuery' is not mapped
+        post = flask_alchemytry.Posts.query.filter_by(post_id=id)
+        flask_alchemytry.db.session.delete(post[0])
+        flask_alchemytry.db.session.commit()
+        session['detect']=2
+        return dashboard()
+    elif session['detect']==4:
+        print("inside edit")
+    elif session['detect']==5:
+        print("inside add")
+    return dashboard()
 
 
 @app.route('/logout')
@@ -327,7 +421,14 @@ def logout():
 @app.route('/dashboard')
 @is_logged_in
 def dashboard():
-    return render_template('dashboard.html',username=session['username'])
+    user= flask_alchemytry.User.query.filter_by(user_name=session['username'])
+    posts = flask_alchemytry.Posts.query.filter_by(post_userid=user[0].user_id)
+    list_of_posts=[]
+
+    for i in posts:
+        list_of_posts.append(i)
+
+    return render_template('dashboard.html',username=session['username'],list_of_posts=list_of_posts)
 
 
 
@@ -345,21 +446,52 @@ class RegisterForm(Form):
 @app.route('/reg', methods=['GET', 'POST'])
 def register():
     form = RegisterForm(request.form)
+    num_posts=count_without_where()
+    post_all = flask_alchemytry.Posts.query.all()
+    print("Number of Posts: ",num_posts)
+    index1=random.randint(0,int(num_posts/2))
+    index2=random.randint(int(num_posts/2)+1,num_posts-1)
+    print("index1: ",index1,"index2: ",index2)
+    print("here i am")
+    published_by=[]
+    user_0=flask_alchemytry.User.query.filter_by(user_id=post_all[index1].post_userid).first()
+    print ("user0 id; ",user_0)
+    published_by.append(user_0.user_name)
+    print ("P[0]: ",published_by)
+    user_1=flask_alchemytry.User.query.filter_by(user_id=post_all[index2].post_userid).first()
+    print ("user1 id; ",user_1)
+
+    published_by.append(user_1.user_name)
+    print ("P[1]: ",published_by)
+
+    # form = LoginForm(request.form)
+    post1 = flask_alchemytry.Posts.query.filter_by(post_id = post_all[index1].post_id).first()
+    print("post1: ",post1)
+    content1 =post1.post_content
+    content1  = Markup(content1 [0:150])
+
+    post2 = flask_alchemytry.Posts.query.filter_by(post_id = post_all[index2].post_id).first()
+    print("post2: ",post2)
+    content2 = post2.post_content
+    # print "i=",i,"str: ",i.post_content
+    content2 = Markup(content2 [0:150])
     if request.method == 'POST' and form.validate():
         name = form.name.data
         email = form.email.data
         username = form.username.data
         password = sha256_crypt.encrypt(str(form.password.data))
-
+        
+        
 
 
         # user_data = flask_alchemytry.User.query.all()
         # get_index = user_data[len(user_data)-1]
         userid = db.session.query(func.max(flask_alchemytry.User.user_id)).scalar()
+        session['detect']=2
         try:
             get_index = userid+1
             # get_index = get_index.user_id + 1
-            new_user = flask_alchemytry.User(get_index,username,email,password,username+'.blogspot.com','my blog',1)
+            new_user = flask_alchemytry.User(get_index,username,email,password,'http://127.0.0.1:5000/showall/'+username+'/',username+"'"+"s Blog",1)
             flask_alchemytry.db.session.add(new_user)
             flask_alchemytry.db.session.commit()
 
@@ -369,14 +501,16 @@ def register():
             return redirect(url_for('login'))
         except:
 
-            new_user = flask_alchemytry.User(1,username,email,password,'http://127.0.0.1:5000/showall/'+username+'/','my blog',1)
+            new_user = flask_alchemytry.User(1,username,email,password,'http://127.0.0.1:5000/showall/'+username+'/',username+"'"+"s Blog",1)
             flask_alchemytry.db.session.add(new_user)
             flask_alchemytry.db.session.commit()
             flash('You are now registered and can log in', 'success')
 
             return redirect(url_for('login'))
 
-    return render_template('reg.html', form=form)
+        return redirect(url_for('login'))
+    return render_template('reg.html', form=form,post1=post1,post2=post2,c1=content1,c2=content2,publishedBy=published_by)
+    
 
 @app.route('/about')
 def about():

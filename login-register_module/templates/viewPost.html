@@ -1,14 +1,9 @@
 
 {% extends 'theme1layout.html'%}
-
-
     
 {% block title %}
     All Your Blogs Here!
  {% endblock %}
-
-
-
 
   
 {% block body %}
@@ -17,7 +12,7 @@
      <!-- Navigation -->
      <nav class="navbar navbar-expand-lg navbar-light fixed-top" id="mainNav">
       <div class="container">
-        <a class="navbar-brand" href="index.html">Hi {{session['username']}}</a>
+        <a class="navbar-brand" href="index.html">Blogger.com</a>
         <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
           Menu
           <i class="fas fa-bars"></i>
@@ -43,7 +38,9 @@
 
 
     <!-- Page Header -->
+
     <header class="masthead" style='background-image: url("../../static/img/sea_blue.jpg");'>
+
 
       <div class="overlay"></div>
       <div class="container" >
@@ -53,7 +50,8 @@
               <div class="avatar">
                     <img alt="image" src="../../static/img/deepika.jpg" style="border-image-width: 30%;" height="100%" width="100%">
                 </div>
-              <span class="subheading">{{name}}</span>
+                <span class="subheading">{{uname[0]}}</span>
+
             </div>
           </div>
           <div class="col-lg-5 col-md-5 mx-auto">
@@ -68,41 +66,32 @@
 
           <!-- Main Content -->
           <div class="container background">
+            {%  for i in range(0,post|length) %}
             <div class="row">
+              
               <div class="col-lg-11 col-md-10 mx-auto">
-                {%  for i in range(0,post|length) %}
+                
                   <div class="post-preview" style="height: 30%;width: 100%;align-content: center;">
-                      <a href="post.html">
                         <h2 class="post-title" >
                           {{post_title[i]}}
                         </h2>
-                      </a>
                     <h4 class="post-meta">
                       {{post[i]}}
                     </h4>
                     <h5 class="post-subtitle" style="font-style:italic;">
                       Posted by {{uname[i]}} on {{i.post_published_on}}  {{x[i]}} {{day[i]}},{{year[i]}}
                     </h5>
-                    <p class="post-meta"> {{num_com[i]}} Comments</p>
-                    <p class="post-meta" style="color:green;">
 
+                    <p class="post-meta"> {{num_com[i]}} Comments 
                       <a href="{{url_for('showmore',id = pid[i])}}"> Show More </a>
+                  </div> <!--end post preview-->
+                
+          </div> <!--end col lg-11-->
+         
 
-                      <!-- <a href="#"></a> -->
-                      <!-- <a class="pull-right" style="font-size: 15px;padding-left: 35vw;color: #0085a1;font-weight: normal;font-family: all;" href="/comment" >Comment</a> -->
-                    </p>
-                  </div>
-                <hr>
-          {% else %}
-              <h1> No Posts Found!! </h1>
-              {% endfor %}
-            <div class="clearfix">
-              <a class="btn btn-primary float-right" href="#">Older Posts &rarr;</a>
-            </div>
-
-          </div>
-        </div>
-      </div>
+        </div> <!--end row-->
+         {% endfor %}
+      </div> <!--end container-->
     <hr>
     <!-- Footer -->
     <footer>

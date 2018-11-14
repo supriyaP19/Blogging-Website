@@ -5,6 +5,12 @@ Blogger Clone
 {% endblock %}
 
 {% block style %}
+
+<!-- CKEditor -->
+<script src="//cdn.ckeditor.com/4.11.1/standard/ckeditor.js"></script>
+<!-- CKEditor -->
+
+
 <!-- Font Awesome -->
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
 <!-- Bootstrap core CSS -->
@@ -194,15 +200,16 @@ body{
 
 
         function modal_save(){
-          var markupStr = $('#summernote' ).summernote('code'); 
-          
+          var my_html = CKEDITOR.instances.editor.getData();
+          alert(my_html);
+          var mypost_content = $('#summernote' ).summernote('code');
+          alert(mypost_content); 
+          document.getElementById('#hidden_p').value=mypost_content;
         }
 
+
         function new_post_fun(){
-            $('#summernote').summernote({
-              placeholder: 'Write your content here...',
-              dialogsInBody: true
-            });
+            CKEDITOR.replace('editor');
         }
         // var markupStr = $('#summernote' ).summernote('code');
 
@@ -281,11 +288,11 @@ body{
 
         <!-- Left -->
         <ul class="navbar-nav mr-auto">
-          <li class="nav-item active">
+          <!-- <li class="nav-item active">NoneNone -->
             <a class="nav-link" href="/dashboard">Home
               <span class="sr-only">(current)</span>
             </a>
-          </li>
+          <!-- </li> -->
           <li class="nav-item">
             <a class="nav-link" href="/showall" target="_blank" >Read post</a>
             <!-- <strong>Show all User</strong> <a href="/showall"> Click here to see all users</a> -->
@@ -375,6 +382,7 @@ body{
       </div>
       
       <!-- Modal -->
+      <form action="" method="POST">
       <div class="modal" id="new_post_modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
 
         <!-- Add .modal-dialog-centered to .modal-dialog to vertically center the modal -->
@@ -388,18 +396,50 @@ body{
                 <span aria-hidden="true">&times;</span>
               </button>
             </div>
+          
           <div class="modal-body">
-            <div id="summernote">
-              <p></p>
-            </div> 
+
+
+            {% from "includes/_formhelpers.html" import render_field %}
+              <form method="POST" action="{{url_for('dashboard')}}">
+                  <div class="form-group">
+                      {{render_field(form.post_title, class_="form-control")}}
+                  </div>
+                  <div class="form-group">
+                      {{ render_field(form.post_content, class_="form-control", id="editor") }}
+                  </div>
+                  <p><input type="submit" class="btn btn-primary" value="Submit"></p> 
+              </form>
+
+
+            <div class="row" style="padding-bottom: 1%">
+              <div class="col-sm-2 align-center">
+                <p class="align-center">Post Title:</p>
+              </div>
+              <div class="col-sm-10">
+                <div class="input-group">
+                  <input type="text" class="form-control" placeholder="Blog Title" name="title" id='blog_title' >
+                </div>
+              </div>
+            </div>
+            <div>
+              <!-- //CKEditor -->
+              <textarea name="editor" id='editor'></textarea>  
+              <!-- //CKEditor -->
+            </div>
+            <p hidden='true' id='hidden_p' name='hidden_p'></p> 
           </div>
+          
           <div class="modal-footer">
             <button type="button" class="btn btn-secondary" data-dismiss = "modal">Close</button>
-            <button type="button" class="btn btn-primary" onclick="modal_save()">Save changes</button>
+            <button type="submit" class="btn btn-primary" onclick="modal_save()">Save changes</button>
             </div>
+          
           </div>
+          
         </div>
       </div>
+      </form>
 
 
 

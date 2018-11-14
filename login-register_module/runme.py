@@ -46,6 +46,12 @@ def count(pid):
     connection.close()
     return numberOfRows
 
+# @app.route('/insert_post',methods=['GET','POST'])
+# def insertPost():
+#     print("content is ========",request.form.get('content'))
+#     print("title is ========",request.form['title'])
+#     return render_template('dashboard.html')
+
 def findMonth(month):
     mon=[]
     if month=="1" or month=="01":
@@ -137,7 +143,7 @@ def showmore(id):
         comm_content.append(i.comment_content)
 
 
-    print "Comments: ",comm_content
+    print ("Comments: ",comm_content)
 
     # print("Comments: ",comm_content)
 
@@ -147,7 +153,7 @@ def showmore(id):
     for i in all_comments:
          user_id.append(i.comment_userid)
 
-    print "Commented users: ",user_id
+    print ("Commented users: ",user_id)
     
     names=[]
     for i in user_id:
@@ -157,7 +163,7 @@ def showmore(id):
             user_name_i=flask_alchemytry.User.query.filter_by(user_id=i).first()
             names.append(user_name_i.user_name)
 
-    print "Commented user names:", names
+    print ("Commented user names:", names)
     # print("Commented users: ",user_id)
     
 
@@ -167,7 +173,7 @@ def showmore(id):
         temp_det.append(j)
         comment_details.append(temp_det)
 
-    print "COMMENT DET: ",comment_details
+    print( "COMMENT DET: ",comment_details)
 
 
     theme = flask_alchemytry.User.query.filter_by(user_name=session['username'])
@@ -221,12 +227,12 @@ def showPosts():
         num=count(i.post_id)
         n.append(num)
         str = i.post_content
-        print "i=",i,"str: ",i.post_content
+        print("i=",i,"str: ",i.post_content)
         str = str[0:150]
         # print("date is: ",i.post_published_on)
         postid.append(i.post_id)
         date = ((i.post_published_on).strftime('%m/%d/%Y %H:%M:%S')).split(" ")
-        print "date: ",date
+        print("date: ",date)
         date1 = (date[0]).split('/')
         # day=date1[0]
         month = date1[0]
@@ -241,7 +247,7 @@ def showPosts():
     theme = flask_alchemytry.User.query.filter_by(user_name=session['username'])
     id = theme[0].user_themeid
     # print("the id is ",id)
-    print "DATE: ",mon, time, day, year
+    print("DATE: ",mon, time, day, year)
     if id == "1":   
         return render_template("viewPost.html",num_com=n,pid=postid,post=temp,x=mon,time=time,day=day,year=year,uname=uname,post_title=title)
     elif id == "2":
@@ -321,10 +327,51 @@ def logout():
     return redirect(url_for('login'))
 
 
-@app.route('/dashboard')
+class add_post_form(Form):
+    post_title = StringField('post_title',[validators.Required()])
+    post_content = TextAreaField('post_content',[validators.Required()])
+
+@app.route('/dashboard',methods=['GET','POST'])
 @is_logged_in
 def dashboard():
-    return render_template('dashboard.html',username=session['username'])
+    form = add_post_form(request.form)
+    if request.method == 'POST':
+        title = form.post_title.data
+        content = form.post_content.data
+        print("wtfffffffffff")
+        print(title)
+        print(content)
+
+        post_id = flask_alchemytry.Posts.query.all()
+        post_index = post_id[len(post_id)-1]
+        post_index = post_index.post_id + 1
+
+        current_username = session['username']
+        user_obj = flask_alchemytry.User.query.filter_by(user_name = current_username).first()
+        userid_here = user_obj.user_id
+
+        print("post_index-----------------:",post_index)
+        print("userid-----------------:",userid_here)
+
+        new_post = flask_alchemytry.Posts(int(post_index),int(userid_here),datetime.now(),content,title)
+        # new_post = flask_alchemytry.Posts(int(102),int(15),datetime.now(),'trying','hello')
+        flask_alchemytry.db.session.add(new_post)
+        flask_alchemytry.db.session.commit()
+
+
+        # user_data = flask_alchemytry.User.query.all()
+        # get_index = user_data[len(user_data)-1]
+        # get_index = get_index.user_id + 1
+        # new_user = flask_alchemytry.User(get_index,username,email,password,username+'.com','my blog',1)
+        # flask_alchemytry.db.session.add(new_user)
+        # flask_alchemytry.db.session.commit()
+
+    return render_template('dashboard.html',username=session['username'],form=form)
+
+
+
+
+
 
 
 

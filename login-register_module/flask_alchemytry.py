@@ -33,14 +33,16 @@ class Posts(db.Model):
     post_published_on = db.Column('post_published_on',db.DateTime,default = datetime.utcnow)
     post_content = db.Column('post_content',db.Unicode)
     post_title = db.Column('post_title',db.Unicode)
+    post_status = db.Column('post_status',db.Unicode)
 #    __table_args__ = (ForeignKeyConstraint(onupdate = 'CASCADE', ondelete = 'CASCADE') )
 
-    def __init__(self, id, userid,published_on, content, title):
+    def __init__(self, id, userid,published_on, content, title, status):
         self.post_id = id
         self.userid = userid
         self.published_on = published_on
         self.post_content = content
-        self.post_title = title     
+        self.post_title = title  
+        self.post_status = status   
 
 class Theme(db.Model):
     __tablename__ = 'theme'

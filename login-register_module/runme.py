@@ -147,7 +147,6 @@ def showmore(id):
     for i in all_comments:
         comm_content.append(i.comment_content)
 
-
     print("Comments: ",comm_content)
 
     # print("Comments: ",comm_content)
@@ -169,7 +168,6 @@ def showmore(id):
             names.append(user_name_i.user_name)
 
     print("Commented user names:", names)
-    # print("Commented users: ",user_id)
     
 
     for i,j in zip(comm_content,names):
@@ -178,7 +176,9 @@ def showmore(id):
         temp_det.append(j)
         comment_details.append(temp_det)
 
+
     print("COMMENT DET: ",comment_details)
+
 
     try:
         theme = flask_alchemytry.User.query.filter_by(user_name=session['username'])
@@ -210,6 +210,7 @@ def showPosts(name):
 
     posts=flask_alchemytry.Posts.query.filter_by(post_userid=userid.user_id).all()
     print ("Posts: ",posts)
+
 
 
         # posts=flask_alchemytry.Posts.query.all()
@@ -262,10 +263,13 @@ def showPosts(name):
             colors=["card blue-grey darken-1","card blue darken-1","card green darken-1"]
            
             return render_template("viewPost1.html",colors=colors,num_com=n,pid=postid,post=temp,x=mon,time=time,day=day,year=year,uname=uname,post_title=title,name=name)
-        else:
-            return render_template("viewPost2.html",num_com=n,pid=postid,post=temp,x=mon,time=time,day=day,year=year,uname=uname,post_title=title,name=name)
+        elif id == "3":
+            colors=["card blue-grey darken-1","card blue darken-1","card green darken-1"]
+           
+            return render_template("viewPost2.html",colors=colors,num_com=n,pid=postid,post=temp,x=mon,time=time,day=day,year=year,uname=uname,post_title=title,name=name)
     except:
         return render_template("no_posts.html")
+
 
 
 #check if user is logged in
@@ -303,8 +307,8 @@ def login():
         num_posts=count_without_where()
         post_all = flask_alchemytry.Posts.query.all()
         print("Number of Posts: ",num_posts)
-        index1=random.randint(0,num_posts/2)
-        index2=random.randint(num_posts/2+1,num_posts-1)
+        index1=random.randint(0,int(num_posts/2))
+        index2=random.randint(int(num_posts/2)+1,num_posts-1)
         print("index1: ",index1,"index2: ",index2)
         print("here i am")
         published_by=[]
@@ -423,12 +427,46 @@ def detect_function(id):
         flask_alchemytry.db.session.delete(post[0])
         flask_alchemytry.db.session.commit()
         session['detect']=2
-        return dashboard()
+        return redirect(url_for('dashboard'))
     elif session['detect']==4:
         print("inside edit")
     elif session['detect']==5:
         print("inside add")
     return dashboard()
+
+@app.route('/save',methods=['GET','POST'])
+def save():
+    # print("inside save")
+    # return "OOPS"
+    form = add_post_form(request.form)
+    if request.method == 'POST':
+        title = form.post_title.data
+        content = form.post_content.data
+
+        print(title)
+        print(content)
+
+        post_id = flask_alchemytry.Posts.query.all()
+        post_index = post_id[len(post_id)-1]
+        post_index = post_index.post_id + 1
+
+        current_username = session['username']
+        user_obj = flask_alchemytry.User.query.filter_by(user_name = current_username).first()
+        userid_here = user_obj.user_id
+
+        new_post = flask_alchemytry.Posts(int(post_index),int(userid_here),datetime.now(),content,title,'draft')
+        flask_alchemytry.db.session.add(new_post)
+        flask_alchemytry.db.session.commit()
+
+    # list_of_posts=[]
+    # user= flask_alchemytry.User.query.filter_by(user_name=session['username'])
+    # posts = flask_alchemytry.Posts.query.filter_by(post_userid=user[0].user_id)
+
+    # for i in posts:
+    #     list_of_posts.append(i)
+
+    # return render_template('dashboard.html',username=session['username'],form=form,list_of_posts=list_of_posts)
+    return redirect(url_for('dashboard'))
 
 
 @app.route('/logout')
@@ -438,18 +476,58 @@ def logout():
     return redirect(url_for('login'))
 
 
-@app.route('/dashboard')
+class add_post_form(Form):
+    post_title = StringField('post_title',[validators.Required()])
+    post_content = TextAreaField('post_content',[validators.Required()])
+
+@app.route('/dashboard',methods=['GET','POST'])
 @is_logged_in
 def dashboard():
-    print("inside dashboard")
+
+    form = add_post_form(request.form)
+    if request.method == 'POST':
+        title = form.post_title.data
+        content = form.post_content.data
+        print("wtfffffffffff")
+        print(title)
+        print(content)
+
+        post_id = flask_alchemytry.Posts.query.all()
+        post_index = post_id[len(post_id)-1]
+        post_index = post_index.post_id + 1
+
+        current_username = session['username']
+        user_obj = flask_alchemytry.User.query.filter_by(user_name = current_username).first()
+        userid_here = user_obj.user_id
+
+        print("post_index-----------------:",post_index)
+        print("userid-----------------:",userid_here)
+
+        new_post = flask_alchemytry.Posts(int(post_index),int(userid_here),datetime.now(),content,title,'publish')
+            # new_post = flask_alchemytry.Posts(int(102),int(15),datetime.now(),'trying','hello')
+        flask_alchemytry.db.session.add(new_post)
+        flask_alchemytry.db.session.commit()
+
+
+        # user_data = flask_alchemytry.User.query.all()
+        # get_index = user_data[len(user_data)-1]
+        # get_index = get_index.user_id + 1
+        # new_user = flask_alchemytry.User(get_index,username,email,password,username+'.com','my blog',1)
+        # flask_alchemytry.db.session.add(new_user)
+        # flask_alchemytry.db.session.commit()
+        return redirect(url_for('dashboard'))
+
+    list_of_posts=[]
     user= flask_alchemytry.User.query.filter_by(user_name=session['username'])
     posts = flask_alchemytry.Posts.query.filter_by(post_userid=user[0].user_id)
-    list_of_posts=[]
 
     for i in posts:
         list_of_posts.append(i)
 
-    return render_template('dashboard.html',username=session['username'],list_of_posts=list_of_posts)
+    return render_template('dashboard.html',username=session['username'],form=form,list_of_posts=list_of_posts)
+    # return redirect(url_for('dashboard'))
+
+
 
 
 
@@ -470,8 +548,8 @@ def register():
     num_posts=count_without_where()
     post_all = flask_alchemytry.Posts.query.all()
     print("Number of Posts: ",num_posts)
-    index1=random.randint(0,num_posts/2)
-    index2=random.randint(num_posts/2+1,num_posts-1)
+    index1=random.randint(0,int(num_posts/2))
+    index2=random.randint(int(num_posts/2)+1,num_posts-1)
     print("index1: ",index1,"index2: ",index2)
     print("here i am")
     published_by=[]
@@ -534,7 +612,9 @@ def register():
     return render_template('reg.html', form=form,post1=post1,post2=post2,c1=content1,c2=content2,publishedBy=published_by)
     
 
-
+@app.route('/about')
+def about():
+    return render_template('about.html')
 
 if(__name__) == '__main__':
     app.secret_key='secret123'

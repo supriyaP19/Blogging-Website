@@ -191,7 +191,7 @@ $(document).ready(function(){
 </script>
 
 </head>
-<body  style='background-image: url("../static/img/HD-Texture-Backgrounds-033.jpg"); background-size:  cover;  background-attachment: fixed;'>
+<body  style='background-image: url("../../static/img/HD-Texture-Backgrounds-033.jpg"); background-size:  cover;  background-attachment: fixed;'>
 
 <div class="container-fluid">
 
@@ -201,18 +201,16 @@ $(document).ready(function(){
                 <div class="row">
                   <div class="col s12">
                     <a href="#" data-activates="mobile-demo" class="button-collapse show-on-large"><i class="material-icons">menu</i></a>
-                    <a href="https://codepen.io/collection/nbBqgY/" class="brand-logo" target="_blank">Blogger.com</a>
+                    <a href="https://codepen.io/collection/nbBqgY/" class="brand-logo" target="_blank">{{session['username']}}.BlogMe.com</a>
                     <ul class="right hide-on-med-and-down">
-                      <li><a href="{{url_for('dashboard')}}">Home</a></li>s
-                      <li><a href="https://codepen.io/collection/nbBqgY/" target="_blank">About</a></li>
-                      <li><a href="https://codepen.io/collection/nbBqgY/" target="_blank">Contact</a></li>
+                      <li><a href="/showall/{{session['username']}}/">Home</a></li>
+                      <li><a href="/about">About</a></li>
                     </ul>
                   </div>
                 </div>
                 <ul class="side-nav" id="mobile-demo">
-                  <li><a href="https://codepen.io/collection/nbBqgY/" target="_blank">Home</a></li>
-                  <li><a href="https://codepen.io/collection/nbBqgY/" target="_blank">About</a></li>
-                  <li><a href="https://codepen.io/collection/nbBqgY/" target="_blank">Contact</a></li>
+                    <li><a href="/showall/{{session['username']}}/">Home</a></li>
+                    <li><a href="/about">About</a></li>
                 </ul>
               </div>
             </nav>
@@ -280,7 +278,7 @@ $(document).ready(function(){
 
 
     <!-- Footer -->
-<footer class="page-footer font-small cyan darken-3">
+<footer class="page-footer font-small cyan darken-3" >
 
         <!-- Footer Elements -->
         <div class="container">
@@ -328,7 +326,7 @@ $(document).ready(function(){
     
         <!-- Copyright -->
         <div class="footer-copyright text-center py-3">© 2018 Copyright:
-          <a href="https://mdbootstrap.com/education/bootstrap/"> MDBootstrap.com</a>
+          <a href="https://mdbootstrap.com/education/bootstrap/">{{session['username']}}.blogme.com</a>
         </div>
         <!-- Copyright -->
     

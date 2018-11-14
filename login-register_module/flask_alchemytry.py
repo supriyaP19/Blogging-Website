@@ -25,24 +25,28 @@ class User(db.Model):
         self.user_blog_url = blog_url
         self.user_blog_title = blog_title
         self.user_themeid = themeid
-    
+
 class Posts(db.Model):
-    __tablename__ = 'posts'
+    _tablename_ = 'posts'
     post_id = db.Column('post_id',db.Integer,primary_key = True,unique=True,nullable=False)
     post_userid = db.Column('post_userid',db.Integer, db.ForeignKey('user.user_id', onupdate='CASCADE', ondelete = 'CASCADE'),nullable=False)
     post_published_on = db.Column('post_published_on',db.DateTime,default = datetime.utcnow)
     post_content = db.Column('post_content',db.Unicode)
     post_title = db.Column('post_title',db.Unicode)
     post_status = db.Column('post_status',db.Unicode)
+
 #    __table_args__ = (ForeignKeyConstraint(onupdate = 'CASCADE', ondelete = 'CASCADE') )
+
 
     def __init__(self, id, userid,published_on, content, title, status):
         self.post_id = id
-        self.userid = userid
+        self.post_userid = userid
         self.published_on = published_on
         self.post_content = content
         self.post_title = title  
+
         self.post_status = status   
+
 
 class Theme(db.Model):
     __tablename__ = 'theme'

@@ -3,7 +3,7 @@
  <head>
      <meta charset="utf-8" />
      <meta http-equiv="X-UA-Compatible" content="IE=edge">
-     <title>All Your Blogs Here!</title>  
+     <title>{{post_content[3]}}</title>  
  
      <!-- Compiled and minified CSS -->
      <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
@@ -212,25 +212,17 @@
                  <div class="row">
                    <div class="col s12">
                      <a href="#" data-activates="mobile-demo" class="button-collapse show-on-large"><i class="material-icons">menu</i></a>
-                     <ul class="brand-logo" style="padding: 10;"><li>{{session['username']}}.BlogMe.com</li></ul>
+                      <a href="{{url_for('dashboard')}}" class="brand-logo" target="_blank">Blog Title</a>
                      <ul class="right hide-on-med-and-down">
-                        <a href="{{url_for('dashboard')}}">Dashboard</a>
+                        <li><a href="/showall/{{session['username']}}/">Home</a></li>
                         <li><a href="/about">About</a></li>
                      </ul>
                    </div>
                  </div>
                  <ul class="side-nav" id="mobile-demo">
-                    <a href="{{url_for('dashboard')}}">Dashboard</a>
+                    <li><a href="/showall/{{session['username']}}/">Home</a></li>
                     <li><a href="/about">About</a></li>
-                    
-                    {%  for i in range(0,post|length) %}       
-                    <li> 
-                      <a href="{{url_for('showmore',id = pid[i])}}"> 
-                      {{post_title[i]}} 
-                    </a>
-                    </li>
-                    <br>
-                    {% endfor %}
+
                  </ul>
                </div>
              </nav>
@@ -252,41 +244,75 @@
                       <div class="card-stacked">
                         <div class="card-content black-text">
                           <h3>
-                           Read Your Blogs!
+                            {{post_content[3]}}
                           </h3>
+                            <h4>
+                              <p class="post-meta">
+                                By {{post_content[6]}}
+                              </p>
+                              <p class="post-meta">
+                                <!-- date time -->
+                                {{post_content[0][0]}} {{post_content[1]}}, {{post_content[2]}}
+                              </p>
+                              </h4>
                         </div>
                         <!-- <div class="card-action">
                           <a href="#">This is a link</a>
                         </div> -->
                       </div>
                     </div>
-                  </div>
-                         
-                  {%  for i in range(0,post|length) %}             
+
+                  
                   <div class="card white">
-                      <div class="card-content black-text">
-                          <a href="{{url_for('showmore',id = pid[i])}}">
-                              <span class="card-title">
-                              {{post_title[i]}}
-                              </span>
-                              <hr>
-                          </a>     
-                          <p> {{post[i]}} </p>
-                          <p class="post-meta"> {{num_com[i]}} Comments </p>
+                      <div class="card-content black-text">  
+                          <p>  {{post_content[4]}} </p>
                       </div>
               
                   <hr>
               </div>
-              {% endfor%}
+                <div class="card-action" style="height: 60px;">
+          <div class="row" >
+            <div class="col m1">
+              <i class="material-icons">comment</i>
+            </div>  
+            <div class="col m10">
+              <form action = "/comment-result/{{post_content[5]}}" method="post">
+              <input type="text" placeholder="comment" id="comment" name="comment" style="position: relative; top:-15px;">
+            </div>
+            <div class="col m1">
+               <button type="submit" style="color: red"><i class="material-icons right">send</i> </button>
+              </form>
+            </div>
+          </div>
+        </div>
+        <hr>
+      </div>
 
+
+
+
+              <div class="post-preview" style="height: 30%;width: 100%;align-content: center;">
+              <h4 class="comment-username" >
+                COMMENTS
+                <!-- username gets printed -->
+              </h4>
+              {% for i in comments %}
+              <h5 class="comment-content">
+                  <!-- comment content  -->
+                {{i[1]}} said {{i[0]}} 
+              </h5>
+             {% endfor %}
+            
+                  </div>
+                         
 
 
  
          </div> <!--col m8-->
   
      
-     </div> <!--wow -->
-    </div>  
+
+ 
    </div>
  
  

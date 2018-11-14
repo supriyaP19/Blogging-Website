@@ -309,7 +309,7 @@ body{
           </li>
           <li class="nav-item">
             <!-- <strong>Show all User</strong> <a href="/showall"> Click here to see all users</a> -->
-            <a class="nav-link" href="{{url_for('showPosts',uname=session['username'])}}" target="_blank" >Read post</a>
+            <a class="nav-link" href="{{url_for('showPosts',name=session['username'])}}" target="_blank" >Read post</a>
           </li>
           
             <li class="nav-item">
@@ -434,6 +434,9 @@ body{
                 On post title: {{i[2]}},
                {{i[0]}} wrote {{i[1]}}
                 </li>
+                {%else%}
+                <li class="list-group-item" style="text-transform: none;">
+                No Comments To Show
                 {%endfor%}
           </ul>
           <div class="card-header">
@@ -445,6 +448,9 @@ body{
               <li class="list-group-item" style="text-transform: none;">
                 On post title: {{i[1]}}, Anonymous wrote  {{i[0]}}
                 </li>
+                 {%else%}
+                <li class="list-group-item" style="text-transform: none;">
+                No Comments To Show
                 {%endfor%}
           </ul>
         </div>  

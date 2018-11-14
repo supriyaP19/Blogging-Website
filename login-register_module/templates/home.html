@@ -1,7 +1,7 @@
 {% extends 'default.html' %}
 
 {% block title %}
-Blogger Clone
+BlogMe
 {% endblock %}
 
 {% block style %}
@@ -73,7 +73,7 @@ Blogger Clone
     <div class="container">
 
       <!-- Brand -->
-          <strong style="font-size: 30px; color:azure;align-content: left">Blogger </strong>
+          <strong style="font-size: 30px; color:azure;align-content: left">BlogMe </strong>
 
       <!-- Collapse -->
       <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
@@ -87,19 +87,13 @@ Blogger Clone
         <!-- Left -->
         <ul class="navbar-nav mr-auto">
           <li class="nav-item active">
-            <a class="nav-link" href="#">Home
+            <a class="nav-link" href="/">Home
               <span class="sr-only">(current)</span>
             </a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="https://mdbootstrap.com/getting-started/" target="_blank">Read post</a>
+            <a class="nav-link" href="" target="_blank">Read post</a>
           </li>
-          <!-- <li class="nav-item">
-            <a class="nav-link" href="https://mdbootstrap.com/education/bootstrap/" target="_blank">Free tutorials</a>
-          </li> -->
-            <li class="nav-item">
-                <a class="nav-link" href="https://mdbootstrap.com/material-design-for-bootstrap/" target="_blank">About Blogger clone</a>
-            </li>
     
         </ul>
 
@@ -116,11 +110,10 @@ Blogger Clone
           </li> 
           
           <li class="nav-item">
-            <a href="https://github.com/mdbootstrap/bootstrap-material-design" class="nav-link"
-              target="_blank">
-              <!-- <i class="fa fa-bitcoin" style="font-size:36px"></i> -->
+            <a href="" class="nav-link">
+           
               <i class="fab fa-blogger" style="font-size:40px"></i>
-              <!-- <i class="fa fa-github mr-2"></i>MDB GitHub -->
+   
             </a>
           </li>
         </ul>
@@ -144,9 +137,9 @@ Blogger Clone
         <div class="row wow fadeIn">
 
           <!--Grid column-->
-          <div class="col-md-6 mb-4 white-text text-center text-md-left">
+          <div class="col-md-6 mb-4 white-text text-center text-md-left" style="position: relative; top:15vh;">
 
-            <h1 class="display-4 font-weight-bold">Welcome to Blogger clone</h1>
+            <h1 class="display-4 font-weight-bold">Welcome to BlogMe</h1>
 
             <hr class="hr-light">
 
@@ -154,10 +147,6 @@ Blogger Clone
               <strong>Create, Post, Publish and Comment. </strong>
             </p>
 
-            <!-- <p class="mb-4 d-none d-md-block">
-              <strong>The most comprehensive tutorial for the Bootstrap 4. Loved by over 500 000 users. Video and written versions
-                available. Create your own, stunning website.</strong>
-            </p> -->
 {% block reglog %}
 {% endblock %}
           </div>
@@ -198,7 +187,7 @@ Blogger Clone
   <!-- Full Page Intro -->
 
   <!--Main layout-->
-  <main style="background-image: url('static/img/poster-background-high-resolution-design.jpg')">
+  <main style="background-image: url('static/img/poster-background-high-resolution-design.jpg'); background-size: cover;background-attachment: fixed;">
     <div class="container" >
 
       <div class="row wow fadeIn">
@@ -260,11 +249,11 @@ Blogger Clone
 
     <!--Call to action-->
     <div class="pt-4">
-      <a class="btn btn-outline-white" href="https://mdbootstrap.com/getting-started/" target="_blank" role="button">Download MDB
-        <i class="fa fa-download ml-2"></i>
+      <a class="btn btn-outline-white" href="/about" role="button">About BlogMe
+        <i class="fa fa-info ml-2"></i>
       </a>
-      <a class="btn btn-outline-white" href="https://mdbootstrap.com/education/bootstrap/" target="_blank" role="button">Register
-        <i class="fa fa-book ml-2"></i>
+      <a class="btn btn-outline-white" href="/" role="button">Feedback
+        <i class="fa fa-comment-alt ml-2"></i>
       </a>
     </div>
     <!--/.Call to action-->
@@ -275,7 +264,7 @@ Blogger Clone
     <!--Copyright-->
     <div class="footer-copyright py-3">
       © 2018 Copyright:
-      <a href="https://mdbootstrap.com/education/bootstrap/" target="_blank"> bloggerclone.com </a>
+      <a href="" > blogMe.com </a>
     </div>
     <!--/.Copyright-->
 

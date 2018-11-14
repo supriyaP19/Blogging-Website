@@ -201,18 +201,18 @@ $(document).ready(function(){
                 <div class="row">
                   <div class="col s12">
                     <a href="#" data-activates="mobile-demo" class="button-collapse show-on-large"><i class="material-icons">menu</i></a>
-                    <a href="https://codepen.io/collection/nbBqgY/" class="brand-logo" target="_blank">Blogger.com</a>
+                    <a href="https://codepen.io/collection/nbBqgY/" class="brand-logo" target="_blank">{{session['username']}}.BlogMe.com</a>
                     <ul class="right hide-on-med-and-down">
-                      <li><a href="{{url_for('showPosts',uname=session['username'])}}">Home</a></li>
-                      <li><a href="https://codepen.io/collection/nbBqgY/" target="_blank">About</a></li>
-                      <li><a href="https://codepen.io/collection/nbBqgY/" target="_blank">Contact</a></li>
+
+                        <li><a href="/showall/{{session['username']}}/">Home</a></li>
+                        <li><a href="/about">About</a></li>
+
                     </ul>
                   </div>
                 </div>
                 <ul class="side-nav" id="mobile-demo">
-                  <li><a href="https://codepen.io/collection/nbBqgY/" target="_blank">Home</a></li>
-                  <li><a href="https://codepen.io/collection/nbBqgY/" target="_blank">About</a></li>
-                  <li><a href="https://codepen.io/collection/nbBqgY/" target="_blank">Contact</a></li>
+                    <li><a href="/showall/{{session['username']}}/">Home</a></li>
+                    <li><a href="/about">About</a></li>
                 </ul>
               </div>
             </nav>
@@ -250,11 +250,13 @@ $(document).ready(function(){
 						<!-- <span class="card-title">Card Title</span> -->
 				</div>
 				<div class="card-content black-text">
+
 <pre>
 I have written {{num_posts}} posts
 My posts have got {{num_comments}} comments! 
 
 </pre>
+
 				</div>
 			</div>
 		</div> <!--col m4-->
@@ -265,7 +267,7 @@ My posts have got {{num_comments}} comments!
 
 
     <!-- Footer -->
-<footer class="page-footer font-small cyan darken-3">
+<footer class="page-footer font-small cyan darken-3" >
 
         <!-- Footer Elements -->
         <div class="container">
@@ -313,7 +315,7 @@ My posts have got {{num_comments}} comments!
     
         <!-- Copyright -->
         <div class="footer-copyright text-center py-3">© 2018 Copyright:
-          <a href="https://mdbootstrap.com/education/bootstrap/"> MDBootstrap.com</a>
+          <a href="https://mdbootstrap.com/education/bootstrap/"> {{session['username']}}.blogme.com</a>
         </div>
         <!-- Copyright -->
     

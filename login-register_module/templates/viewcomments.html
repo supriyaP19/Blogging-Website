@@ -1,16 +1,10 @@
 {% extends 'default.html' %}
 
 {% block title %}
-BlogMe
+Blogger Clone
 {% endblock %}
 
 {% block style %}
-
-<!-- CKEditor -->
-<script src="//cdn.ckeditor.com/4.11.1/standard/ckeditor.js"></script>
-<!-- CKEditor -->
-
-
 <!-- Font Awesome -->
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
 <!-- Bootstrap core CSS -->
@@ -182,12 +176,6 @@ body{
 }
 
 
-
-
-
-#scroll{height:70vh; width:100%;}
-#scroll{overflow:hidden; overflow-y:scroll;}
-
 </style>
 
 
@@ -216,31 +204,26 @@ body{
           document.getElementById("mySidenav").style.width = "0";
           document.getElementById("main").style.marginRight = "0";	      }
 
-
+        // jQuery( "li:has(ul)" ).click(function(){ // When a li that has a ul is clicked ...
+	      // jQuery(this).toggleClass('active'); // then toggle (add/remove) the class 'active' on it. 
+        // });
 
         function openlist()
         {
-          // alert('clicked')
-
           $('#postlist').toggleClass('active');
-          // location.reload()
-        }
-        function afterclick(){
-          location.reload()
         }
 
 
         function modal_save(){
-          var my_html = CKEDITOR.instances.editor.getData();
-          alert(my_html);
-          var mypost_content = $('#summernote' ).summernote('code');
-          alert(mypost_content); 
-          document.getElementById('#hidden_p').value=mypost_content;
+          var markupStr = $('#summernote' ).summernote('code'); 
+          
         }
 
-
         function new_post_fun(){
-            CKEDITOR.replace('editor');
+            $('#summernote').summernote({
+              placeholder: 'Write your content here...',
+              dialogsInBody: true
+            });
         }
         // var markupStr = $('#summernote' ).summernote('code');
 
@@ -272,6 +255,7 @@ body{
   <!-- Navbar -->
   <nav class="navbar fixed-top navbar-expand-lg navbar-dark scrolling-navbar" >
       <div id="mySidenav" class="sidenav">
+          <!-- <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a> -->
           <i class="fa fa-angle-right" style="font-size:30px;color:azure;cursor:pointer; position: absolute; left:15%; top:  4vh; " onclick="closeNav()"></i>
 
           <a href="#">
@@ -283,12 +267,12 @@ body{
           <ul>
             <li onclick="openlist()" id="postlist">Posts
               <ul>
-              <a href={{url_for('detector_all')}}><li >All</li></a>
-              <a  href={{url_for('detector_draft')}}><li>Drafts</li></a>
-              <a href={{url_for('detector_pub')}}><li>Published</li></a>
+              <li>All</li>
+              <li>Drafts</li>
+              <li>Published</li>
               </ul>
             </li>
-            <li> <a href="{{url_for('showcomments')}}">Comments</a></li>
+            <li>Comments</li>
             
                 <li onclick="scrolldown()">Theme </li>
 
@@ -305,7 +289,7 @@ body{
       
 
       <!-- Brand -->
-          <strong style="font-size: 30px; color:azure;align-content: left">BlogMe </strong>
+          <strong style="font-size: 30px; color:azure;align-content: left">Blogger </strong>
 
       <!-- Collapse -->
       <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
@@ -318,15 +302,19 @@ body{
 
         <!-- Left -->
         <ul class="navbar-nav mr-auto">
-          <!-- <li class="nav-item active">NoneNone -->
+          <li class="nav-item active">
             <a class="nav-link" href="/dashboard">Home
               <span class="sr-only">(current)</span>
             </a>
-          <!-- </li> -->
+          </li>
           <li class="nav-item">
             <!-- <strong>Show all User</strong> <a href="/showall"> Click here to see all users</a> -->
-            <a class="nav-link" href="{{url_for('showPosts',name=username)}}" target="_blank" >Read post</a>
+            <a class="nav-link" href="{{url_for('showPosts',name=session['username'])}}" target="_blank" >Read post</a>
           </li>
+          
+            <li class="nav-item">
+                <a class="nav-link" href="https://mdbootstrap.com/material-design-for-bootstrap/" target="_blank">About Blogger clone</a>
+            </li>
     
         </ul>
 
@@ -408,7 +396,6 @@ body{
       </div>
       
       <!-- Modal -->
-      <form action="" method="POST">
       <div class="modal" id="new_post_modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
 
         <!-- Add .modal-dialog-centered to .modal-dialog to vertically center the modal -->
@@ -422,62 +409,50 @@ body{
                 <span aria-hidden="true">&times;</span>
               </button>
             </div>
-          
           <div class="modal-body">
-
-
-            {% from "includes/_formhelpers.html" import render_field %}
-              <form method="POST" action="{{url_for('dashboard')}}">
-                  <div class="form-group">
-                      {{render_field(form.post_title, class_="form-control")}}
-                  </div>
-                  <div class="form-group">
-                      {{ render_field(form.post_content, class_="form-control", id="editor") }}
-                  </div>
-                  <a href="{{url_for('save')}}"><input type="submit" class="btn btn-primary" value="Save as Draft" name='draft_button'></a>
-                  <input type="submit" class="btn btn-primary" value="Submit" name='publish_button'>
-              </form>
-          </div>          
-        </div>  
-          
+            <div id="summernote">
+              <p></p>
+            </div> 
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss = "modal">Close</button>
+            <button type="button" class="btn btn-primary" onclick="modal_save()">Save changes</button>
+            </div>
+          </div>
         </div>
       </div>
 
-      </form>
-
-      <div class="col-md-9 text-md-left ">
+      <div class="col-md-9 text-md-left">
         <div class="card text-white bg-dark">
-     
           <div class="card-header">
-            
-            {{ session['status'] }}
+           Comments: 
           </div>
-          <ul class="list-group list-group-flush text-dark " id="scroll">
-            {% for i in list_of_posts %}
-<<<<<<< HEAD
-              <a href="{{url_for('detect_function',id=i.post_id)}}"><li class="list-group-item ">{{i.post_title}}</li></a>
-=======
-              {% if session['status']=="All" %}
-                <a href="{{url_for('detect_function',id=i.post_id)}}"><li class="list-group-item">{{i.post_title}}</li></a>
-              {% endif %}
-              {%  if session['status']=="Drafts" %}
-                {% if i.post_status=="draft" %}
-                  <a href="{{url_for('detect_function',id=i.post_id)}}"><li class="list-group-item">{{i.post_title}}</li></a>
-                {% endif %}
-              {% endif %}
-              {%  if session['status']=="Published" %}
-                {% if i.post_status=="publish" %}
-                  <a href="{{url_for('detect_function',id=i.post_id)}}"><li class="list-group-item">{{i.post_title}}</li></a>
-                {% endif %}
-              {% endif %}
->>>>>>> eed763129566cc699cbc590f93f48f1700cff2aa
-            <!-- <a><li class="list-group-item">Dapibus ac facilisis in</li></a>
-            <a><li class="list-group-item">Vestibulum at eros</li></a> -->
-            {% else %}
-              <a><li class="list-group-item"></li></a>
-            {% endfor %}
+          <ul class="list-group list-group-flush text-dark">
+            <!--for each post title-->
+             {%  for i in ulist%}
+              <li class="list-group-item" style="text-transform: none;">
+                On post title: {{i[2]}},
+               {{i[0]}} wrote {{i[1]}}
+                </li>
+                {%else%}
+                <li class="list-group-item" style="text-transform: none;">
+                No Comments To Show
+                {%endfor%}
           </ul>
-       
+          <div class="card-header">
+           Anonymous Comments: 
+          </div>
+          <ul class="list-group list-group-flush text-dark">
+            <!--for each post title-->
+             {%  for i in alist%}
+              <li class="list-group-item" style="text-transform: none;">
+                On post title: {{i[1]}}, Anonymous wrote  {{i[0]}}
+                </li>
+                 {%else%}
+                <li class="list-group-item" style="text-transform: none;">
+                No Comments To Show
+                {%endfor%}
+          </ul>
         </div>  
         
       </div>
@@ -488,7 +463,7 @@ body{
     </div>
     <!-- Content -->
 
-    </div>
+  </div>
   <!-- Mask & flexbox options-->
 <!-- Floating Action Button like Google Material -->
 
@@ -538,9 +513,7 @@ body{
       <div class="col mb-6">
 
           <div class="card mb-3 ">
-              <a href="{{url_for('themeChange',tid=3)}}">
-              <img class="card-img-top" src='{{url_for("static",filename="img/theme3.jpg")}}' alt="Card image cap">
-              </a>
+              <img class="card-img-top" src='{{url_for("static",filename="img/theme1.jpg")}}' alt="Card image cap">
               <div class="card-body">
                 <h5 class="card-title">Theme 3</h5>
                <!--  <p class="card-text">This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>
@@ -560,11 +533,11 @@ body{
 
     <!--Call to action-->
     <div class="pt-4">
-      <a class="btn btn-outline-white" href="/about" role="button">About BlogMe
-        <i class="fa fa-info ml-2"></i>
+      <a class="btn btn-outline-white" href="https://mdbootstrap.com/getting-started/" target="_blank" role="button">Download MDB
+        <i class="fa fa-download ml-2"></i>
       </a>
-      <a class="btn btn-outline-white" href="/" role="button">Feedback
-        <i class="fa fa-comment-alt ml-2"></i>
+      <a class="btn btn-outline-white" href="https://mdbootstrap.com/education/bootstrap/" target="_blank" role="button">Register
+        <i class="fa fa-book ml-2"></i>
       </a>
     </div>
     <!--/.Call to action-->
@@ -575,7 +548,7 @@ body{
     <!--Copyright-->
     <div class="footer-copyright py-3">
       © 2018 Copyright:
-      <a href="" ></a> blogMe.com </a>
+      <a href="https://mdbootstrap.com/education/bootstrap/" target="_blank"> bloggerclone.com </a>
     </div>
     <!--/.Copyright-->
 
@@ -584,24 +557,24 @@ body{
 
 
 <div class="menu pmd-floating-action"  role="navigation"> 
-    <a href="{{url_for('detector_publish')}}"  class="pmd-floating-action-btn btn btn-sm pmd-btn-fab pmd-btn-raised pmd-ripple-effect btn-default" data-title="Publish"> 
+    <a href="javascript:void(0);" class="pmd-floating-action-btn btn btn-sm pmd-btn-fab pmd-btn-raised pmd-ripple-effect btn-default" data-title="Publish"> 
       <span class="pmd-floating-hidden">Publish</span>
       <i class="material-icons">publish</i>
     </a> 
-    <a href="{{url_for('detector_view')}}" class="pmd-floating-action-btn btn btn-sm pmd-btn-fab pmd-btn-raised pmd-ripple-effect btn-default" data-title="View"> 
+    <a href="javascript:void(0);" class="pmd-floating-action-btn btn btn-sm pmd-btn-fab pmd-btn-raised pmd-ripple-effect btn-default" data-title="View"> 
       <span class="pmd-floating-hidden">View</span> 
       <i class="material-icons">ondemand_video
         </i> 
     </a> 
-    <a href="{{url_for('detector_delete')}}" class="pmd-floating-action-btn btn btn-sm pmd-btn-fab pmd-btn-raised pmd-ripple-effect btn-default" data-title="Delete"> 
+    <a href="javascript:void(0);" class="pmd-floating-action-btn btn btn-sm pmd-btn-fab pmd-btn-raised pmd-ripple-effect btn-default" data-title="Delete"> 
       <span class="pmd-floating-hidden">Delete</span> 
       <i class="material-icons">delete</i>
     </a> 
-    <a href="{{url_for('detector_edit')}}" class="pmd-floating-action-btn btn btn-sm pmd-btn-fab pmd-btn-raised pmd-ripple-effect btn-default" data-title="Edit"> 
+    <a href="javascript:void(0);" class="pmd-floating-action-btn btn btn-sm pmd-btn-fab pmd-btn-raised pmd-ripple-effect btn-default" data-title="Edit"> 
       <span class="pmd-floating-hidden">Edit</span> 
       <i class="material-icons">edit</i> 
     </a> 
-    <a class="pmd-floating-action-btn btn pmd-btn-fab pmd-btn-raised pmd-ripple-effect btn-primary" data-title="Add Post" href="{{url_for('detector_add')}}"> 
+    <a class="pmd-floating-action-btn btn pmd-btn-fab pmd-btn-raised pmd-ripple-effect btn-primary" data-title="Add Post" href="javascript:void(0);"> 
       <span class="pmd-floating-hidden">Primary</span>
       <i class="material-icons pmd-sm" >add</i> 
     </a> 

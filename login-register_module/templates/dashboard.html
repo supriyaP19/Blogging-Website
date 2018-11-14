@@ -182,6 +182,12 @@ body{
 }
 
 
+
+
+
+#scroll{height:70vh; width:100%;}
+#scroll{overflow:hidden; overflow-y:scroll;}
+
 </style>
 
 
@@ -200,8 +206,6 @@ body{
   <script type="text/javascript">
     // Animations initialization
     new WOW().init();
-
-
       function openNav() {
           document.getElementById("mySidenav").style.width = "250px";
           document.getElementById("main").style.marginRight = "250px";	      }
@@ -275,16 +279,16 @@ body{
           <a href="#">view post</a>
           <div id="mylist" style="color:white;font-size:20px; cursor: pointer;">
           <ul>
-            <li onclick="openlist()" id="postlist">Posts
-              <ul>
-              <a href={{url_for('detector_all')}}><li >All</li></a>
-              <a  href={{url_for('detector_draft')}}><li>Drafts</li></a>
-              <a href={{url_for('detector_pub')}}><li>Published</li></a>
+            <li onclick="openlist()" id="postlist"><a style="font-size: 20px;">Posts</a>
+              <ul >
+                <li><a href="{{url_for('detector_all')}}" style="font-size: 15px;">All</a></li>
+                <li><a  href="{{url_for('detector_draft')}}" style="font-size: 15px;">Drafts</a></li>
+                <li><a href="{{url_for('detector_pub')}}" style="font-size: 15px;">Published</li></a></li>
               </ul>
             </li>
-            <li> <a href="{{url_for('showcomments')}}">Comments</a></li>
+            <li> <a href="{{url_for('showcomments')}}" style="font-size: 20px;">Comments</a></li>
             
-                <li onclick="scrolldown()">Theme </li>
+                <li onclick="scrolldown()"><a style="font-size: 20px;">Theme</a>  </li>
 
            
           </ul>
@@ -428,8 +432,8 @@ body{
                   <div class="form-group">
                       {{ render_field(form.post_content, class_="form-control", id="editor") }}
                   </div>
-                  <a href="{{url_for('save')}}"><input type="submit" class="btn btn-primary" value="Save as Draft" name='draft_button'></a>
-                  <input type="submit" class="btn btn-primary" value="Submit" name='publish_button'>
+                  <a href="{{url_for('save')}}"><input type="submit" class="btn btn-primary" name="submit_button" value="Save as Draft" name='draft_button'></a>
+                  <input type="submit" class="btn btn-primary" value="Publish" name="submit_button">
               </form>
           </div>          
         </div>  
@@ -439,14 +443,14 @@ body{
 
       </form>
 
-      <div class="col-md-9 text-md-left">
+      <div class="col-md-9 text-md-left ">
         <div class="card text-white bg-dark">
      
           <div class="card-header">
             
             {{ session['status'] }}
           </div>
-          <ul class="list-group list-group-flush text-dark">
+          <ul class="list-group list-group-flush text-dark " id="scroll">
             {% for i in list_of_posts %}
               {% if session['status']=="All" %}
                 <a href="{{url_for('detect_function',id=i.post_id)}}"><li class="list-group-item">{{i.post_title}}</li></a>

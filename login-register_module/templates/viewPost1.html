@@ -231,16 +231,35 @@ $(document).ready(function(){
 
 
 					<div class="card-content white-text">
-						<a href="{{url_for('showmore',id = pid[i])}}">
-							<span class="card-title">
-							{{post_title[i]}}
-							</span>
-						</a>     
-						<p> {{post[i]}} </p>
-            <p class="post-meta"> {{num_com[i]}} Comments </p>
+              <div class="card-header">
+                  <span class="card-title"> <h5>{{post_title[i]}}</h5></span>
+  
+                 <hr>
+                </div>
+						    
+            <p> {{post[i]}} </p>
+            <div class="card-action" style="height: 20px;">
+            
+                <div class="row" >
+                  <div class="col m4">
+                      <p class="post-meta"> {{num_com[i]}} Comments </p>
+
+
+                  </div>
+                  <div class="col m4">
+                  </div>
+
+                  <div class="col m4 pull-right">
+                      <a href="{{url_for('showmore',id = pid[i])}}">
+                          read more
+                                  </a> 
+                  </div>
+                </div>
+          
 					</div>
+        </div>
 			   
-				<hr>
+		
 			</div>
 			{% endfor%}
 

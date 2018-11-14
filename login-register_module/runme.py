@@ -100,17 +100,18 @@ def count_posts(uid):
 
 def user_posts(uid):
     print("uid: ",uid)
-    # try:
-    all_posts=flask_alchemytry.Posts.query.filter_by(post_userid=uid).all()
-    print("all_posts: ",all_posts)
-    c=0
-    comment_ids=[]
-    for i in all_posts:
-        tempcomment_ids=flask_alchemytry.Comments.query.filter_by(comment_postid=i.post_id).all()
-        c = c+len(tempcomment_ids)
-    return c
-    # except:
-    #     return 0
+
+    try:
+        all_posts=flask_alchemytry.Posts.query.filter_by(post_userid=uid).all()
+        print("all_posts: ",all_posts)
+        c=0
+        for i in all_posts:
+            comment_ids=flask_alchemytry.Comments.query.filter_by(comment_postid=i.post_id).all()
+            c=c+len(comment_ids)
+        return c
+    except:
+        return 0
+
 
 def count_without_where():
     connection = sqlite3.connect("blogger_db1.db")
@@ -508,7 +509,10 @@ def save():
     # print("inside save")
     # return "OOPS"
     form = add_post_form(request.form)
-    if request.method == 'POST':
+    print(form.post_title)
+    print(request.method)
+    if request.method:
+        print('not sure i came here')
         title = form.post_title.data
         content = form.post_content.data
 
@@ -548,6 +552,8 @@ def logout():
 class add_post_form(Form):
     post_title = StringField('post_title',[validators.Required()])
     post_content = TextAreaField('post_content',[validators.Required()])
+    print(post_title)
+    print(post_content)
 
 @app.route('/dashboard',methods=['GET','POST'])
 @is_logged_in
@@ -557,10 +563,11 @@ def dashboard():
     if request.method == 'POST':
         title = form.post_title.data
         content = form.post_content.data
+        print('i think i came here')
         print("wtfffffffffff")
         print(title)
         print(content)
-
+        
         post_id = flask_alchemytry.Posts.query.all()
         post_index = post_id[len(post_id)-1]
         post_index = post_index.post_id + 1
@@ -572,7 +579,15 @@ def dashboard():
         print("post_index-----------------:",post_index)
         print("userid-----------------:",userid_here)
 
-        new_post = flask_alchemytry.Posts(int(post_index),int(userid_here),datetime.now(),content,title,'publish')
+
+        if request.form['submit_button'] == 'Publish':
+            print("in publish")
+            new_post = flask_alchemytry.Posts(int(post_index),int(userid_here),datetime.now(),content,title,'publish')
+        elif request.form['submit_button'] == 'Save as Draft':
+            print("in draft")
+            new_post = flask_alchemytry.Posts(int(post_index),int(userid_here),datetime.now(),content,title,'draft')
+
+
             # new_post = flask_alchemytry.Posts(int(102),int(15),datetime.now(),'trying','hello')
         flask_alchemytry.db.session.add(new_post)
         flask_alchemytry.db.session.commit()
@@ -595,10 +610,6 @@ def dashboard():
 
     return render_template('dashboard.html',username=session['username'],form=form,list_of_posts=list_of_posts)
     # return redirect(url_for('dashboard'))
-
-
-
-
 
 # Register Form Class
 class RegisterForm(Form):

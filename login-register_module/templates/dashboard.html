@@ -430,7 +430,7 @@ body{
                       {{ render_field(form.post_content, class_="form-control", id="editor") }}
                   </div>
                   <input type="submit" class="btn btn-primary" value="Submit" name='publish_button'>
-                  <a href="{{url_for('save')}}"><input type="button" class="btn btn-primary" value="Save as Draft" name='draft_button'></a>
+                  <a href="{{url_for('save')}}"><input type="submit" class="btn btn-primary" value="Save as Draft" name='draft_button'></a>
               </form>
           </div>          
         </div>  

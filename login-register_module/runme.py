@@ -410,10 +410,39 @@ def detect_function(id):
         print("inside add")
     return dashboard()
 
-@app.route('/save')
+@app.route('/save',methods=['GET','POST'])
 def save():
-    print("inside save")
-    return "OOPS"
+    # print("inside save")
+    # return "OOPS"
+    form = add_post_form(request.form)
+    if request.method == 'POST':
+        title = form.post_title.data
+        content = form.post_content.data
+
+        print(title)
+        print(content)
+
+        post_id = flask_alchemytry.Posts.query.all()
+        post_index = post_id[len(post_id)-1]
+        post_index = post_index.post_id + 1
+
+        current_username = session['username']
+        user_obj = flask_alchemytry.User.query.filter_by(user_name = current_username).first()
+        userid_here = user_obj.user_id
+
+        new_post = flask_alchemytry.Posts(int(post_index),int(userid_here),datetime.now(),content,title,'draft')
+        flask_alchemytry.db.session.add(new_post)
+        flask_alchemytry.db.session.commit()
+
+    list_of_posts=[]
+    user= flask_alchemytry.User.query.filter_by(user_name=session['username'])
+    posts = flask_alchemytry.Posts.query.filter_by(post_userid=user[0].user_id)
+
+    for i in posts:
+        list_of_posts.append(i)
+
+    return render_template('dashboard.html',username=session['username'],form=form,list_of_posts=list_of_posts)
+
 
 @app.route('/logout')
 def logout():
@@ -448,7 +477,7 @@ def dashboard():
         print("post_index-----------------:",post_index)
         print("userid-----------------:",userid_here)
 
-        new_post = flask_alchemytry.Posts(int(post_index),int(userid_here),datetime.now(),content,title)
+        new_post = flask_alchemytry.Posts(int(post_index),int(userid_here),datetime.now(),content,title,'published')
         # new_post = flask_alchemytry.Posts(int(102),int(15),datetime.now(),'trying','hello')
         flask_alchemytry.db.session.add(new_post)
         flask_alchemytry.db.session.commit()
@@ -492,8 +521,8 @@ def register():
     num_posts=count_without_where()
     post_all = flask_alchemytry.Posts.query.all()
     print("Number of Posts: ",num_posts)
-    index1=random.randint(0,num_posts/2)
-    index2=random.randint(num_posts/2+1,num_posts-1)
+    index1=random.randint(0,int(num_posts/2))
+    index2=random.randint(int(num_posts/2)+1,num_posts-1)
     print("index1: ",index1,"index2: ",index2)
     print("here i am")
     published_by=[]

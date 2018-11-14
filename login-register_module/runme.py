@@ -167,12 +167,7 @@ def showmore(id):
             user_name_i=flask_alchemytry.User.query.filter_by(user_id=i).first()
             names.append(user_name_i.user_name)
 
-<<<<<<< HEAD
     print("Commented user names:", names)
-=======
-    print("Commented user names:", names)
->>>>>>> 81e98b391786f8c900d5400a7da976fefe34621c
-    # print("Commented users: ",user_id)
     
 
     for i,j in zip(comm_content,names):
@@ -181,8 +176,7 @@ def showmore(id):
         temp_det.append(j)
         comment_details.append(temp_det)
 
-<<<<<<< HEAD
-    print("COMMENT DET: ",comment_details)
+
     print("COMMENT DET: ",comment_details)
 
 
@@ -416,6 +410,10 @@ def detect_function(id):
         print("inside add")
     return dashboard()
 
+@app.route('/save')
+def save():
+    print("inside save")
+    return "OOPS"
 
 @app.route('/logout')
 def logout():
@@ -431,7 +429,6 @@ class add_post_form(Form):
 @app.route('/dashboard',methods=['GET','POST'])
 @is_logged_in
 def dashboard():
-
     form = add_post_form(request.form)
     if request.method == 'POST':
         title = form.post_title.data
@@ -463,12 +460,14 @@ def dashboard():
         # new_user = flask_alchemytry.User(get_index,username,email,password,username+'.com','my blog',1)
         # flask_alchemytry.db.session.add(new_user)
         # flask_alchemytry.db.session.commit()
-        user= flask_alchemytry.User.query.filter_by(user_name=session['username'])
-        posts = flask_alchemytry.Posts.query.filter_by(post_userid=user[0].user_id)
-        list_of_posts=[]
+        
 
-        for i in posts:
-            list_of_posts.append(i)
+    list_of_posts=[]
+    user= flask_alchemytry.User.query.filter_by(user_name=session['username'])
+    posts = flask_alchemytry.Posts.query.filter_by(post_userid=user[0].user_id)
+
+    for i in posts:
+        list_of_posts.append(i)
 
     return render_template('dashboard.html',username=session['username'],form=form,list_of_posts=list_of_posts)
 

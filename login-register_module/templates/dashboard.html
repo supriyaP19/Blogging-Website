@@ -429,34 +429,11 @@ body{
                   <div class="form-group">
                       {{ render_field(form.post_content, class_="form-control", id="editor") }}
                   </div>
-                  <p><input type="submit" class="btn btn-primary" value="Submit"></p> 
+                  <input type="submit" class="btn btn-primary" value="Submit" name='publish_button'>
+                  <a href="{{url_for('save')}}"><input type="button" class="btn btn-primary" value="Save as Draft" name='draft_button'></a>
               </form>
-
-
-            <div class="row" style="padding-bottom: 1%">
-              <div class="col-sm-2 align-center">
-                <p class="align-center">Post Title:</p>
-              </div>
-              <div class="col-sm-10">
-                <div class="input-group">
-                  <input type="text" class="form-control" placeholder="Blog Title" name="title" id='blog_title' >
-                </div>
-              </div>
-            </div>
-            <div>
-              <!-- //CKEditor -->
-              <textarea name="editor" id='editor'></textarea>  
-              <!-- //CKEditor -->
-            </div>
-            <p hidden='true' id='hidden_p' name='hidden_p'></p> 
-          </div>
-          
-          <div class="modal-footer">
-            <button type="button" class="btn btn-secondary" data-dismiss = "modal">Close</button>
-            <button type="submit" class="btn btn-primary" onclick="modal_save()">Save changes</button>
-            </div>
-          
-          </div>
+          </div>          
+        </div>  
           
         </div>
       </div>

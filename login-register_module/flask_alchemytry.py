@@ -37,7 +37,7 @@ class Posts(db.Model):
 
     def __init__(self, id, userid,published_on, content, title):
         self.post_id = id
-        self.userid = userid
+        self.post_userid = userid
         self.published_on = published_on
         self.post_content = content
         self.post_title = title     

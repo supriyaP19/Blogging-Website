@@ -1,7 +1,7 @@
 {% extends 'default.html' %}
 
 {% block title %}
-Blogger Clone
+BlogMe
 {% endblock %}
 
 {% block style %}
@@ -291,7 +291,7 @@ body{
       
 
       <!-- Brand -->
-          <strong style="font-size: 30px; color:azure;align-content: left">Blogger </strong>
+          <strong style="font-size: 30px; color:azure;align-content: left">BlogMe </strong>
 
       <!-- Collapse -->
       <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
@@ -313,10 +313,6 @@ body{
             <!-- <strong>Show all User</strong> <a href="/showall"> Click here to see all users</a> -->
             <a class="nav-link" href="{{url_for('showPosts',name=session['username'])}}" target="_blank" >Read post</a>
           </li>
-          
-            <li class="nav-item">
-                <a class="nav-link" href="https://mdbootstrap.com/material-design-for-bootstrap/" target="_blank">About Blogger clone</a>
-            </li>
     
         </ul>
 
@@ -529,16 +525,17 @@ body{
 </div>
   </main>
 
+  
   <!--Footer-->
   <footer class="page-footer text-center font-small mt-4 wow fadeIn">
 
     <!--Call to action-->
     <div class="pt-4">
-      <a class="btn btn-outline-white" href="https://mdbootstrap.com/getting-started/" target="_blank" role="button">Download MDB
-        <i class="fa fa-download ml-2"></i>
+      <a class="btn btn-outline-white" href="/about" role="button">About BlogMe
+        <i class="fa fa-info ml-2"></i>
       </a>
-      <a class="btn btn-outline-white" href="https://mdbootstrap.com/education/bootstrap/" target="_blank" role="button">Register
-        <i class="fa fa-book ml-2"></i>
+      <a class="btn btn-outline-white" href="/feedback" role="button">Feedback
+        <i class="fa fa-comment-alt ml-2"></i>
       </a>
     </div>
     <!--/.Call to action-->
@@ -549,13 +546,12 @@ body{
     <!--Copyright-->
     <div class="footer-copyright py-3">
       © 2018 Copyright:
-      <a href="https://mdbootstrap.com/education/bootstrap/" target="_blank"> bloggerclone.com </a>
+      <a href="" ></a> BlogMe.com </a>
     </div>
     <!--/.Copyright-->
 
   </footer>
   <!--/.Footer-->
-
 
 <div class="menu pmd-floating-action"  role="navigation"> 
     <a href="javascript:void(0);" class="pmd-floating-action-btn btn btn-sm pmd-btn-fab pmd-btn-raised pmd-ripple-effect btn-default" data-title="Publish"> 

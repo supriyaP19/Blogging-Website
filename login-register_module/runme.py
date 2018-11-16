@@ -302,6 +302,7 @@ def showPosts(name):
             num=count(i.post_id)
             n.append(num)
             str = i.post_content
+            str = Markup(str)
             print("i=",i,"str: ",i.post_content)
             str = str[0:150]
             
@@ -313,7 +314,7 @@ def showPosts(name):
             month = date1[0]
             year.append(date1[2])
             day.append(date1[1])
-            temp.append(Markup(str)) #has post content
+            temp.append(str) #has post content
             mon=findMonth(month)
             time.append(((date[1]).split(":"))[0] + ":" + ((date[1]).split(":"))[1])
             user = flask_alchemytry.User.query.filter_by(user_id=i.post_userid)

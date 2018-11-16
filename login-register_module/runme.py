@@ -706,13 +706,15 @@ def register():
     post1 = flask_alchemytry.Posts.query.filter_by(post_id = post_all[index1].post_id).first()
     print("post1: ",post1)
     content1 =post1.post_content
-    content1  = Markup(content1 [0:150])
+    content1 =Markup(content1)
+    content1  = content1 [0:150]
 
     post2 = flask_alchemytry.Posts.query.filter_by(post_id = post_all[index2].post_id).first()
     print("post2: ",post2)
     content2 = post2.post_content
     # print "i=",i,"str: ",i.post_content
-    content2 = Markup(content2 [0:150])
+    content2 = Markup(content2)
+    content2 = content2 [0:150]
     if request.method == 'POST' and form.validate():
         name = form.name.data
         email = form.email.data

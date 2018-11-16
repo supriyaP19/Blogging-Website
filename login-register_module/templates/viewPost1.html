@@ -204,15 +204,16 @@ $(document).ready(function(){
                     <ul class="brand-logo" style="padding: 10;"><li>{{session['username']}}.BlogMe.com</li></ul>
                     <ul class="right hide-on-med-and-down">
 
-                        <a href="{{url_for('dashboard')}}">Dashboard</a>
+                        <li><a href="{{url_for('dashboard')}}">Dashboard</a></li>
                         <li><a href="/about">About</a></li>
 
                     </ul>
                   </div>
                 </div>
                 <ul class="side-nav" id="mobile-demo">
-                    <a href="{{url_for('dashboard')}}">Dashboard</a>
+                    <li><a href="{{url_for('dashboard')}}">Dashboard</a></li>
                     <li><a href="/about">About</a></li>
+                    <hr>
                     {%  for i in range(0,post|length) %}       
                     <li> 
                       <a href="{{url_for('showmore',id = pid[i])}}"> 

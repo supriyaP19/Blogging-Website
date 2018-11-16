@@ -257,11 +257,11 @@ body{
       <div id="mySidenav" class="sidenav">
           <i class="fa fa-angle-right" style="font-size:30px;color:azure;cursor:pointer; position: absolute; left:15%; top:  4vh; " onclick="closeNav()"></i>
 
-          <a href="#">
-            <h1 style="color:white; padding-top:5vh">Title</h1>
+         
+            <p style="color:white; padding-top:5vh ;padding-left:5px ;">{{session['username']}}.BlogMe.com
             <hr style="border-top: 1px solid white;">
-          </a>
-          <a href="#">view post</a>
+          </p>
+         
           <div id="mylist" style="color:white;font-size:20px; cursor: pointer;">
           <ul>
             <li onclick="openlist()" id="postlist"><a style="font-size: 20px;">Posts</a>
@@ -302,9 +302,9 @@ body{
         <!-- Left -->
         <ul class="navbar-nav mr-auto">
           <!-- <li class="nav-item active">NoneNone -->
-            <a class="nav-link" href="/dashboard">Home
+           <li class="nav-item "> <a class="nav-link" href="/dashboard">Home
               <span class="sr-only">(current)</span>
-            </a>
+            </a></li> 
           <!-- </li> -->
           <li class="nav-item">
             <!-- <strong>Show all User</strong> <a href="/showall"> Click here to see all users</a> -->
@@ -552,7 +552,7 @@ body{
       <a class="btn btn-outline-white" href="/about" role="button">About BlogMe
         <i class="fa fa-info ml-2"></i>
       </a>
-      <a class="btn btn-outline-white" href="/" role="button">Feedback
+      <a class="btn btn-outline-white" href="/feedback" role="button">Feedback
         <i class="fa fa-comment-alt ml-2"></i>
       </a>
     </div>
@@ -564,7 +564,7 @@ body{
     <!--Copyright-->
     <div class="footer-copyright py-3">
       © 2018 Copyright:
-      <a href="" ></a> blogMe.com </a>
+      <a href="" ></a> BlogMe.com </a>
     </div>
     <!--/.Copyright-->
 

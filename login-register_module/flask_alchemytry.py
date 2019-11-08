@@ -71,8 +71,6 @@ class Comments(db.Model):
         self.comment_content = content
 
 class Follows(db.Model):
-    #table_id = db.Column()
-    #follows_id_auto = db.Column('follows_id',db.Integer, primary_key=True)
     follows_id = db.Column('follows_id', db.ForeignKey('user.user_id', ondelete = 'cascade', onupdate = 'cascade'), nullable=False,primary_key=True)
     follows_userid = db.Column('follows_userid', db.ForeignKey('user.user_id', ondelete = 'cascade', onupdate = 'cascade'), nullable=False,primary_key=True)
 
